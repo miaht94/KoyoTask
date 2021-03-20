@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "electron dist/index.js"
+    "start": "electron dist/index.js",
+    "bnr" : "tsc & electron dist/index.js"
   },
   "author": "",
   "license": "ISC",
