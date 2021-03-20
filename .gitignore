@@ -1,0 +1,10 @@
+node_modules
+build
+npm-debug.log
+.nyc
+.env
+.DS_Store
+
+# out source
+dist/*.js
+dist/*.map

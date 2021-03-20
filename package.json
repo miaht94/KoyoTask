@@ -1,0 +1,17 @@
+{
+  "name": "KoyoTask",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "electron dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^12.0.1",
+    "typescript": "^4.2.3"
+  }
+}
