@@ -3,7 +3,7 @@ import { BrowserWindow } from 'electron';
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
     static application: Electron.App;
-    static BrowserWindow;
+    static BrowserWindow: typeof BrowserWindow;
     private static onWindowAllClosed() {
         if (process.platform !== 'darwin') {
             Main.application.quit();
@@ -18,7 +18,7 @@ export default class Main {
     private static onReady() {
         Main.mainWindow = new Main.BrowserWindow({ width: 800, height: 600 });
         Main.mainWindow
-            .loadURL('file://' + __dirname + '/index.html');
+            .loadURL('file://' + __dirname + '/../resource/index.html');
         Main.mainWindow.on('closed', Main.onClose);
     }
 
