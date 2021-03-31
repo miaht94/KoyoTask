@@ -16,9 +16,21 @@ export default class Main {
     }
 
     private static onReady() {
-        Main.mainWindow = new Main.BrowserWindow({ width: 800, height: 600 });
+        Main.mainWindow = new Main.BrowserWindow({
+            width: 800,
+            height: 600,
+            frame: false,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,
+                enableRemoteModule: true,
+            },
+            titleBarStyle: 'hiddenInset',
+            transparent: true
+        });
+        Main.mainWindow.webContents.openDevTools();
         Main.mainWindow
-            .loadURL('file://' + __dirname + '/../resource/index.html');
+            .loadURL('file://' + __dirname + '/index.html');
         Main.mainWindow.on('closed', Main.onClose);
     }
 

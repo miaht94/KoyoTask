@@ -1,19 +1,29 @@
 {
-  "name": "KoyoTask",
+  "name": "electron-webpack-sample",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/App.js",
+  "description": "Use ES Modules with Electron using Webpack",
+  "main": "dist/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "start": "electron dist/index.js",
-    "bnr": "tsc & electron dist/index.js",
-    "learnTS": "tsc & node dist/index.js"
+    "clean": "rimraf dist",
+    "dev": "npm run clean && webpack",
+    "prod": "npm run clean && webpack -p",
+    "start": "electron dist/main.js"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "electron": "^12.0.2",
+    "html-webpack-plugin": "^5.3.1",
+    "ts-loader": "^8.1.0",
+    "tsconfig-paths-webpack-plugin": "^3.5.1",
+    "typescript": "^4.2.3",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-merge": "^5.7.3"
+  },
   "dependencies": {
-    "electron": "^12.0.1",
-    "typescript": "^4.2.3"
+    "jquery": "^3.6.0",
+    "rimraf": "^3.0.2"
   }
 }
