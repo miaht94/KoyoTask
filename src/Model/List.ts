@@ -1,5 +1,5 @@
 
-class List {
+export class List {
     public tasks: Task[];
     constructor(json) {
         for (let task in json.tasks) {
@@ -9,7 +9,7 @@ class List {
     }
 }
 
-class Task {
+export class Task {
     task_name: string;
     task_id: string;
     constructor(task) {

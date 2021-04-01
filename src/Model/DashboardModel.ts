@@ -1,4 +1,6 @@
 import IOSystem from '../utils/iosys';
+import { List } from './List';
+import { Model } from './Model';
 export class DashboardModel extends Model {
     protected lists: JSON;
     protected currentList: List;

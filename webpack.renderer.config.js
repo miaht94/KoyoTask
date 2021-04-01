@@ -17,7 +17,15 @@ const renderer = {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: "ts-loader"
-      }
+      },
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+        options: {
+          // Disables attributes processing
+          sources: true,
+        },
+      },
     ]
   },
   plugins: [
@@ -31,7 +39,7 @@ const renderer = {
   },
   resolve: {
     plugins: [new TsconfigPathsPlugin({/* options: see below */ })],
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.html'],
   },
   devtool: 'inline-source-map'
 };

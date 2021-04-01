@@ -1,5 +1,6 @@
 import { DashboardModel } from '../Model/DashboardModel';
 import { DashboardView } from '../View/DashboardView';
+import { Controller } from './Controller';
 export class DashboardController extends Controller {
     private model: DashboardModel;
     private view: DashboardView;
