@@ -1,5 +1,5 @@
 {
-  "name": "electron-webpack-sample",
+  "name": "Koyotask",
   "version": "1.0.0",
   "description": "Use ES Modules with Electron using Webpack",
   "main": "dist/main.js",
