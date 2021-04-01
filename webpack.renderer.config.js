@@ -8,7 +8,8 @@ const renderer = {
   entry: "./src/renderer.ts",
   output: {
     filename: "renderer.js",
-    path: buildPath
+    path: buildPath,
+    devtoolModuleFilenameTemplate: '[absolute-resource-path]'
   },
   module: {
     rules: [
@@ -31,7 +32,8 @@ const renderer = {
   resolve: {
     plugins: [new TsconfigPathsPlugin({/* options: see below */ })],
     extensions: ['.tsx', '.ts', '.js'],
-  }
+  },
+  devtool: 'inline-source-map'
 };
 
 module.exports = renderer;
