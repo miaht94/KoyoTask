@@ -17,93 +17,93 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<title>KoyoTask</title>
-	<link rel="stylesheet" href="./dashboard_style.css" />
-	<link rel="stylesheet" href="./style.css" />
-	<link rel="stylesheet" href="./jquery-ui.css">
-	<link rel="stylesheet" href="./stylewin.css">
+  <meta charset="UTF-8">
+  <title>KoyoTask</title>
+  <link rel="stylesheet" href="./css/dashboard_style.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/jquery-ui.css">
+  <link rel="stylesheet" href="./css/stylewin.css">
 </head>
 
 <body>
 
-	<div class="window">
-		<header id="titlebar">
-			<div id="drag-region">
-				<div id="window-controls">
-					<div class="button" id="min-button">
-						<img class="icon"
-							srcset="icons/min-w-10.png 1x, icons/min-w-12.png 1.25x, icons/min-w-15.png 1.5x, icons/min-w-15.png 1.75x, icons/min-w-20.png 2x, icons/min-w-20.png 2.25x, icons/min-w-24.png 2.5x, icons/min-w-30.png 3x, icons/min-w-30.png 3.5x"
-							draggable="false" />
-					</div>
-					<div class="button" id="max-button">
-						<img class="icon"
-							srcset="icons/max-w-10.png 1x, icons/max-w-12.png 1.25x, icons/max-w-15.png 1.5x, icons/max-w-15.png 1.75x, icons/max-w-20.png 2x, icons/max-w-20.png 2.25x, icons/max-w-24.png 2.5x, icons/max-w-30.png 3x, icons/max-w-30.png 3.5x"
-							draggable="false" />
-					</div>
-					<div class="button" id="restore-button">
-						<img class="icon"
-							srcset="icons/restore-w-10.png 1x, icons/restore-w-12.png 1.25x, icons/restore-w-15.png 1.5x, icons/restore-w-15.png 1.75x, icons/restore-w-20.png 2x, icons/restore-w-20.png 2.25x, icons/restore-w-24.png 2.5x, icons/restore-w-30.png 3x, icons/restore-w-30.png 3.5x"
-							draggable="false" />
-					</div>
-					<div class="button" id="close-button">
-						<img class="icon"
-							srcset="icons/close-w-10.png 1x, icons/close-w-12.png 1.25x, icons/close-w-15.png 1.5x, icons/close-w-15.png 1.75x, icons/close-w-20.png 2x, icons/close-w-20.png 2.25x, icons/close-w-24.png 2.5x, icons/close-w-30.png 3x, icons/close-w-30.png 3.5x"
-							draggable="false" />
-					</div>
+  <div class="window">
+    <header id="titlebar">
+      <div id="drag-region">
+        <div id="window-controls">
+          <div class="button" id="min-button">
+            <img class="icon"
+              srcset="img/min-w-10.png 1x, img/min-w-12.png 1.25x, img/min-w-15.png 1.5x, img/min-w-15.png 1.75x, img/min-w-20.png 2x, img/min-w-20.png 2.25x, img/min-w-24.png 2.5x, img/min-w-30.png 3x, img/min-w-30.png 3.5x"
+              draggable="false" />
+          </div>
+          <div class="button" id="max-button">
+            <img class="icon"
+              srcset="img/max-w-10.png 1x, img/max-w-12.png 1.25x, img/max-w-15.png 1.5x, img/max-w-15.png 1.75x, img/max-w-20.png 2x, img/max-w-20.png 2.25x, img/max-w-24.png 2.5x, img/max-w-30.png 3x, img/max-w-30.png 3.5x"
+              draggable="false" />
+          </div>
+          <div class="button" id="restore-button">
+            <img class="icon"
+              srcset="img/restore-w-10.png 1x, img/restore-w-12.png 1.25x, img/restore-w-15.png 1.5x, img/restore-w-15.png 1.75x, img/restore-w-20.png 2x, img/restore-w-20.png 2.25x, img/restore-w-24.png 2.5x, img/restore-w-30.png 3x, img/restore-w-30.png 3.5x"
+              draggable="false" />
+          </div>
+          <div class="button" id="close-button">
+            <img class="icon"
+              srcset="img/close-w-10.png 1x, img/close-w-12.png 1.25x, img/close-w-15.png 1.5x, img/close-w-15.png 1.75x, img/close-w-20.png 2x, img/close-w-20.png 2.25x, img/close-w-24.png 2.5x, img/close-w-30.png 3x, img/close-w-30.png 3.5x"
+              draggable="false" />
+          </div>
 
-				</div>
-			</div>
-		</header>
-		<div id="main">
-			<div class="view">
-				<div class="column sidebar">
-					<h1>KoyoTask</h1>
-					<p>
-						Search
-					</p>
-				</div>
-				<div class="column mainview">
-					<div id="tabs">
-						<ul>
-							<li><a href="#Dashboard">Dashboard</a></li>
-							<li><a href="#NewTask">New Task</a></li>
-							<li><a href="#NewList">New List</a></li>
-						</ul>
-						<div id="Dashboard">
-							<div class="dashboard_main">
-								<h1 class="title helvetica-normal-black-24px">Dashboard</h1>
-								<div class="dashboard_item">
-									<img class="line" src="ui_resources/line1.png" />
-									<div class="flex-row">
-										<img class="oval" src="ui_resources/oval1.png" />
-										<div class="task-1 helvetica-normal-black-16px">Task 1</div>
-									</div>
-								</div>
-								<div class="dashboard_item">
-									<img class="line" src="ui_resources/line1.png" />
-									<div class="flex-row">
-										<img class="oval" src="ui_resources/oval1.png" />
-										<div class="task-1 helvetica-normal-black-16px">Task 1</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="NewTask">
-							<h1> New Task </h1>
-						</div>
-						<div id="NewList">
-							<h1> New List </h1>
-						</div>
-					</div>
-					<h1>Tasks</h1>
-					<p>
-						List of tasks
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
+        </div>
+      </div>
+    </header>
+    <div id="main">
+      <div class="view">
+        <div class="column sidebar">
+          <h1>KoyoTask</h1>
+          <p>
+            Search
+          </p>
+        </div>
+        <div class="column mainview">
+          <div id="tabs">
+            <ul>
+              <li><a href="#Dashboard">Dashboard</a></li>
+              <li><a href="#NewTask">New Task</a></li>
+              <li><a href="#NewList">New List</a></li>
+            </ul>
+            <div id="Dashboard">
+              <div class="dashboard_main">
+                <h1 class="title helvetica-normal-black-24px">Dashboard</h1>
+                <div class="dashboard_item">
+                  <img class="line" src="img/line1.png" />
+                  <div class="flex-row">
+                    <img class="oval" src="img/oval1.png" />
+                    <div class="task-1 helvetica-normal-black-16px">Task 1</div>
+                  </div>
+                </div>
+                <div class="dashboard_item">
+                  <img class="line" src="img/line1.png" />
+                  <div class="flex-row">
+                    <img class="oval" src="img/oval1.png" />
+                    <div class="task-1 helvetica-normal-black-16px">Task 1</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="NewTask">
+              <h1> New Task </h1>
+            </div>
+            <div id="NewList">
+              <h1> New List </h1>
+            </div>
+          </div>
+          <h1>Tasks</h1>
+          <p>
+            List of tasks
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

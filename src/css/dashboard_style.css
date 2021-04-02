@@ -1,0 +1,61 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+* {
+  box-sizing: border-box;
+}
+.dashboard_main {
+  align-items: flex-start;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 1024px;
+  width: 1024px;
+}
+.dashboard_main .dashboard_item {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-top: 19px;
+  min-height: 37px;
+  width: 978px;
+}
+.dashboard_main .flex-row {
+  align-items: center;
+  display: flex;
+  height: 19px;
+  margin-left: 1px;
+  margin-top: 17px;
+  min-width: 75px;
+}
+.dashboard_main .line {
+  height: 1px;
+  width: 978px;
+}
+.dashboard_main .oval {
+  height: 16px;
+  margin-bottom: 1px;
+  width: 16px;
+}
+.dashboard_main .task-1 {
+  letter-spacing: 0px;
+  line-height: 19px;
+  margin-left: 10px;
+  min-height: 19px;
+  min-width: 49px;
+  white-space: nowrap;
+}
+.dashboard_main .title {
+  letter-spacing: 0px;
+  line-height: 29px;
+  min-height: 29px;
+  white-space: nowrap;
+}
+.helvetica-normal-black-16px {
+  color: black;
+  font-family: "Helvetica", Helvetica;
+  font-size: 16px;
+}
+.helvetica-normal-black-24px {
+  color: black;
+  font-family: "Helvetica", Helvetica;
+  font-size: 24px;
+}
