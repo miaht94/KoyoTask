@@ -1,47 +1,37 @@
-const path = require("path");
-const merge = require("webpack-merge");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const buildPath = path.resolve(__dirname, "./dist");
+const rules = require('./webpack.rules');
+const plugins = require('./webpack.plugins');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
+// const isProd = process.env.MY_APP_ROLE === 'production';
+const isProd = process.env.NODE_ENV == 'production';
+const assets = ['img', 'data', 'css', 'js']; // asset directories
+rules.push({
+  test: /\.css$/,
+  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+});
 
-const renderer = {
-  entry: "./src/renderer.ts",
-  output: {
-    filename: "renderer.js",
-    path: buildPath,
-    devtoolModuleFilenameTemplate: '[absolute-resource-path]'
-  },
+module.exports = {
   module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: "ts-loader"
-      },
-      {
-        test: /\.html$/i,
-        loader: 'html-loader',
-        options: {
-          // Disables attributes processing
-          sources: true,
-        },
-      },
-    ]
+    rules,
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html"
-    })
-  ],
-  target: "electron-renderer",
-  externalsPresets: {
-    electronRenderer: true
-  },
+  plugins: plugins,
   resolve: {
-    plugins: [new TsconfigPathsPlugin({/* options: see below */ })],
-    extensions: ['.tsx', '.ts', '.js', '.html'],
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.html']
   },
+  plugins: assets.map(asset => {
+    return new CopyWebpackPlugin({
+      patterns: [((isProd) => {
+        return (!isProd) ?
+          {
+            from: path.resolve(__dirname, 'src', asset),
+            to: path.resolve(__dirname, '.webpack', 'renderer', asset)
+          } :
+          {
+            from: path.resolve(__dirname, 'src', asset),
+            to: path.resolve(__dirname, '.webpack', 'renderer', 'main_window', asset)
+          }
+      })(isProd)],
+    });
+  }),
   devtool: 'inline-source-map'
 };
-
-module.exports = renderer;

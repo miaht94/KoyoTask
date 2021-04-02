@@ -5,18 +5,18 @@
             "name": "Debug main process",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/src/main.ts",
+            "program": "${workspaceRoot}/src/index.ts",
             "stopOnEntry": false,
             "args": [],
-            "cwd": "${workspaceRoot}/dist",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-forge-vscode-win.cmd",
             "runtimeArgs": [
-                "--enable-logging"
+                "--enable-logging",
             ],
             "env": {},
             "sourceMaps": true,
             "outFiles": [
-                "${workspaceRoot}/dist/main.js"
+                "${workspaceRoot}/.webpack/main/index.js"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "console": "integratedTerminal",
@@ -26,13 +26,13 @@
             "name": "Debug renderer process",
             "type": "chrome",
             "request": "launch",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-forge-vscode-win.cmd",
             "runtimeArgs": [
-                "${workspaceRoot}/dist/main.js",
+                "${workspaceRoot}/.webpack/main/main.js",
                 "--enable-logging",
                 "--remote-debugging-port=9222"
             ],
-            "webRoot": "${workspaceRoot}/dist",
+            "webRoot": "${workspaceRoot}/.webpack",
             "sourceMaps": true,
             "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "npm: build"

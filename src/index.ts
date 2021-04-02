@@ -47,3 +47,4 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 Main.main(app, BrowserWindow, MAIN_WINDOW_WEBPACK_ENTRY);
 console.log("anything");
+console.log(process.argv.find(arg => arg.startsWith('--role=')) == 'prod');

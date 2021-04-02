@@ -1,4 +1,4 @@
-import { List, Task } from 'Model/List';
+import { List, Task } from '../Model/List';
 import { View } from './View';
 export class DashboardView extends View {
     public dashboard: HTMLElement;

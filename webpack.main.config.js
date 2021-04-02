@@ -1,34 +1,18 @@
-const path = require("path");
-const merge = require("webpack-merge");
-const buildPath = path.resolve(__dirname, "./dist");
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-
-const main = {
-  entry: "./src/main.ts",
+module.exports = {
+  /**
+   * This is the main entry point for your application, it's the first file
+   * that runs in the main process.
+   */
+  entry: './src/index.ts',
+  // Put your normal webpack config below here
   output: {
-    filename: "main.js",
-    path: buildPath,
     devtoolModuleFilenameTemplate: '[absolute-resource-path]'
   },
   module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: "ts-loader"
-      }
-    ]
+    rules: require('./webpack.rules'),
   },
-  node: {
-    __dirname: false,
-    __filename: false
-  },
-  target: "electron-main",
   resolve: {
-    plugins: [new TsconfigPathsPlugin({/* options: see below */ })],
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json']
   },
   devtool: 'inline-source-map'
 };
-
-module.exports = main;
