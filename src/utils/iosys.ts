@@ -9,13 +9,24 @@ export default class IOSystem {
 
     static paths: JSON;
     static init(): void {
-        IOSystem.workspaceRoot = path.resolve(".");
-        IOSystem.paths = JSON.parse(fs.readFileSync(IOSystem.workspaceRoot + "/src/config.json", "utf8"));
-        IOSystem.isActive = true;
+        if (!this.isActive) {
+            IOSystem.workspaceRoot = path.resolve(".");
+            let str: string = !(process.env.NODE_ENV === 'production') ? "/src/data/config.json" : "/resources/app/.webpack/renderer/main_window/data/config.json";
+            IOSystem.workspaceRoot += str;
+            try {
+                IOSystem.paths = JSON.parse(fs.readFileSync(IOSystem.workspaceRoot, "utf8"));
+            } catch {
+                console.log("ko load dc paths");
+            }
+            IOSystem.isActive = true;
+            IOSystem.workspaceRoot = path.resolve(IOSystem.workspaceRoot, '..');
+            // console.log(IOSystem.workspaceRoot);
+        }
     }
     static getData(file_name: string): JSON {
+        let paths: any = IOSystem.paths;
         if (IOSystem.isActive) {
-            return JSON.parse(fs.readFileSync(IOSystem.workspaceRoot + IOSystem.paths[file_name], "utf8"));
+            return JSON.parse(fs.readFileSync(IOSystem.workspaceRoot + paths[file_name], "utf8"));
         } else throw "Chua init IOSystem";
     }
 }

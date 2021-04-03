@@ -32,6 +32,7 @@
                 "--enable-logging",
                 "--remote-debugging-port=9222"
             ],
+            "port": 9222,
             "webRoot": "${workspaceRoot}/.webpack",
             "sourceMaps": true,
             "internalConsoleOptions": "openOnSessionStart",

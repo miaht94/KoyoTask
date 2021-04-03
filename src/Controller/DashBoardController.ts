@@ -8,7 +8,7 @@ export class DashboardController extends Controller {
         super();
         this.model = model;
         this.view = view;
-        model.bindOnChange(this.view.render);
-        model.onChange(model.getCurrentList());
+        this.model.bindOnChange(this.view.render.bind(this.view));
+        this.model.onChange(model.getCurrentList());
     }
 }

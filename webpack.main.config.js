@@ -5,14 +5,14 @@ module.exports = {
    */
   entry: './src/index.ts',
   // Put your normal webpack config below here
-  output: {
-    devtoolModuleFilenameTemplate: '[absolute-resource-path]'
-  },
+  // output: {
+  //   devtoolModuleFilenameTemplate: '[absolute-resource-path]'
+  // },
   module: {
     rules: require('./webpack.rules'),
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json']
   },
-  devtool: 'inline-source-map'
+  // devtool: 'inline-source-map'
 };
