@@ -1,19 +1,4 @@
-<!-- <!DOCTYPE html>
-<html>
-
-<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-</head>
-
-<body>
-	<h1 id='Dashboard'>Hello World</h1>
-</body>
-
-</html> -->
-<!DOCTYPE html>
+<!doctype html>
 <html>
 
 <head>
@@ -23,36 +8,25 @@
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="stylesheet" href="./css/jquery-ui.css">
   <link rel="stylesheet" href="./css/stylewin.css">
-  <script src="./main_window/index.js"></script>
 </head>
 
 <body>
-
   <div class="window">
     <header id="titlebar">
       <div id="drag-region">
         <div id="window-controls">
-          <div class="button" id="min-button">
-            <img class="icon"
-              srcset="img/min-w-10.png 1x, img/min-w-12.png 1.25x, img/min-w-15.png 1.5x, img/min-w-15.png 1.75x, img/min-w-20.png 2x, img/min-w-20.png 2.25x, img/min-w-24.png 2.5x, img/min-w-30.png 3x, img/min-w-30.png 3.5x"
-              draggable="false" />
-          </div>
-          <div class="button" id="max-button">
-            <img class="icon"
-              srcset="img/max-w-10.png 1x, img/max-w-12.png 1.25x, img/max-w-15.png 1.5x, img/max-w-15.png 1.75x, img/max-w-20.png 2x, img/max-w-20.png 2.25x, img/max-w-24.png 2.5x, img/max-w-30.png 3x, img/max-w-30.png 3.5x"
-              draggable="false" />
-          </div>
-          <div class="button" id="restore-button">
-            <img class="icon"
-              srcset="img/restore-w-10.png 1x, img/restore-w-12.png 1.25x, img/restore-w-15.png 1.5x, img/restore-w-15.png 1.75x, img/restore-w-20.png 2x, img/restore-w-20.png 2.25x, img/restore-w-24.png 2.5x, img/restore-w-30.png 3x, img/restore-w-30.png 3.5x"
-              draggable="false" />
-          </div>
-          <div class="button" id="close-button">
-            <img class="icon"
-              srcset="img/close-w-10.png 1x, img/close-w-12.png 1.25x, img/close-w-15.png 1.5x, img/close-w-15.png 1.75x, img/close-w-20.png 2x, img/close-w-20.png 2.25x, img/close-w-24.png 2.5x, img/close-w-30.png 3x, img/close-w-30.png 3.5x"
-              draggable="false" />
-          </div>
-
+          <div class="button" id="min-button"><img class="icon"
+              srcset="img/min-w-10.png, img/min-w-12.png 1.25x, img/min-w-15.png 1.5x, img/min-w-15.png 1.75x, img/min-w-20.png 2x, img/min-w-20.png 2.25x, img/min-w-24.png 2.5x, img/min-w-30.png 3x, img/min-w-30.png 3.5x"
+              draggable="false" /></div>
+          <div class="button" id="max-button"><img class="icon"
+              srcset="img/max-w-10.png, img/max-w-12.png 1.25x, img/max-w-15.png 1.5x, img/max-w-15.png 1.75x, img/max-w-20.png 2x, img/max-w-20.png 2.25x, img/max-w-24.png 2.5x, img/max-w-30.png 3x, img/max-w-30.png 3.5x"
+              draggable="false" /></div>
+          <div class="button" id="restore-button"><img class="icon"
+              srcset="img/restore-w-10.png, img/restore-w-12.png 1.25x, img/restore-w-15.png 1.5x, img/restore-w-15.png 1.75x, img/restore-w-20.png 2x, img/restore-w-20.png 2.25x, img/restore-w-24.png 2.5x, img/restore-w-30.png 3x, img/restore-w-30.png 3.5x"
+              draggable="false" /></div>
+          <div class="button" id="close-button"><img class="icon"
+              srcset="img/close-w-10.png, img/close-w-12.png 1.25x, img/close-w-15.png 1.5x, img/close-w-15.png 1.75x, img/close-w-20.png 2x, img/close-w-20.png 2.25x, img/close-w-24.png 2.5x, img/close-w-30.png 3x, img/close-w-30.png 3.5x"
+              draggable="false" /></div>
         </div>
       </div>
     </header>
@@ -60,9 +34,7 @@
       <div class="view">
         <div class="column sidebar">
           <h1>KoyoTask</h1>
-          <p>
-            Search
-          </p>
+          <p>Search</p>
         </div>
         <div class="column mainview">
           <div id="tabs">
@@ -74,33 +46,27 @@
             <div id="Dashboard_Main">
               <div id="Dashboard" class="dashboard_main">
                 <h1 class="title helvetica-normal-black-24px">Dashboard</h1>
-                <div class="dashboard_item">
-                  <img class="line" src="img/line1.png" />
-                  <div class="flex-row">
-                    <img class="oval" src="img/oval1.png" />
+                <div class="dashboard_item"><img class="line" src="img/line1.png" />
+                  <div class="flex-row"><img class="oval" src="img/oval1.png" />
                     <div class="task-1 helvetica-normal-black-16px">Task 1</div>
                   </div>
                 </div>
-                <div class="dashboard_item">
-                  <img class="line" src="img/line1.png" />
-                  <div class="flex-row">
-                    <img class="oval" src="img/oval1.png" />
+                <div class="dashboard_item"><img class="line" src="img/line1.png" />
+                  <div class="flex-row"><img class="oval" src="img/oval1.png" />
                     <div class="task-1 helvetica-normal-black-16px">Task 1</div>
                   </div>
                 </div>
               </div>
             </div>
             <div id="NewTask">
-              <h1> New Task </h1>
+              <h1>New Task</h1>
             </div>
             <div id="NewList">
-              <h1> New List </h1>
+              <h1>New List</h1>
             </div>
           </div>
           <h1>Tasks</h1>
-          <p>
-            List of tasks
-          </p>
+          <p>List of tasks</p>
         </div>
       </div>
     </div>

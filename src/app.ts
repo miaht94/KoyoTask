@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow } from 'electron';
 
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
@@ -29,6 +29,9 @@ export default class Main {
             titleBarStyle: 'hiddenInset',
             transparent: true
         });
+        Main.mainWindow.webContents.on('did-finish-load', () => {
+            Main.mainWindow.webContents.send('Receive root path', Main.MAIN_WINDOW_WEBPACK_ENTRY)
+        })
         Main.mainWindow.webContents.openDevTools();
         Main.mainWindow
             .loadURL(Main.MAIN_WINDOW_WEBPACK_ENTRY);

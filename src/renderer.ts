@@ -5,7 +5,7 @@ import $ from './js/jquery';
 import { DashboardController } from './Controller/DashBoardController';
 import { DashboardView } from './View/DashboardView';
 import { DashboardModel } from './Model/DashboardModel';
-
+import { ipcRenderer } from 'electron';
 
 $(document).ready(() => {
     io.init();
@@ -15,4 +15,7 @@ $(document).ready(() => {
     // $("html").append(html);
     // $("#tabs").tabs();
     let a: DashboardController = new DashboardController(new DashboardModel(), new DashboardView());
+    ipcRenderer.on("Receive root path", (event, message) => {
+        console.log(message);
+    })
 })
