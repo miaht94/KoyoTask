@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <title>KoyoTask</title>
-  <link rel="stylesheet" href="./css/dashboard_style.css" />
   <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/dashboard_style.css" />
   <link rel="stylesheet" href="./css/jquery-ui.css">
   <link rel="stylesheet" href="./css/stylewin.css">
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
 </head>
 
 <body>
@@ -33,40 +34,53 @@
     <div id="main">
       <div class="view">
         <div class="column sidebar">
-          <h1>KoyoTask</h1>
-          <p>Search</p>
-        </div>
-        <div class="column mainview">
-          <div id="tabs">
-            <ul>
-              <li><a href="#Dashboard">Dashboard</a></li>
-              <li><a href="#NewTask">New Task</a></li>
-              <li><a href="#NewList">New List</a></li>
-            </ul>
-            <div id="Dashboard_Main">
-              <div id="Dashboard" class="dashboard_main">
-                <h1 class="title helvetica-normal-black-24px">Dashboard</h1>
-                <div class="dashboard_item"><img class="line" src="img/line1.png" />
-                  <div class="flex-row"><img class="oval" src="img/oval1.png" />
-                    <div class="task-1 helvetica-normal-black-16px">Task 1</div>
-                  </div>
-                </div>
-                <div class="dashboard_item"><img class="line" src="img/line1.png" />
-                  <div class="flex-row"><img class="oval" src="img/oval1.png" />
-                    <div class="task-1 helvetica-normal-black-16px">Task 1</div>
-                  </div>
-                </div>
+          <div class="viewcontent" id = "sidebarContent">
+            <div class="heading" id = "sidebarHeading">
+              <h1 class="title" id = >KoyoTask</h1>
+              <div class="searchbox" id = "mainSearchBox"></div>
+            </div>
+            <div class="sidebar_main" id="Dashboard" >
+              <div class="listitem">
+                <!-- <img class="line" src="img/line1.png" /> -->
+                  <div class="listitem itemname">List 1</div>
               </div>
+              <div class="listitem">
+                <!-- <img class="line" src="img/line1.png" /> -->
+              
+                  <div class="listitem itemname">List 2</div>
+              </div>
+          </div>
+          </div>
+        </div>
+        <div class="column mainview"> 
+          <div class="viewcontent" id = "mainviewContent">
+            <div class="heading mainviewheading" id = "mainViewHeading">
+                <h1 class="title" id = >Tasks</h1>
+                <div class="buttongroup" >
+                  <div class="button" id ="addTaskButton">
+                    <img
+                      class="oval"
+                      src="https://anima-uploads.s3.amazonaws.com/projects/60633923f44a1907a369d511/releases/60675202f6c618c6981274d6/img/artboard-oval@2x.png"
+                    />
+                    <div class="textlabel">＋</div>
+                  </div>
+                </div>
             </div>
-            <div id="NewTask">
-              <h1>New Task</h1>
-            </div>
-            <div id="NewList">
-              <h1>New List</h1>
+            <div class="dashboard_main" id="Dashboard" >
+                <div class="dashboarditem">
+                  <!-- <img class="line" src="img/line1.png" /> -->
+                  <div class="flex-row"><img class="oval checkbox" src="img/oval1.png" />
+                    <div class="dashboarditem itemname">Task 1</div>
+                  </div>
+                </div>
+                <div class="dashboarditem">
+                  <!-- <img class="line" src="img/line1.png" /> -->
+                  <div class="flex-row"><img class="oval checkbox" src="img/oval1.png" />
+                    <div class="dashboarditem itemname">Task 1</div>
+                  </div>
+                </div>
             </div>
           </div>
-          <h1>Tasks</h1>
-          <p>List of tasks</p>
         </div>
       </div>
     </div>

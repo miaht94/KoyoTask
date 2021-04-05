@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import io from './utils/iosys';
 import $ from './js/jquery';
+import './js/bootstrap.min';
 // import './js/jquery-ui';
 import { DashboardController } from './Controller/DashBoardController';
 import { DashboardView } from './View/DashboardView';

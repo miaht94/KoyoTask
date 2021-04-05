@@ -7,8 +7,7 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  height: 1024px;
-  width: 1024px;
+  width: 100%
 }
 .dashboard_main .dashboard_item {
   align-items: flex-start;
@@ -49,11 +48,7 @@
   min-height: 29px;
   white-space: nowrap;
 }
-.helvetica-normal-black-16px {
-  color: black;
-  font-family: "Helvetica", Helvetica;
-  font-size: 16px;
-}
+
 .helvetica-normal-black-24px {
   color: black;
   font-family: "Helvetica", Helvetica;

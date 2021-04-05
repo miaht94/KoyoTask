@@ -14,7 +14,8 @@ module.exports = {
   },
   plugins: plugins,
   resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css']
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
+    modules: [path.resolve(__dirname, 'src/js'), 'node_modules']
   },
 
   devtool: 'inline-source-map',

@@ -1,13 +1,6 @@
-.window {
+/* .window {
     border-radius: 15px; 
-}
-
-.sidebar {
-    width: 35%;
-    padding-left: 30px;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-  }
+} */
 
 #window-controls {
     display: grid;

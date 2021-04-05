@@ -26,6 +26,8 @@ export default class Main {
                 contextIsolation: false,
                 enableRemoteModule: true,
             },
+            minHeight: 500,
+            minWidth: 800,
             titleBarStyle: 'hiddenInset',
             transparent: true
         });
