@@ -5,7 +5,7 @@ export class DashboardView {
     private dashboard: HTMLElement;
     constructor() {
         // super();
-        this.dashboard = $('#Dashboard');
+        this.dashboard = $('#DashboardList');
         console.log("constructor :" + this.dashboard);
         // this.dashboard.innerHTML = "Bach";
     }
@@ -14,7 +14,14 @@ export class DashboardView {
         console.log("render :" + this.dashboard);
         let task: any;
         for (task of listData.getTasks()) {
-            this.dashboard.append(`<div class=\"dashboard_item\"\><img class=\"line\" src=\"img/line1.png\" /\><div class=\"flex-row\"\><img class=\"oval\" src=\"img/oval1.png\" /\><div class=\"task-1 helvetica-normal-black-16px\"\>${task.getTaskName()}</div\></div\></div\>`);
+            // this.dashboard.append(`<div class=\"dashboard_item\"\><img class=\"line\" src=\"img/line1.png\" /\><div class=\"flex-row\"\><img class=\"oval\" src=\"img/oval1.png\" /\><div class=\"task-1 helvetica-normal-black-16px\"\>${task.getTaskName()}</div\></div\></div\>`);
+            this.dashboard.append(`
+            <div class="dashboarditem">
+                <div class="flex-row"><img class="oval checkbox" src="img/oval1.png">
+                    <div class="dashboarditem itemname">${task.getTaskName()}</div>
+                </div>
+            </div>
+            `);
         }
     }
 
