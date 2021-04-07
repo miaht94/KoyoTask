@@ -41,4 +41,9 @@ export class DashboardModel extends Model {
     public getCurrentList(): List {
         return this.currentList;
     }
+
+    public addTaskToCurrentList(taskName: string){
+        this.currentList.addTaskCompact(taskName);
+        this.commit();
+    }
 }

@@ -11,7 +11,7 @@ export class List {
         for (let task of list.tasks) {
             console.log(task);
             if (task === undefined) throw new Error("Illegal JSON Argument");
-            this.tasks.push(new Task(task))
+            this.tasks.push(Task.createNewTaskByJson(task))
         }
     }
 
@@ -34,18 +34,34 @@ export class List {
     public getListName(): string {
         return this.listName;
     }
+
+    public addTaskCompact(taskName : string): void {
+        this.tasks.push(Task.createNewTaskCompact(taskName));
+    }
 }
 
 export class Task {
     private task_name: string;
     private task_id: string;
     private task_description: string;
-    constructor(task: any) {
+    constructor() {
+
+    }
+    static createNewTaskByJson(task: any): Task {
         // console.log(task);
         // task = JSON.parse(task);
-        this.task_name = task.task_name;
-        this.task_id = task.task_id;
-        this.task_description = task.task_description;
+        let newTask : Task = new Task();
+        newTask.task_name = task.task_name;
+        newTask.task_id = task.task_id;
+        newTask.task_description = task.task_description;
+        return newTask;
+    }
+
+    static createNewTaskCompact(taskName: string): Task {
+        let newTask : Task = new Task();
+        newTask.task_name = taskName;
+        newTask.task_id = '';
+        return newTask;
     }
 
     public getTaskID(): string {

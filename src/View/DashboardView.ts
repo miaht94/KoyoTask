@@ -3,19 +3,44 @@ import { View } from './View';
 import $ from '../js/jquery';
 export class DashboardView {
     private dashboard: HTMLElement;
+    private addButton: HTMLElement;
+
+    private expandButton: HTMLElement;
+    private submitButton: HTMLElement;
+    private newTaskTitleCompact: HTMLInputElement;
+
+    private handleAdd: Function;
+
     constructor() {
         // super();
         this.dashboard = $('#DashboardList');
         console.log("constructor :" + this.dashboard);
         // this.dashboard.innerHTML = "Bach";
+        this.addButton = $('#taskListAddButton');
+        let addButtonAny : any = this.addButton;
+        addButtonAny.on("click", ()=>{
+            this.dashboard.append(`
+            <div class="newTaskGroup"\>
+                <div class="dashboarditem itemname">+</div>
+                <input class="form-control form-control-sm newTaskColumn" type="text" id="newTaskTitleCompact" placeholder="Write something">
+                <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskSubmitButton">S</button>
+                <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskSubmitButton">S</button>
+                <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskExpandButton">E</button>
+            </div>
+            `);
+            this.initNewTaskCompact();
+        })
     }
 
     public render(listData: List) {
         console.log("render :" + this.dashboard);
+        let dashboard:any = this.dashboard;
+        dashboard.html("");
         let task: any;
         for (task of listData.getTasks()) {
             // this.dashboard.append(`<div class=\"dashboard_item\"\><img class=\"line\" src=\"img/line1.png\" /\><div class=\"flex-row\"\><img class=\"oval\" src=\"img/oval1.png\" /\><div class=\"task-1 helvetica-normal-black-16px\"\>${task.getTaskName()}</div\></div\></div\>`);
-            this.dashboard.append(`
+            
+            dashboard.append(`
             <div class="dashboarditem">
                 <div class="flex-row"><img class="oval checkbox" src="img/oval1.png">
                     <div class="dashboarditem itemname">${task.getTaskName()}</div>
@@ -25,11 +50,31 @@ export class DashboardView {
         }
     }
 
+
     public getDashboard(): HTMLElement {
         return this.dashboard;
     }
     public setDashboard(dashboard: HTMLElement): void {
         this.dashboard = dashboard;
+    }
+
+    private initNewTaskCompact(): void {
+        this.newTaskTitleCompact = $('#newTaskTitleCompact')[0];
+        this.submitButton = $('#newTaskSubmitButton');
+        let submitButtonAny : any = this.submitButton;
+        // let newTaskTitleCompactAny : any = this.newTaskTitleCompact;
+        submitButtonAny.on("click", ()=>{
+            this.handleAdd(this.newTaskTitleCompact.value);
+        })
+
+    }
+
+    private initNewTaskView(): void {
+
+    }
+    
+    public bindOnAdd(handler : Function){
+        this.handleAdd = handler;
     }
 
     // private generateTaskNode(task: Task): HTMLElement {

@@ -10,5 +10,10 @@ export class DashboardController extends Controller {
         this.view = view;
         this.model.bindOnChange(this.view.render.bind(this.view));
         this.model.onChange(model.getCurrentList());
+        this.view.bindOnAdd(this.onAddCompact.bind(this));
+    }
+
+    public onAddCompact(taskName : string){
+        this.model.addTaskToCurrentList(taskName);
     }
 }

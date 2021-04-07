@@ -7,6 +7,13 @@ html, body {
   overflow: hidden;
 }
 
+.newTaskGroup {
+  display: grid;
+  grid-template-columns: 30px 80px 30px 30px;
+  position: auto;
+  width: 70vw;
+}
+
 .window {
   height:100%;
   width: 100%;
