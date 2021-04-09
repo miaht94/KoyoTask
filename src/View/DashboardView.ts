@@ -8,6 +8,7 @@ export class DashboardView {
     private expandButton: HTMLElement;
     private submitButton: HTMLElement;
     private newTaskTitleCompact: HTMLInputElement;
+    private addTriggered: boolean;
 
     private handleAdd: Function;
 
@@ -17,19 +18,24 @@ export class DashboardView {
         console.log("constructor :" + this.dashboard);
         // this.dashboard.innerHTML = "Bach";
         this.addButton = $('#taskListAddButton');
+        this.addTriggered = false;
         let addButtonAny : any = this.addButton;
         addButtonAny.on("click", ()=>{
-            this.dashboard.append(`
-            <div class="newTaskGroup"\>
-                <div class="dashboarditem itemname">+</div>
-                <input class="form-control form-control-sm newTaskColumn" type="text" id="newTaskTitleCompact" placeholder="Write something">
-                <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskSubmitButton">S</button>
-                <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskSubmitButton">S</button>
-                <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskExpandButton">E</button>
-            </div>
-            `);
-            this.initNewTaskCompact();
+            if (this.addTriggered == false) {
+                this.dashboard.append(`
+                <div class="newTaskGroup"\>
+                    <div class="dashboarditem itemname">+</div>
+                    <input class="form-control form-control-sm newTaskColumn" type="text" id="newTaskTitleCompact" placeholder="Write something">
+                    <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskSubmitButton" disabled>Add</button>
+                    <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskExpandButton">Expand</button>
+                </div>
+                `);
+                this.initNewTaskCompact();
+                this.addTriggered = true;
+            }
+            
         })
+        
     }
 
     public render(listData: List) {
@@ -39,7 +45,6 @@ export class DashboardView {
         let task: any;
         for (task of listData.getTasks()) {
             // this.dashboard.append(`<div class=\"dashboard_item\"\><img class=\"line\" src=\"img/line1.png\" /\><div class=\"flex-row\"\><img class=\"oval\" src=\"img/oval1.png\" /\><div class=\"task-1 helvetica-normal-black-16px\"\>${task.getTaskName()}</div\></div\></div\>`);
-            
             dashboard.append(`
             <div class="dashboarditem">
                 <div class="flex-row"><img class="oval checkbox" src="img/oval1.png">
@@ -60,13 +65,19 @@ export class DashboardView {
 
     private initNewTaskCompact(): void {
         this.newTaskTitleCompact = $('#newTaskTitleCompact')[0];
-        this.submitButton = $('#newTaskSubmitButton');
+        this.submitButton = $('#newTaskSubmitButton')[0];
+        let newTaskTitleCompactAny : any =  this.newTaskTitleCompact;
         let submitButtonAny : any = this.submitButton;
-        // let newTaskTitleCompactAny : any = this.newTaskTitleCompact;
-        submitButtonAny.on("click", ()=>{
-            this.handleAdd(this.newTaskTitleCompact.value);
+        newTaskTitleCompactAny.addEventListener("input", ()=>{
+            console.log("changed to " + this.newTaskTitleCompact.value);
+            if(this.newTaskTitleCompact.value == "")
+                submitButtonAny.setAttribute("disabled", true);
+            else submitButtonAny.removeAttribute("disabled");
         })
-
+        submitButtonAny.addEventListener("click", ()=>{
+            this.handleAdd(this.newTaskTitleCompact.value.trimLeft().trimRight());
+            this.addTriggered = false;
+        })
     }
 
     private initNewTaskView(): void {

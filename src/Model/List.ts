@@ -54,8 +54,6 @@ export class Task {
         newTask.task_name = task.task_name;
         newTask.task_id = task.task_id;
         newTask.task_description = task.task_description;
-        // console.log("print tasks");
-        // console.log(JSON.stringify(newTask));
         return newTask;
     }
 
@@ -63,6 +61,7 @@ export class Task {
         let newTask : Task = new Task();
         newTask.task_name = taskName;
         newTask.task_id = '';
+        newTask.task_description = '';
         return newTask;
     }
 

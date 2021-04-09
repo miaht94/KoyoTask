@@ -9,7 +9,7 @@ html, body {
 
 .newTaskGroup {
   display: grid;
-  grid-template-columns: 30px 80px 30px 30px;
+  grid-template-columns: 30px 120px 50px 70px;
   position: auto;
   width: 70vw;
 }
