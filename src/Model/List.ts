@@ -9,7 +9,7 @@ export class List {
         this.listName = list.list_name;
 
         for (let task of list.tasks) {
-            console.log(task);
+            //console.log(task);
             if (task === undefined) throw new Error("Illegal JSON Argument");
             this.tasks.push(Task.createNewTaskByJson(task))
         }
@@ -54,6 +54,8 @@ export class Task {
         newTask.task_name = task.task_name;
         newTask.task_id = task.task_id;
         newTask.task_description = task.task_description;
+        // console.log("print tasks");
+        // console.log(JSON.stringify(newTask));
         return newTask;
     }
 

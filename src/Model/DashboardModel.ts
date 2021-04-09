@@ -3,13 +3,14 @@ import { List } from './List';
 import { Model } from './Model';
 import { DashboardView } from '../View/DashboardView';
 export class DashboardModel extends Model {
-    protected lists: List[] = [];
+    protected lists: List[] = []; //same
     protected currentList: List;
 
     public onChange: Function;
     protected commit() {
         this.onChange(this.currentList)
     };
+
     constructor() {
         super();
         let lists_json: any = IOSystem.getData("list_data");
@@ -19,6 +20,7 @@ export class DashboardModel extends Model {
         })
         if (this.lists.length === 0) this.currentList = List.createEmptyList();
         else this.currentList = this.lists[0];
+        //console.log(JSON.stringify(this.lists));
     }
     public bindOnChange(viewTriggerFunction: Function) {
         this.onChange = viewTriggerFunction;
@@ -44,6 +46,7 @@ export class DashboardModel extends Model {
 
     public addTaskToCurrentList(taskName: string){
         this.currentList.addTaskCompact(taskName);
+        IOSystem.writeData("list_data",JSON.stringify(this.lists, null, "\t"));
         this.commit();
     }
 }

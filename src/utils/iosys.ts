@@ -29,4 +29,19 @@ export default class IOSystem {
             return JSON.parse(fs.readFileSync(IOSystem.workspaceRoot + paths[file_name], "utf8"));
         } else throw "Chua init IOSystem";
     }
+
+    static getDataRaw(file_name: string): string {
+        let paths: any = IOSystem.paths;
+        if (IOSystem.isActive) {
+            return fs.readFileSync(IOSystem.workspaceRoot + paths[file_name], "utf8");
+        } else throw "Chua init IOSystem";
+    }
+
+    //WORKING
+    static writeData(file_name: string, content: string,): void {
+        let paths: any = IOSystem.paths;
+        if (IOSystem.isActive) {
+            fs.writeFileSync(IOSystem.workspaceRoot + paths[file_name], content, "utf8");
+        } else throw "Chua init IOSystem";
+    }
 }
