@@ -49,4 +49,11 @@ export class DashboardModel extends Model {
         IOSystem.writeData("list_data",JSON.stringify(this.lists, null, "\t"));
         this.commit();
     }
+
+    public deleteTaskFromCurrentList(taskID: string){
+        console.log("deleteTaskFromCurrentList executing");
+        this.currentList.deleteTask(taskID);
+        IOSystem.writeData("list_data",JSON.stringify(this.lists, null, "\t"));
+        this.commit();
+    }
 }

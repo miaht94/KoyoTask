@@ -11,9 +11,14 @@ export class DashboardController extends Controller {
         this.model.bindOnChange(this.view.render.bind(this.view));
         this.model.onChange(model.getCurrentList());
         this.view.bindOnAdd(this.onAddCompact.bind(this));
+        this.view.bindOnDelete(this.onDelete.bind(this));
     }
 
     public onAddCompact(taskName : string){
         this.model.addTaskToCurrentList(taskName);
+    }
+
+    public onDelete(taskID : string){
+        this.model.deleteTaskFromCurrentList(taskID);
     }
 }

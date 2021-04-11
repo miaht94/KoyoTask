@@ -38,6 +38,17 @@ export class List {
     public addTaskCompact(taskName : string): void {
         this.tasks.push(Task.createNewTaskCompact(taskName));
     }
+
+    public deleteTask(taskID: string): void {
+        for (var i = 0; i < this.tasks.length; i++) {
+            var obj = this.tasks[i];
+        
+            if (obj.getTaskID() == taskID) {
+                this.tasks.splice(i, 1);
+            }
+        }
+        console.log(this.tasks);
+    }
 }
 
 export class Task {

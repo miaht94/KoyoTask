@@ -9,8 +9,10 @@ export class DashboardView {
     private submitButton: HTMLElement;
     private newTaskTitleCompact: HTMLInputElement;
     private addTriggered: boolean;
+    private dashboardItem: HTMLElement;
 
     private handleAdd: Function;
+    private handleDelete: Function;
 
     constructor() {
         // super();
@@ -46,13 +48,37 @@ export class DashboardView {
         for (task of listData.getTasks()) {
             // this.dashboard.append(`<div class=\"dashboard_item\"\><img class=\"line\" src=\"img/line1.png\" /\><div class=\"flex-row\"\><img class=\"oval\" src=\"img/oval1.png\" /\><div class=\"task-1 helvetica-normal-black-16px\"\>${task.getTaskName()}</div\></div\></div\>`);
             dashboard.append(`
-            <div class="dashboarditem">
-                <div class="flex-row"><img class="oval checkbox" src="img/oval1.png">
+            <div class="dashboarditem" id="dashboarditem">
+                <div class="flex-row" id="itemrow"><img class="oval checkbox" src="img/oval1.png">
                     <div class="dashboarditem itemname">${task.getTaskName()}</div>
+                    <div class="itembuttongroup" id = "itembuttongroup">
+                        <button type="button" class="btn btn-danger btn-sm taskColumn" id="taskDeleteButton">Delete</button>
+                    </div>
+                    
                 </div>
             </div>
             `);
-        }
+            
+            let currentTask = task;
+            let dashboardItemForAppender : any = document.querySelector('#dashboarditem:last-child');
+            //let toolbarButtonGroupForAppender : any = dashboardItemForAppender.querySelector('#flex-row');
+            let deleteButtonForAppender : any = dashboardItemForAppender.querySelector('#taskDeleteButton');
+            //console.log(dashboardItemForAppender);
+            //console.log(taskColumnForAppender);
+            dashboardItemForAppender.addEventListener('mouseenter', ()=>{
+                deleteButtonForAppender.style.opacity = "1";
+            });
+
+            dashboardItemForAppender.addEventListener('mouseleave', ()=>{
+                deleteButtonForAppender.style.opacity = "0";
+            });
+            
+            deleteButtonForAppender.addEventListener('click', ()=>{
+                console.log("deleted task " + currentTask.getTaskName());
+                this.handleDelete(currentTask.getTaskID());
+            });
+
+        }   
     }
 
 
@@ -86,6 +112,10 @@ export class DashboardView {
     
     public bindOnAdd(handler : Function){
         this.handleAdd = handler;
+    }
+
+    public bindOnDelete(handler : Function){
+        this.handleDelete = handler;
     }
 
     // private generateTaskNode(task: Task): HTMLElement {
