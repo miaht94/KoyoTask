@@ -35,9 +35,7 @@ export class DashboardView {
                 this.initNewTaskCompact();
                 this.addTriggered = true;
             }
-            
         })
-        
     }
 
     public render(listData: List) {
@@ -53,8 +51,8 @@ export class DashboardView {
                     <div class="dashboarditem itemname">${task.getTaskName()}</div>
                     <div class="itembuttongroup" id = "itembuttongroup">
                         <button type="button" class="btn btn-danger btn-sm taskColumn" id="taskDeleteButton">Delete</button>
+                        <button type="button" class="btn btn-primary btn-sm taskColumn" id="taskEditButton">Edit</button>
                     </div>
-                    
                 </div>
             </div>
             `);
@@ -63,8 +61,6 @@ export class DashboardView {
             let dashboardItemForAppender : any = document.querySelector('#dashboarditem:last-child');
             //let toolbarButtonGroupForAppender : any = dashboardItemForAppender.querySelector('#flex-row');
             let deleteButtonForAppender : any = dashboardItemForAppender.querySelector('#taskDeleteButton');
-            //console.log(dashboardItemForAppender);
-            //console.log(taskColumnForAppender);
             dashboardItemForAppender.addEventListener('mouseenter', ()=>{
                 deleteButtonForAppender.style.opacity = "1";
             });
@@ -77,7 +73,6 @@ export class DashboardView {
                 console.log("deleted task " + currentTask.getTaskName());
                 this.handleDelete(currentTask.getTaskID());
             });
-
         }   
     }
 

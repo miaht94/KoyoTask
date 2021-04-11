@@ -1,17 +1,6 @@
 [
 	{
-		"tasks": [
-			{
-				"task_name": "hello",
-				"task_id": "",
-				"task_description": ""
-			},
-			{
-				"task_name": "good",
-				"task_id": "",
-				"task_description": ""
-			}
-		]
+		"tasks": []
 	},
 	{
 		"tasks": [
