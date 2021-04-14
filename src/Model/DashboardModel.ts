@@ -1,5 +1,5 @@
 import IOSystem from '../utils/iosys';
-import { List } from './List';
+import { List, Task } from './List';
 import { Model } from './Model';
 import { DashboardView } from '../View/DashboardView';
 export class DashboardModel extends Model {
@@ -8,7 +8,8 @@ export class DashboardModel extends Model {
 
     public onChange: Function;
     protected commit() {
-        this.onChange(this.currentList)
+        IOSystem.writeData("list_data",JSON.stringify(this.lists, null, "\t"));
+        this.onChange(this.currentList);
     };
 
     constructor() {
@@ -22,6 +23,7 @@ export class DashboardModel extends Model {
         else this.currentList = this.lists[0];
         //console.log(JSON.stringify(this.lists));
     }
+
     public bindOnChange(viewTriggerFunction: Function) {
         this.onChange = viewTriggerFunction;
     }
@@ -44,16 +46,20 @@ export class DashboardModel extends Model {
         return this.currentList;
     }
 
-    public addTaskToCurrentList(taskName: string){
+    public addTaskCompactToCurrentList(taskName: string){
         this.currentList.addTaskCompact(taskName);
-        IOSystem.writeData("list_data",JSON.stringify(this.lists, null, "\t"));
         this.commit();
     }
 
     public deleteTaskFromCurrentList(taskID: string){
-        console.log("deleteTaskFromCurrentList executing");
+        // console.log("deleteTaskFromCurrentList executing");
         this.currentList.deleteTask(taskID);
-        IOSystem.writeData("list_data",JSON.stringify(this.lists, null, "\t"));
         this.commit();
     }
+
+    public setTaskInCurrentList(taskID: string, that: Task){
+        this.currentList.setTask(taskID, that);
+        this.commit();
+    }
+
 }

@@ -11,8 +11,9 @@ export class DashboardView {
     private addTriggered: boolean;
     private dashboardItem: HTMLElement;
 
-    private handleAdd: Function;
+    private handleAddCompact: Function;
     private handleDelete: Function;
+    private handleSetTask: Function;
 
     constructor() {
         // super();
@@ -96,7 +97,7 @@ export class DashboardView {
             else submitButtonAny.removeAttribute("disabled");
         })
         submitButtonAny.addEventListener("click", ()=>{
-            this.handleAdd(this.newTaskTitleCompact.value.trimLeft().trimRight());
+            this.handleAddCompact(this.newTaskTitleCompact.value.trimLeft().trimRight());
             this.addTriggered = false;
         })
     }
@@ -105,13 +106,19 @@ export class DashboardView {
 
     }
     
-    public bindOnAdd(handler : Function){
-        this.handleAdd = handler;
+    public bindOnAddCompact(handler : Function){
+        this.handleAddCompact = handler;
     }
 
     public bindOnDelete(handler : Function){
         this.handleDelete = handler;
     }
+
+    public bindOnSetTask(handler: Function){
+        this.handleSetTask = handler;
+    }
+
+    
 
     // private generateTaskNode(task: Task): HTMLElement {
     // let border: HTMLElement = document.createElement('div');
