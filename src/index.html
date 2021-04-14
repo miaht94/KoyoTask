@@ -1,76 +1,196 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>KoyoTask</title>
-  <link rel="stylesheet" href="./css/dashboard_style.css" />
-  <link rel="stylesheet" href="./css/style.css" />
-  <link rel="stylesheet" href="./css/jquery-ui.css">
-  <link rel="stylesheet" href="./css/stylewin.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/bootstrap-icons-1.4.0/bootstrap-icons.css">
+
+    <title>Document</title>
 </head>
 
 <body>
-  <div class="window">
-    <header id="titlebar">
-      <div id="drag-region">
-        <div id="window-controls">
-          <div class="button" id="min-button"><img class="icon"
-              srcset="img/min-w-10.png, img/min-w-12.png 1.25x, img/min-w-15.png 1.5x, img/min-w-15.png 1.75x, img/min-w-20.png 2x, img/min-w-20.png 2.25x, img/min-w-24.png 2.5x, img/min-w-30.png 3x, img/min-w-30.png 3.5x"
-              draggable="false" /></div>
-          <div class="button" id="max-button"><img class="icon"
-              srcset="img/max-w-10.png, img/max-w-12.png 1.25x, img/max-w-15.png 1.5x, img/max-w-15.png 1.75x, img/max-w-20.png 2x, img/max-w-20.png 2.25x, img/max-w-24.png 2.5x, img/max-w-30.png 3x, img/max-w-30.png 3.5x"
-              draggable="false" /></div>
-          <div class="button" id="restore-button"><img class="icon"
-              srcset="img/restore-w-10.png, img/restore-w-12.png 1.25x, img/restore-w-15.png 1.5x, img/restore-w-15.png 1.75x, img/restore-w-20.png 2x, img/restore-w-20.png 2.25x, img/restore-w-24.png 2.5x, img/restore-w-30.png 3x, img/restore-w-30.png 3.5x"
-              draggable="false" /></div>
-          <div class="button" id="close-button"><img class="icon"
-              srcset="img/close-w-10.png, img/close-w-12.png 1.25x, img/close-w-15.png 1.5x, img/close-w-15.png 1.75x, img/close-w-20.png 2x, img/close-w-20.png 2.25x, img/close-w-24.png 2.5x, img/close-w-30.png 3x, img/close-w-30.png 3.5x"
-              draggable="false" /></div>
-        </div>
-      </div>
-    </header>
-    <div id="main">
-      <div class="view">
-        <div class="column sidebar">
-          <h1>KoyoTask</h1>
-          <p>Search</p>
-        </div>
-        <div class="column mainview">
-          <div id="tabs">
-            <ul>
-              <li><a href="#Dashboard">Dashboard</a></li>
-              <li><a href="#NewTask">New Task</a></li>
-              <li><a href="#NewList">New List</a></li>
-            </ul>
-            <div id="Dashboard_Main">
-              <div id="Dashboard" class="dashboard_main">
-                <h1 class="title helvetica-normal-black-24px">Dashboard</h1>
-                <div class="dashboard_item"><img class="line" src="img/line1.png" />
-                  <div class="flex-row"><img class="oval" src="img/oval1.png" />
-                    <div class="task-1 helvetica-normal-black-16px">Task 1</div>
-                  </div>
+    <div class="dashboard-container container-fluid">
+        <div class="row no-gutters vh-100">
+            <div class="col col-4 col-sm-4 justify-content-center dashboard-lists overflow-auto">
+                <div class='list-header col col-4 fixed-top d-flex p-1 justify-content-center'>
+                    <p>KoyoTask</p>
                 </div>
-                <div class="dashboard_item"><img class="line" src="img/line1.png" />
-                  <div class="flex-row"><img class="oval" src="img/oval1.png" />
-                    <div class="task-1 helvetica-normal-black-16px">Task 1</div>
-                  </div>
+                <div class='d-flex p-1 pt-4 justify-content-start'>
+                    <div class='text-start koyoheader'>KoyoTask</div>
                 </div>
-              </div>
+                <div class='row d-flex flex-row p-3'>
+                    <div class='d-flex justify-content-start align-items-center searchBar'>
+                        <i class="col-1 bi bi-search"></i>
+                        <input class='col-11 searchInput' placeholder='Search'></input>
+                    </div>
+                </div>
+                <div class='row no-gutters d-flex p-3'>
+                    <div class='userinfor d-flex p-2'>
+                        <div class='col col-4 col-sm-4 align-items-center'>
+                            <div class='d-flex p-0 justify-content-center'>
+                                <img src='avt.jpg' class='user-avatar rounded-circle'></img>
+                            </div>
+                        </div>
+                        <div class='col col-8 col-sm-8 d-flex align-items-center'>
+                            <div class='d-flex flex-column'>
+                                <div class='username p-0'>Tran Xuan Bach</div>
+                                <div class='usermail p-0'>tranxuanbach1@gmail.com</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active">
+                    <div class="row no-gutters align-items-between">
+                        <div class="d-flex p-1 col-1 justify-content-center">
+                            <i class="bi bi-plus-circle"></i>
+                        </div>
+                    </div>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                  </div> -->
+                <div class='row d-flex flex-column p-3 list-group'>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-0'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex flex-column col-10 p-1 justify-content-start align-content-center noselect'>
+                            <div class='d-flex flex-row p-0 list-group-title'>Bach</div>
+                            <div class='d-flex flex-row p-0 list-group-notice'>Bach</div>
+                        </div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-1'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-2'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-3'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-3'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-3'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-3'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-3'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-3'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                    <div class='d-flex flex-row p-1 list-group-item align-items-center' id='list-id-3'>
+                        <div class='d-flex col-2 justify-content-center'><i class="bi bi-calendar3 list-icon"></i></div>
+                        <div class='d-flex col-10 p-1 noselect'>Bach</div>
+                    </div>
+                </div>
+                <div class='list-add-footer col col-4 fixed-bottom d-flex p-2 justify-content-end align-items-center'>
+                    <div class='d-flex'>Add list</div>
+                </div>
             </div>
-            <div id="NewTask">
-              <h1>New Task</h1>
+
+            <div class="col col-sm-8 d-flex flex-column p-0 justify-content-start dashboard-tasks">
+
+                <div class='d-flex flex-column p-3 task-name-frame mb-3'>
+                    <div class='d-flex col-12 mt-4 task-name'>Task name</div>
+                    <div class='d-flex flex-row task-notice'>
+                        <div class='d-flex flex-row m-2 flex-wrap shared-user-avatar-frame justify-content-end'>
+                            <div class='d-flex align-items-center '>
+                                <img class='d-flex rounded-circle shared-user-avatar' src='avt.jpg'></img>
+                                <img class='d-flex rounded-circle shared-user-avatar' src='avt_1.jpg'></img>
+                            </div>
+                        </div>
+                        <div class='d-flex m-2'>Đã chia sẻ với IV.Anh</div>
+                    </div>
+                </div>
+                <div class='d-flex flex-row row task-frame title1 collapsible'>
+                    <div class='d-flex col-1 justify-content-start'>
+                        <label class="container_checkbox">
+                            <input type="checkbox" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class='d-flex flex-column col-10 task-data'>
+                        <div class='d-flex col-11 task-title' contenteditable="true">
+                            Bachaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        </div>
+                        <div class='d-flex col-1'></div>
+                        <div class='d-flex col-10 task-description' contenteditable="false">
+                            Description Here ....
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class='d-flex flex-row row task-frame'>
+                    <div class='d-flex col-1 justify-content-start'>
+                        <label class="container_checkbox">
+                            <input type="checkbox" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class='d-flex flex-column col-10 task-data'>
+                        <div class='d-flex col-11 task-title' contenteditable="true">
+                            Bachaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        </div>
+                        <div class='d-flex col-1'></div>
+                        <div class='d-flex col-12 task-time'>17:00, 09/03/2021</div>
+                        <div class='d-flex col-11 task-description'>Description Here ........</div>
+                        <div class='d-flex col-1'></div>
+                    </div>
+
+
+                </div>
             </div>
-            <div id="NewList">
-              <h1>New List</h1>
-            </div>
-          </div>
-          <h1>Tasks</h1>
-          <p>List of tasks</p>
         </div>
-      </div>
     </div>
-  </div>
+    <button class="more-button"><i class="bi bi-list"></i></button>
+    <button class="add-btn btn"><i class="bi bi-plus-circle"></i></button>
+    <button class="test-hide">HIDE</button>
+    <div class="modal">
+        <div class="container task-menu">
+            <div class="d-flex row menu-button p-1 align-items-center">
+                <div class="d-flex col-10 menu-title">Bach</div>
+                <div class="d-flex col-2 menu-button">
+                    <i class="bi bi-pen-fill"></i>
+                </div>
+            </div>
+            <div class="d-flex row menu-button p-1 align-items-center">
+                <div class="d-flex col-10 menu-title">Bach</div>
+                <div class="d-flex col-2 menu-button">
+                    <i class="bi bi-pen-fill"></i>
+                </div>
+            </div>
+            <div class="d-flex row menu-button p-1 align-items-center">
+                <div class="d-flex col-10 menu-title">Bach</div>
+                <div class="d-flex col-2 menu-button">
+                    <i class="bi bi-pencil-square"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
