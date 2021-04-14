@@ -1,4 +1,4 @@
-import { ipcMain, Menu, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow } from 'electron';
 
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
@@ -51,15 +51,5 @@ export default class Main {
         Main.application = app;
         Main.application.on('window-all-closed', Main.onWindowAllClosed);
         Main.application.on('ready', Main.onReady);
-        ipcMain.on('show-context-menu', (event) => {
-            const template = [
-                {
-                    label: 'Menu Item 1',
-                    click: () => { event.sender.send('context-menu-command', 'menu-item-1') }
-                }
-            ]
-            const menu = Menu.buildFromTemplate(template)
-            menu.popup(BrowserWindow.fromWebContents(event.sender) as Electron.PopupOptions)
-        })
     }
 }
