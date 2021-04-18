@@ -1,0 +1,492 @@
+body {
+  padding: 0;
+  overflow: hidden;
+}
+
+:root {
+  --list-icon-color: black;
+}
+
+
+
+
+.dashboard-lists {
+  background-color: rgb(245, 244, 244);
+  font-size: 26px;
+  font-weight: bold;
+  height: 100%;
+}
+
+.dashboard-lists::-webkit-scrollbar {
+  display: none;
+}
+
+.dashboard-tasks {
+  background-color: rgb(253, 253, 253);
+  font-size: 26px;
+  min-height: 100%;
+  height: calc(100vh - 70px);
+  font-weight: bold;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dashboard-tasks::-webkit-scrollbar {
+  display: none
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border: 0.2px solid rgb(223, 222, 222);
+}
+
+.username {
+  font-size: 20px;
+}
+
+.usermail {
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+.userinfor {
+  border-radius: 10px;
+  background-color: white;
+}
+
+.add-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  height: 40px;
+  width: 40px;
+  background-color: var(--list-icon-color);
+  border-radius: 50%;
+  outline: none;
+}
+
+.add-btn .bi-plus-circle {
+  font-size: 2rem;
+  color: rgb(223, 222, 222);
+  bottom: -4.4px;
+  right: 3px;
+  position: absolute;
+  display: block;
+  outline: none;
+}
+
+.add-btn:hover {
+  opacity: 0.5
+}
+
+.alway-top {
+  width: 100%;
+  opacity: 1;
+  background-color: white;
+}
+
+.list-header {
+  opacity: 0;
+  background-color: white;
+  height: 60px;
+  border-bottom: 1px solid rgb(184, 184, 184);
+  border-right: 1px solid rgba(236, 236, 236, 0.678);
+}
+
+.list-group {
+  font-size: 1rem;
+  padding: 3px;
+  border-radius: 10px;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.list-group-item {
+  border: 0px !important;
+  font-size: 1rem !important;
+  height: 60px;
+
+}
+
+.list-group-item+.list-group-item {
+  background: linear-gradient(rgb(175, 175, 175), rgb(245, 244, 244))top right/ 80% 1px;
+  background-color: white;
+  background-repeat: no-repeat;
+}
+
+.list-group-item:hover:active:not(.active) {
+  background-color: rgba(168, 205, 235, 0.877);
+}
+
+.list-group-item:hover:not(.active) {
+  background-color: rgba(168, 205, 235, 0.726);
+}
+
+.list-group-item.active {
+  background-color: rgb(60, 135, 220) !important;
+  color: white !important;
+}
+
+.list-group-item.active .list-icon {
+  font-size: 1.5rem;
+  color: inherit;
+}
+
+.list-group-item .list-icon {
+  font-size: 1.5rem;
+  color: rgb(109, 145, 199);
+}
+
+.list-group-item:last-of-type {
+  margin-bottom: 40px;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.searchBar {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  border-radius: 10px;
+  padding: 0.5rem;
+  background-color: white
+}
+
+.searchBar .searchInput {
+  outline: none;
+  border: none
+}
+
+.searchBar .bi-search {
+  color: gray;
+}
+
+.list-group-notice {
+  font-weight: normal;
+}
+
+.list-add-footer {
+  font-size: 1rem;
+  background-color: white;
+  border-top: 1px solid rgb(184, 184, 184);
+  border-right: 1px solid rgba(236, 236, 236, 0.678);
+  height: 35px
+}
+
+.task-frame {
+  height: auto;
+  transition: height 0.3s ease-out;
+}
+
+.task-name-frame {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.514);
+
+}
+
+.task-name {
+  color: var(--list-icon-color)
+}
+
+.task-notice {
+  color: gray;
+  font-weight: bolder;
+  font-size: 1rem;
+}
+
+.shared-user-avatar {
+  width: 30px;
+  height: 30px;
+  border: 0.2px solid rgb(223, 222, 222);
+  margin: -7px;
+}
+
+
+@keyframes zoom {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0)
+  }
+}
+
+.container_checkbox {
+  display: flex;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container_checkbox input {
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: relative;
+  top: 8px;
+  left: 0px;
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid rgba(207, 207, 207, 0.589);
+}
+
+
+
+/* When the radio button is checked, add a blue background */
+.container_checkbox input:checked~.checkmark {
+  background-color: #ffffff;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container_checkbox input:checked~.checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container_checkbox .checkmark:after {
+  position: relative;
+  top: 6px;
+  left: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: black;
+  animation: zoom .3s ease;
+}
+
+@keyframe zoom-reverse {
+  0% {}
+
+  100% {
+    opacity: 0;
+    height: 0px
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0px 0px 0px 0px #bdc3c7;
+  }
+
+  100% {
+    box-shadow: 0px 0px 0px 1.5em rgba(189, 195, 199, 0);
+  }
+}
+
+@keyframes tada {
+  0% {
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+    -webkit-transform: scale(7);
+    transform: scale(7);
+  }
+
+  38% {
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  55% {
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+  }
+
+  72% {
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  81% {
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    -webkit-transform: scale(1.24);
+    transform: scale(1.24);
+  }
+
+  89% {
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  95% {
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    -webkit-transform: scale(1.04);
+    transform: scale(1.04);
+  }
+
+  100% {
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+div[contenteditable] {
+  outline: none;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.task-title {
+  font-size: 1.2rem;
+}
+
+.test-hide {
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+}
+
+.task-data {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.712);
+  padding-left: 0px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.task-description {
+  font-weight: bold;
+  color: grey;
+  font-size: 1.1rem;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.task-time {
+  font-size: 1.1rem;
+  font-family: 'Trebuchet MS', sans-serif;
+  color: rgb(247, 94, 56);
+}
+
+.task-menu {
+  background-color: whitesmoke;
+  display: block;
+  border-radius: 7px;
+  /* border: 0.05px solid rgba(128, 128, 128, 0.404); */
+  position: fixed;
+  top: 12%;
+  right: 2%;
+  animation: bach .3s ease;
+  transform-origin: 90% 2%;
+  max-width: 200px
+}
+
+@keyframes bach {
+  0% {
+    transform: scale(0);
+
+  }
+
+  70%,
+  85% {
+    transform: scale(1.02)
+  }
+
+  100% {
+    transform: scale(1);
+
+  }
+}
+
+@keyframes bach-reverse {
+  0% {
+    transform: scale(1);
+
+  }
+
+  15%,
+  30% {
+    transform: scale(1.02)
+  }
+
+  100% {
+    transform: scale(0);
+
+  }
+}
+
+.more-button {
+  position: absolute;
+  right: 2%;
+  top: 5%;
+  outline: none;
+  border-radius: 50%;
+  border: none;
+  background-color: white;
+  color: rgba(79, 79, 206, 0.877)
+}
+
+.more-button>i:hover {
+  opacity: 0.5
+}
+
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0);
+  /* Black w/ opacity */
+}
+
+.menu-button+.menu-button {
+  border-top: 0.1px solid grey;
+}
