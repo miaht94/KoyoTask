@@ -22,8 +22,8 @@ export class DashboardView {
         // this.dashboard.innerHTML = "Bach";
         this.addButton = $('#taskListAddButton');
         this.addTriggered = false;
-        let addButtonAny : any = this.addButton;
-        addButtonAny.on("click", ()=>{
+        let addButtonAny: any = this.addButton;
+        addButtonAny.on("click", () => {
             if (this.addTriggered == false) {
                 this.dashboard.append(`
                 <div class="newTaskGroup"\>
@@ -41,7 +41,7 @@ export class DashboardView {
 
     public render(listData: List) {
         console.log("render :" + this.dashboard);
-        let dashboard:any = this.dashboard;
+        let dashboard: any = this.dashboard;
         dashboard.html("");
         let task: any;
         for (task of listData.getTasks()) {
@@ -57,24 +57,24 @@ export class DashboardView {
                 </div>
             </div>
             `);
-            
+
             let currentTask = task;
-            let dashboardItemForAppender : any = document.querySelector('#dashboarditem:last-child');
+            let dashboardItemForAppender: any = document.querySelector('#dashboarditem:last-child');
             //let toolbarButtonGroupForAppender : any = dashboardItemForAppender.querySelector('#flex-row');
-            let deleteButtonForAppender : any = dashboardItemForAppender.querySelector('#taskDeleteButton');
-            dashboardItemForAppender.addEventListener('mouseenter', ()=>{
+            let deleteButtonForAppender: any = dashboardItemForAppender.querySelector('#taskDeleteButton');
+            dashboardItemForAppender.addEventListener('mouseenter', () => {
                 deleteButtonForAppender.style.opacity = "1";
             });
 
-            dashboardItemForAppender.addEventListener('mouseleave', ()=>{
+            dashboardItemForAppender.addEventListener('mouseleave', () => {
                 deleteButtonForAppender.style.opacity = "0";
             });
-            
-            deleteButtonForAppender.addEventListener('click', ()=>{
+
+            deleteButtonForAppender.addEventListener('click', () => {
                 console.log("deleted task " + currentTask.getTaskName());
                 this.handleDelete(currentTask.getTaskID());
             });
-        }   
+        }
     }
 
 
@@ -88,15 +88,15 @@ export class DashboardView {
     private initNewTaskCompact(): void {
         this.newTaskTitleCompact = $('#newTaskTitleCompact')[0];
         this.submitButton = $('#newTaskSubmitButton')[0];
-        let newTaskTitleCompactAny : any =  this.newTaskTitleCompact;
-        let submitButtonAny : any = this.submitButton;
-        newTaskTitleCompactAny.addEventListener("input", ()=>{
+        let newTaskTitleCompactAny: any = this.newTaskTitleCompact;
+        let submitButtonAny: any = this.submitButton;
+        newTaskTitleCompactAny.addEventListener("input", () => {
             console.log("changed to " + this.newTaskTitleCompact.value);
-            if(this.newTaskTitleCompact.value == "")
+            if (this.newTaskTitleCompact.value == "")
                 submitButtonAny.setAttribute("disabled", true);
             else submitButtonAny.removeAttribute("disabled");
         })
-        submitButtonAny.addEventListener("click", ()=>{
+        submitButtonAny.addEventListener("click", () => {
             this.handleAddCompact(this.newTaskTitleCompact.value.trimLeft().trimRight());
             this.addTriggered = false;
         })
@@ -105,20 +105,20 @@ export class DashboardView {
     private initNewTaskView(): void {
 
     }
-    
-    public bindOnAddCompact(handler : Function){
+
+    public bindOnAddCompact(handler: Function) {
         this.handleAddCompact = handler;
     }
 
-    public bindOnDelete(handler : Function){
+    public bindOnDelete(handler: Function) {
         this.handleDelete = handler;
     }
 
-    public bindOnSetTask(handler: Function){
+    public bindOnSetTask(handler: Function) {
         this.handleSetTask = handler;
     }
 
-    
+
 
     // private generateTaskNode(task: Task): HTMLElement {
     // let border: HTMLElement = document.createElement('div');

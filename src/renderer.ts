@@ -3,24 +3,27 @@ import io from './utils/iosys';
 import $ from './js/jquery';
 import "@popperjs/core";
 import "./js/bootstrap.min";
-// import './js/jquery-ui';
 import { DashboardController } from './Controller/DashBoardController';
 import { DashboardView } from './View/DashboardView';
 import { DashboardModel } from './Model/DashboardModel';
 import { ipcRenderer } from 'electron';
-
 import { remote } from 'electron';
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 const win = remote.getCurrentWindow();
+io.init();
+const firebaseConfig = io.getJsonData("firebase_config");
+firebase.initializeApp(firebaseConfig);
 
 $(document).ready(() => {
-    io.init();
     console.log(io.getData("list_data"));
     // let a = new DashboardView();
     console.log("ready");
     // $("html").append(html);
     // $("#tabs").tabs();
-    let a: DashboardController = new DashboardController(new DashboardModel(), new DashboardView());
+    // let a: DashboardController = new DashboardController(new DashboardModel(), new DashboardView());
     ipcRenderer.on("Receive root path", (event, message) => {
         console.log(message);
     });

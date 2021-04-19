@@ -37,6 +37,13 @@ export default class IOSystem {
         } else throw "Chua init IOSystem";
     }
 
+    static getJsonData(property: string): string {
+        let paths: any = IOSystem.paths;
+        if (IOSystem.isActive) {
+            return paths[property];
+        } else throw "Chua init IOSystem";
+    }
+
     //WORKING
     static writeData(file_name: string, content: string,): void {
         let paths: any = IOSystem.paths;
