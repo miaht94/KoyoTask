@@ -16,11 +16,11 @@ export class DashboardView {
     private handleSetTask: Function;
 
     constructor() {
-        // super();
         this.dashboard = $('#DashboardList');
         console.log("constructor :" + this.dashboard);
+        console.log("hello");
         // this.dashboard.innerHTML = "Bach";
-        this.addButton = $('#taskListAddButton');
+        this.addButton = $('#add-btn');
         this.addTriggered = false;
         let addButtonAny: any = this.addButton;
         addButtonAny.on("click", () => {

@@ -23,7 +23,7 @@ $(document).ready(() => {
     console.log("ready");
     // $("html").append(html);
     // $("#tabs").tabs();
-    // let a: DashboardController = new DashboardController(new DashboardModel(), new DashboardView());
+    let a: DashboardController = new DashboardController(new DashboardModel(), new DashboardView());
     ipcRenderer.on("Receive root path", (event, message) => {
         console.log(message);
     });
