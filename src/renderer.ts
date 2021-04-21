@@ -16,7 +16,16 @@ const win = remote.getCurrentWindow();
 io.init();
 const firebaseConfig = io.getJsonData("firebase_config");
 firebase.initializeApp(firebaseConfig);
-
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        console.log("user id: " + firebase.auth().currentUser.uid)
+    }
+  });
+ipcRenderer.send('requestCredential');
+ipcRenderer.on("credential-reply", function(event, data) {
+    let credential = firebase.auth.GoogleAuthProvider.credential(null, data);
+    firebase.auth().signInWithCredential(credential)
+});
 $(document).ready(() => {
     console.log(io.getData("list_data"));
     // let a = new DashboardView();
@@ -66,6 +75,7 @@ $(document).ready(() => {
             $(".title1").remove();
         }, 300)
     })
+    
     $(".more-button").click((event: any) => {
         if ($(".modal").css("display") == "none") {
             $(".modal").css("display", "block");

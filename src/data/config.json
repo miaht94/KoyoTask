@@ -9,5 +9,6 @@
         "messagingSenderId": "93831312801",
         "appId": "1:93831312801:web:58b998abfb7d8e941907e0",
         "measurementId": "G-JHK1D11GGT"
-      }
+      },
+      "user" : "/user.json"
 }

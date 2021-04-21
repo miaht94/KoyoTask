@@ -86,8 +86,10 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
+    "@types/node-fetch": "^2.5.10",
     "bootstrap-icons": "^1.4.1",
     "electron-squirrel-startup": "^1.0.0",
-    "firebase": "^8.4.1"
+    "firebase": "^8.4.1",
+    "xmlhttprequest": "^1.8.0"
   }
 }
