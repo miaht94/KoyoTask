@@ -2,26 +2,12 @@
 	{
 		"tasks": [
 			{
-				"task_name": "Task Load 1",
-				"task_id": "00001",
-				"task_description": "Desc 1",
-				"completed": false
-			},
-			{
-				"task_name": "Task Load 2",
-				"task_id": "00002",
-				"task_description": "Desc 2",
-				"completed": false
-			},
-			{
 				"task_name": "Task Load 3",
 				"task_id": "00003",
 				"task_description": "Desc 3",
 				"completed": false
 			}
-		],
-		"listID": 0,
-		"listName": "name"
+		]
 	},
 	{
 		"tasks": [
@@ -31,8 +17,6 @@
 				"task_description": "description",
 				"completed": false
 			}
-		],
-		"listID": 1,
-		"listName": "name"
+		]
 	}
 ]
