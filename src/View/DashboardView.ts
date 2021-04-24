@@ -49,7 +49,7 @@ export class DashboardView {
             certainTaskHTML = certainTaskHTML.replace("{{task_name}}", task.getTaskName());
             certainTaskHTML = certainTaskHTML.replace("{{task_date}}", "Should be task.getTaskDate()");
             certainTaskHTML = certainTaskHTML.replace("{{task_description}}", task.getTaskDescription());
-            
+
             dashboardForAppender.append(certainTaskHTML); 
 
             //behavior for each task
@@ -61,9 +61,12 @@ export class DashboardView {
     private initTaskBehavior(task: Task) :void {
         let currentTask = task;
         let dashboardItemForAppender: any = document.querySelector('#dashboarditem:last-child');
+        
         let dashboardItem2ForAppender: any = $('#dashboarditem:last-child');
         dashboardItem2ForAppender.append(this.taskButtonGroupHTML);
 
+        let checkboxForAppender: any = dashboardItemForAppender.querySelector('#taskCheckbox');
+        if(task.getCompleted() == true) checkboxForAppender.checked = true;
         let taskButtonGroupForAppender: any = dashboardItemForAppender.querySelector('#taskButtonGroup');
         let deleteButtonForAppender: any = dashboardItemForAppender.querySelector('#taskDeleteButton');
         let taskTitleForEdit: any = dashboardItemForAppender.querySelector('#taskTitleForEdit');
@@ -74,7 +77,11 @@ export class DashboardView {
         dashboardItemForAppender.addEventListener('mouseleave', () => {
             taskButtonGroupForAppender.style.opacity = "0"; });
 
-        //  WORKING
+        checkboxForAppender.addEventListener('click',  () => {
+            currentTask.setCompleted(checkboxForAppender.checked); 
+            this.handleSetTask(currentTask.getTaskID(), currentTask);
+        });
+
         taskTitleForEdit.addEventListener("keypress", (event:any) => {
             if (event.keyCode === 13) {
                 event.preventDefault();
@@ -132,6 +139,7 @@ export class DashboardView {
     public getDashboard(): HTMLElement {
         return this.dashboard;
     }
+
     public setDashboard(dashboard: HTMLElement): void {
         this.dashboard = dashboard;
     }

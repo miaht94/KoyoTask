@@ -75,7 +75,7 @@ export class Task {
         newTask.task_name = task.task_name;
         newTask.task_id = task.task_id;
         newTask.task_description = task.task_description;
-        newTask.completed = false;
+        newTask.completed = task.completed;
         return newTask;
     }
 
@@ -100,6 +100,10 @@ export class Task {
         return this.task_name;
     }
 
+    public getCompleted(): boolean {
+        return this.completed;
+    }
+
     public setTaskName(task_name: string): void {
         this.task_name = task_name;
     }
@@ -119,5 +123,6 @@ export class Task {
     public setTask(that: Task): void {
         this.task_name = that.task_name;
         this.task_description = that.task_description;
+        this.completed = that.completed;
     }
 }
