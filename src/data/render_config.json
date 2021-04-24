@@ -11,7 +11,7 @@
 
     "TaskAdd" :{
         "targetId" : "dashboarditem",
-        "html" : "<div class='d-flex flex-row row task-frame' id='dashboarditem'><div class='d-flex col-1 justify-content-start' id='dashboarditemcol'><label class='container_checkbox'><input type='checkbox' name='radio'><span class='checkmark'></span></label></div><div class='d-flex flex-column col-9 task-data'><div class='d-flex col-11 task-title' id = 'taskTitleForAdd' contenteditable='true' placeholder='Enter new task title'></div></div></div></div>" 
+        "html" : "<div class='d-flex flex-row row task-frame' id='dashboarditem'><div class='d-flex col-1 justify-content-start' id='dashboarditemcol'><label class='container_checkbox'><input type='checkbox' name='radio' id = checkboxForAdd><span class='checkmark'></span></label></div><div class='d-flex flex-column col-9 task-data'><div class='d-flex col-11 task-title' id = 'taskTitleForAdd' contenteditable='true' placeholder='Enter new task title'></div></div></div></div>" 
     },
 
     "appendNewList" : {

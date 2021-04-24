@@ -38,7 +38,7 @@ export class List {
 
     public setListDescription(listDescription: string): void { this.listDescription = listDescription; }
 
-    public addTaskCompact(taskName: string): void { this.tasks.push(Task.createNewTaskCompact(taskName)); }
+    public addTaskCompact(taskName: string, completed: boolean): void { this.tasks.push(Task.createNewTaskCompact(taskName,completed)); }
 
     public addTask(task: any) {
         this.tasks.push(Task.createNewTaskByJson(task));
@@ -79,12 +79,12 @@ export class Task {
         return newTask;
     }
 
-    static createNewTaskCompact(taskName: string): Task {
+    static createNewTaskCompact(taskName: string, completed: boolean): Task {
         let newTask: Task = new Task();
         newTask.task_name = taskName;
         newTask.task_id = ''; //generate task ID later
         newTask.task_description = '';
-        newTask.completed = false;
+        newTask.completed = completed;
         return newTask;
     }
 

@@ -55,8 +55,8 @@ export class DashboardModel extends Model {
         return this.currentList;
     }
 
-    public addTaskCompactToCurrentList(taskName: string) {
-        this.currentList.addTaskCompact(taskName);
+    public addTaskCompactToCurrentList(taskName: string, completed: boolean) {
+        this.currentList.addTaskCompact(taskName,completed);
         this.commit();
     }
 

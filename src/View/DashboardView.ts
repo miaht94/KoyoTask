@@ -124,10 +124,12 @@ export class DashboardView {
                 certainTaskAddHTML = certainTaskAddHTML.replace("{{task_name}}", "Enter task name here");
                 dashboardForAppender.append(certainTaskAddHTML); 
                 let newTaskTitleCompact: any = $('#taskTitleForAdd');
+                let checkboxCompact: any = $('#checkboxForAdd');
+                console.log(checkboxCompact.prop("checked"));
                 newTaskTitleCompact.on("keypress", (event:any) => {
                     if (event.keyCode === 13) {
                         if (newTaskTitleCompact.textContent != "") {
-                            this.handleAddCompact($('#taskTitleForAdd').text().trimLeft().trimRight());
+                            this.handleAddCompact($('#taskTitleForAdd').text().trimLeft().trimRight(), checkboxCompact.prop("checked"));
                             this.addTriggered = false;
                         }
                     }
