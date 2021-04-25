@@ -2,12 +2,14 @@ import { ipcMain, Menu, BrowserWindow } from 'electron';
 // import firebase from 'firebase/app'
 import IO from './utils/iosys';
 import "firebase/auth";
+import "firebase/firestore"
 global['XMLHttpRequest'] = require('xmlhttprequest').XMLHttpRequest;
-
+global.atob = require("atob");
+global.Blob = require('node-blob');
 
 // Initialize iosystem
 IO.init();
-let userData = IO.getData("user");
+let userData:any = IO.getData("user");
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
     static firebase: any;
@@ -70,21 +72,48 @@ export default class Main {
         Main.BrowserWindow = browserWindow;
         const firebase_config = IO.getJsonData("firebase_config");
         Main.firebase.initializeApp(firebase_config);
+        let database = firebase.firestore();
         Main.application.on('window-all-closed', Main.onWindowAllClosed);
         Main.application.on('ready', Main.onReady);
-        var argument;
+        var argument : string;
         ipcMain.on('token', function (event, arg) {
             console.log("token : " + event + " : " + arg);
             argument = arg;
             let credential = firebase.auth.GoogleAuthProvider.credential(null, arg);
-            firebase.auth().signInWithCredential(credential).then(() => {
-              userData.uid = firebase.auth().currentUser.uid;
-              userData.fullname = firebase.auth().currentUser.displayName;
-              userData.account_type = "Logged";
-              IO.writeData("user", JSON.stringify(userData, null, 2));
-              Main.mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+                firebase.auth().signInWithCredential(credential).then(() => {
+                let uid = firebase.auth().currentUser.uid;
+                let fullname = firebase.auth().currentUser.displayName;
+                let avtURL = firebase.auth().currentUser.photoURL;
+                let email = firebase.auth().currentUser.email;
+                userData.uid = uid;
+                userData.fullname = fullname;
+                userData.account_type = credential.signInMethod;
+                userData.email = email;
+                userData.avtURL = avtURL;
+                IO.writeData("user", JSON.stringify(userData, null, 2));
+                Main.mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+                // add new user for the first time login
+                const userRef = database.collection('users').doc(uid)
+                 userRef.get().then((snapshot) => {
+                    if (!snapshot.exists) {
+                        userRef.set({
+                            avtURL : avtURL,
+                            email : email,
+                            fullname : fullname
+                        })
+                    }
+                })
             })
           });
+        ipcMain.on("log-out",(event, arg) => {
+            userData.uid = null;
+            userData.fullname = "guest";
+            userData.account_type = "guest";
+            userData.email = "guest";
+            userData.avtURL = "guest";
+            IO.writeData("user", JSON.stringify(userData, null, 2));
+            Main.mainWindow.loadURL("https://southamerica-east1-fourth-jigsaw-305509.cloudfunctions.net/function-1");
+        });
         ipcMain.on("requestCredential", (event, arg) => {
             console.log("received")
             event.reply('credential-reply', argument)

@@ -16,12 +16,17 @@ const win = remote.getCurrentWindow();
 io.init();
 const firebaseConfig = io.getJsonData("firebase_config");
 firebase.initializeApp(firebaseConfig);
+let is_logged = true;
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        console.log("user id: " + firebase.auth().currentUser.uid)
+    }
+    else {
+        is_logged = false;
     }
   });
-ipcRenderer.send('requestCredential');
+if (!is_logged) {
+    ipcRenderer.send('requestCredential');
+}
 ipcRenderer.on("credential-reply", function(event, data) {
     let credential = firebase.auth.GoogleAuthProvider.credential(null, data);
     firebase.auth().signInWithCredential(credential)
@@ -32,7 +37,7 @@ $(document).ready(() => {
     console.log("ready");
     // $("html").append(html);
     // $("#tabs").tabs();
-    // let a: DashboardController = new DashboardController(new DashboardModel(), new DashboardView());
+    let mvc: DashboardController = new DashboardController(new DashboardModel(firebase), new DashboardView());
     ipcRenderer.on("Receive root path", (event, message) => {
         console.log(message);
     });
@@ -75,7 +80,13 @@ $(document).ready(() => {
             $(".title1").remove();
         }, 300)
     })
-    
+
+    $(".log-out").click((event: any) => {
+        firebase.auth().signOut().then(function (){
+            ipcRenderer.send("log-out");
+        })
+    })
+
     $(".more-button").click((event: any) => {
         if ($(".modal").css("display") == "none") {
             $(".modal").css("display", "block");

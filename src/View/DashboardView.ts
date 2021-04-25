@@ -60,7 +60,7 @@ export class DashboardView {
 
             let currentTask = task;
             let dashboardItemForAppender: any = document.querySelector('#dashboarditem:last-child');
-            //let toolbarButtonGroupForAppender : any = dashboardItemForAppender.querySelector('#flex-row');
+            let toolbarButtonGroupForAppender : any = dashboardItemForAppender.querySelector('#flex-row');
             let deleteButtonForAppender: any = dashboardItemForAppender.querySelector('#taskDeleteButton');
             dashboardItemForAppender.addEventListener('mouseenter', () => {
                 deleteButtonForAppender.style.opacity = "1";
