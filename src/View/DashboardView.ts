@@ -5,6 +5,7 @@ import $ from '../js/jquery';
 export class DashboardView {
     private dashboard: HTMLElement;
     private addButton: HTMLElement;
+    private addListButton: HTMLElement;
 
     private expandButton: HTMLElement;
     private submitButton: HTMLElement;
@@ -25,6 +26,7 @@ export class DashboardView {
 
     constructor() {
         this.dashboard = $('#DashboardList');
+
         this.renderConfig = IOSystem.getData("render_config");
         this.taskHTML = this.renderConfig.appendNewTask.html;
         this.taskButtonGroupHTML = this.renderConfig.TaskButtonGroup.html;
@@ -36,9 +38,10 @@ export class DashboardView {
         this.initAddTaskButton();
     }
 
-    public render(listData: List) {
-        //console.log("render :" + this.dashboard);
+    public render(listData: List) { 
+        //RENDER DASHBOARD
         let dashboardForAppender: any = this.dashboard;
+        
         let task: any;
         dashboardForAppender.html("");
         for (task of listData.getTasks()) {
@@ -135,6 +138,15 @@ export class DashboardView {
                     }
                   });
             }
+        });
+
+        //TEST ONLY
+        this.addListButton = $('#AddListButton');
+        let addListButtonAny: any = this.addListButton;
+        let addListModal = $('#AddListModal');
+        console.log(addListModal);
+        addListButtonAny.on("click", () => {
+            $('#AddListModal').show();
         });
     }
 

@@ -6,26 +6,11 @@
 				"task_id": "00007",
 				"task_description": "",
 				"completed": true
-			},
-			{
-				"task_name": "Homie",
-				"task_id": "00009",
-				"task_description": "",
-				"completed": true
-			},
-			{
-				"task_name": "hello",
-				"task_id": "",
-				"task_description": "",
-				"completed": true
-			},
-			{
-				"task_name": "hello",
-				"task_id": "",
-				"task_description": "",
-				"completed": false
 			}
-		]
+		],
+		"listID": "list001",
+		"listName": "List 1",
+		"listIcon": null
 	},
 	{
 		"tasks": [
@@ -35,6 +20,9 @@
 				"task_description": "description",
 				"completed": false
 			}
-		]
+		],
+		"listID": "list002",
+		"listName": "List 2",
+		"listIcon": null
 	}
 ]

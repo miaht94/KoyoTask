@@ -10,6 +10,7 @@ export class DashboardModel extends Model {
     protected currentUser: User
     protected database : any;
     public onChange: Function;
+    
     protected commit() {
         IOSystem.writeData("list_data", JSON.stringify(this.lists, null, "\t"));
         this.onChange(this.currentList);
@@ -35,7 +36,7 @@ export class DashboardModel extends Model {
         // get lists data first time
         let validID = this.database.collection("users").doc(this.currentUser.getUID());
         console.log(validID);
-        
+
 
         //validID = reference to user ID to fetch
         this.database.collection("lists").where("collaborators", "array-contains" ,validID)
@@ -45,13 +46,12 @@ export class DashboardModel extends Model {
                 console.log("print from Dashboard Model");
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
-
-                //
             });
         })
         .catch((error : any) => {
             console.log("Error getting documents: ", error);
         });
+
     }
 
     public getCurrentUser(): User {
