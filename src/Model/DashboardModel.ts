@@ -59,7 +59,6 @@ export class DashboardModel extends Model {
 
     constructor(firebase : any) {
         super();
-        this.lists = [];
         this.database = firebase.firestore();
         this.firebase = firebase;
         console.log(this.lists);
