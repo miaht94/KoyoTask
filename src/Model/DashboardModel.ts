@@ -3,18 +3,21 @@ import { List, Task } from './List';
 import { Model } from './Model';
 import { User } from './User';
 import { DashboardView } from '../View/DashboardView';
+import "firebase/firestore";
 export class DashboardModel extends Model {
     protected lists: List[] = []; //same
     protected currentList: List;
     protected currentUser: User
+    protected database : any;
     public onChange: Function;
     protected commit() {
         IOSystem.writeData("list_data", JSON.stringify(this.lists, null, "\t"));
         this.onChange(this.currentList);
     };
 
-    constructor() {
+    constructor(firebase : any) {
         super();
+        this.database = firebase.firestore();
         let lists_json: any = IOSystem.getData("list_data");
         lists_json.forEach((element: any) => {
             let temp_list: List = new List(element);
@@ -22,7 +25,27 @@ export class DashboardModel extends Model {
         })
         if (this.lists.length === 0) this.currentList = List.createEmptyList();
         else this.currentList = this.lists[0];
+
+        //Init User data
+        IOSystem.init();
+        let userData : any = IOSystem.getData("user");
+        this.currentUser = new User(userData.fullname, userData.uid, userData.email, userData.avtURL);
         //console.log(JSON.stringify(this.lists));
+        console.log("from dashborad model" + this.database);
+        // get lists data first time
+        let validID = this.database.collection("users").doc(this.currentUser.getUID());
+        console.log(validID);
+        this.database.collection("lists").where("collaborators", "array-contains" ,validID)
+        .get()
+        .then((querySnapshot : any) => { 
+            querySnapshot.forEach((doc : any) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+        })
+        .catch((error : any) => {
+            console.log("Error getting documents: ", error);
+        });
     }
 
     public getCurrentUser(): User {

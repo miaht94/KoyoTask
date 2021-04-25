@@ -4,7 +4,11 @@ export class User {
     private email: string;
     private avtURL: string;
 
-    constructor() {
+    constructor(fullname : string, uid : string, email : string, avtURL : string) {
+        this.fullname = fullname;
+        this.uid = uid;
+        this.email = email;
+        this.avtURL = avtURL;
     }
 
     public getFullname(): string {

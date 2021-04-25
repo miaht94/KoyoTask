@@ -383,6 +383,15 @@ div[contenteditable] {
   right: 100px;
 }
 
+.log-out {
+  height: 20px;
+  width: 50px;
+  position: fixed;
+  bottom: 350px;
+  left: 100px;
+  font-size: 50%;
+}
+
 .task-data {
   border-bottom: 1px solid rgba(128, 128, 128, 0.712);
   padding-left: 0px;

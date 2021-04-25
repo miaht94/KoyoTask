@@ -1,5 +1,7 @@
 {
-    "account_type" : "Guest",
-    "fullname" : "Guest",
-    "uid" : null    
+  "account_type": "google.com",
+  "fullname": "Đặng Thế Hoàng Anh",
+  "uid": "26d6Xtwp0uYsLf8trF49EsrCYA53",
+  "avtURL": "https://lh3.googleusercontent.com/-UFJaMZPhRl4/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclFgy-ytGIsw4MzHJQf4KGB3WbBEg/s96-c/photo.jpg",
+  "email": "hoanganhxt183@gmail.com"
 }
