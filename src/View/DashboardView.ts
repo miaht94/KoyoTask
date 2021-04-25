@@ -1,4 +1,5 @@
 import { List, Task } from '../Model/List';
+import IOSystem from '../utils/iosys';
 import { View } from './View';
 import $ from '../js/jquery';
 export class DashboardView {
@@ -15,110 +16,152 @@ export class DashboardView {
     private handleDelete: Function;
     private handleSetTask: Function;
 
+    private renderConfig: any;
+    private taskHTML: String;
+    private taskAddHTML: String;
+    private taskButtonGroupHTML: String;
+
+    private currentTask: Task;
+
     constructor() {
-        // super();
         this.dashboard = $('#DashboardList');
-        console.log("constructor :" + this.dashboard);
-        // this.dashboard.innerHTML = "Bach";
-        this.addButton = $('#taskListAddButton');
-        this.addTriggered = false;
-        let addButtonAny : any = this.addButton;
-        addButtonAny.on("click", ()=>{
-            if (this.addTriggered == false) {
-                this.dashboard.append(`
-                <div class="newTaskGroup"\>
-                    <div class="dashboarditem itemname">+</div>
-                    <input class="form-control form-control-sm newTaskColumn" type="text" id="newTaskTitleCompact" placeholder="Write something">
-                    <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskSubmitButton" disabled>Add</button>
-                    <button type="button" class="btn btn-primary btn-sm newTaskColumn" id="newTaskExpandButton">Expand</button>
-                </div>
-                `);
-                this.initNewTaskCompact();
-                this.addTriggered = true;
-            }
-        })
+        this.renderConfig = IOSystem.getData("render_config");
+        this.taskHTML = this.renderConfig.appendNewTask.html;
+        this.taskButtonGroupHTML = this.renderConfig.TaskButtonGroup.html;
+        this.taskAddHTML = this.renderConfig.TaskAdd.html;
+        
+        // console.log("this.taskHTML");
+        // console.log(this.taskHTML);
+        //init each button on dashboard
+        this.initAddTaskButton();
     }
 
     public render(listData: List) {
-        console.log("render :" + this.dashboard);
-        let dashboard:any = this.dashboard;
-        dashboard.html("");
+        //console.log("render :" + this.dashboard);
+        let dashboardForAppender: any = this.dashboard;
         let task: any;
+        dashboardForAppender.html("");
         for (task of listData.getTasks()) {
-            // this.dashboard.append(`<div class=\"dashboard_item\"\><img class=\"line\" src=\"img/line1.png\" /\><div class=\"flex-row\"\><img class=\"oval\" src=\"img/oval1.png\" /\><div class=\"task-1 helvetica-normal-black-16px\"\>${task.getTaskName()}</div\></div\></div\>`);
-            dashboard.append(`
-            <div class="dashboarditem" id="dashboarditem">
-                <div class="flex-row" id="itemrow"><img class="oval checkbox" src="img/oval1.png">
-                    <div class="dashboarditem itemname">${task.getTaskName()}</div>
-                    <div class="itembuttongroup" id = "itembuttongroup">
-                        <button type="button" class="btn btn-danger btn-sm taskColumn" id="taskDeleteButton">Delete</button>
-                        <button type="button" class="btn btn-primary btn-sm taskColumn" id="taskEditButton">Edit</button>
-                    </div>
-                </div>
-            </div>
-            `);
-            
-            let currentTask = task;
-            let dashboardItemForAppender : any = document.querySelector('#dashboarditem:last-child');
-            //let toolbarButtonGroupForAppender : any = dashboardItemForAppender.querySelector('#flex-row');
-            let deleteButtonForAppender : any = dashboardItemForAppender.querySelector('#taskDeleteButton');
-            dashboardItemForAppender.addEventListener('mouseenter', ()=>{
-                deleteButtonForAppender.style.opacity = "1";
-            });
 
-            dashboardItemForAppender.addEventListener('mouseleave', ()=>{
-                deleteButtonForAppender.style.opacity = "0";
-            });
-            
-            deleteButtonForAppender.addEventListener('click', ()=>{
-                console.log("deleted task " + currentTask.getTaskName());
-                this.handleDelete(currentTask.getTaskID());
-            });
-        }   
+            //render all tasks to dashboard
+            //HandleBar
+            let certainTaskHTML : String = this.taskHTML;
+            certainTaskHTML = certainTaskHTML.replace("{{task_name}}", task.getTaskName());
+            certainTaskHTML = certainTaskHTML.replace("{{task_date}}", "Should be task.getTaskDate()");
+            certainTaskHTML = certainTaskHTML.replace("{{task_description}}", task.getTaskDescription());
+
+            dashboardForAppender.append(certainTaskHTML); 
+
+            //behavior for each task
+            this.initTaskBehavior(task);
+        }
+
     }
 
+    private initTaskBehavior(task: Task) :void {
+        let currentTask = task;
+        let dashboardItemForAppender: any = document.querySelector('#dashboarditem:last-child');
+        
+        let dashboardItem2ForAppender: any = $('#dashboarditem:last-child');
+        dashboardItem2ForAppender.append(this.taskButtonGroupHTML);
+
+        let checkboxForAppender: any = dashboardItemForAppender.querySelector('#taskCheckbox');
+        if(task.getCompleted() == true) checkboxForAppender.checked = true;
+        let taskButtonGroupForAppender: any = dashboardItemForAppender.querySelector('#taskButtonGroup');
+        let deleteButtonForAppender: any = dashboardItemForAppender.querySelector('#taskDeleteButton');
+        let taskTitleForEdit: any = dashboardItemForAppender.querySelector('#taskTitleForEdit');
+        
+        dashboardItemForAppender.addEventListener('mouseenter', () => {
+            taskButtonGroupForAppender.style.opacity = "1"; });
+
+        dashboardItemForAppender.addEventListener('mouseleave', () => {
+            taskButtonGroupForAppender.style.opacity = "0"; });
+
+        checkboxForAppender.addEventListener('click',  () => {
+            currentTask.setCompleted(checkboxForAppender.checked); 
+            this.handleSetTask(currentTask.getTaskID(), currentTask);
+        });
+
+        taskTitleForEdit.addEventListener("keypress", (event:any) => {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                let newTask = currentTask;
+                newTask.setTaskName(taskTitleForEdit.innerHTML.trimLeft().trimRight());
+                if (taskTitleForEdit.innerHTML != "") {
+                    this.handleSetTask(currentTask.getTaskID(), newTask);
+                } else {
+                    this.handleDelete(currentTask.getTaskID());
+                }
+            }
+        });
+
+        taskTitleForEdit.addEventListener("focusout", () => {
+            let newTask = currentTask;
+                newTask.setTaskName(taskTitleForEdit.innerHTML.trimLeft().trimRight());
+                if (taskTitleForEdit.innerHTML != "") {
+                    this.handleSetTask(currentTask.getTaskID(), newTask);
+                } else {
+                    this.handleDelete(currentTask.getTaskID());
+                }
+        });
+
+        deleteButtonForAppender.addEventListener('click', () => {
+            console.log("deleted task " + currentTask.getTaskName());
+            this.handleDelete(currentTask.getTaskID());
+        });
+    }
+
+    private initAddTaskButton():void {
+        let dashboardForAppender: any = this.dashboard;
+        this.addButton = $('#AddButton');
+        this.addTriggered = false;
+        let addButtonAny: any = this.addButton;
+
+        addButtonAny.on("click", () => {
+            if (this.addTriggered == false) {
+                this.addTriggered = true;
+                let certainTaskAddHTML : String = this.taskAddHTML;
+                certainTaskAddHTML = certainTaskAddHTML.replace("{{task_name}}", "Enter task name here");
+                dashboardForAppender.append(certainTaskAddHTML); 
+                let newTaskTitleCompact: any = $('#taskTitleForAdd');
+                let checkboxCompact: any = $('#checkboxForAdd');
+                console.log(checkboxCompact.prop("checked"));
+                newTaskTitleCompact.on("keypress", (event:any) => {
+                    if (event.keyCode === 13) {
+                        if (newTaskTitleCompact.textContent != "") {
+                            this.handleAddCompact($('#taskTitleForAdd').text().trimLeft().trimRight(), checkboxCompact.prop("checked"));
+                            this.addTriggered = false;
+                        }
+                    }
+                  });
+            }
+        });
+    }
 
     public getDashboard(): HTMLElement {
         return this.dashboard;
     }
+
     public setDashboard(dashboard: HTMLElement): void {
         this.dashboard = dashboard;
     }
 
-    private initNewTaskCompact(): void {
-        this.newTaskTitleCompact = $('#newTaskTitleCompact')[0];
-        this.submitButton = $('#newTaskSubmitButton')[0];
-        let newTaskTitleCompactAny : any =  this.newTaskTitleCompact;
-        let submitButtonAny : any = this.submitButton;
-        newTaskTitleCompactAny.addEventListener("input", ()=>{
-            console.log("changed to " + this.newTaskTitleCompact.value);
-            if(this.newTaskTitleCompact.value == "")
-                submitButtonAny.setAttribute("disabled", true);
-            else submitButtonAny.removeAttribute("disabled");
-        })
-        submitButtonAny.addEventListener("click", ()=>{
-            this.handleAddCompact(this.newTaskTitleCompact.value.trimLeft().trimRight());
-            this.addTriggered = false;
-        })
-    }
-
     private initNewTaskView(): void {
-
     }
-    
-    public bindOnAddCompact(handler : Function){
+
+    public bindOnAddCompact(handler: Function) {
         this.handleAddCompact = handler;
     }
 
-    public bindOnDelete(handler : Function){
+    public bindOnDelete(handler: Function) {
         this.handleDelete = handler;
     }
 
-    public bindOnSetTask(handler: Function){
+    public bindOnSetTask(handler: Function) {
         this.handleSetTask = handler;
     }
 
-    
+
 
     // private generateTaskNode(task: Task): HTMLElement {
     // let border: HTMLElement = document.createElement('div');

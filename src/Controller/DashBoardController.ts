@@ -16,8 +16,8 @@ export class DashboardController extends Controller {
         this.view.bindOnSetTask(this.onSetTask.bind(this));
     }
 
-    public onAddCompact(taskName : string){
-        this.model.addTaskCompactToCurrentList(taskName);
+    public onAddCompact(taskName : string, completed:boolean){
+        this.model.addTaskCompactToCurrentList(taskName,completed);
     }
 
     public onDelete(taskID : string){

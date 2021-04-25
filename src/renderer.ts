@@ -1,19 +1,23 @@
 import * as fs from 'fs';
 import io from './utils/iosys';
 import $ from './js/jquery';
-import './js/bootstrap.min';
-// import './js/jquery-ui';
+import "@popperjs/core";
+import "./js/bootstrap.min";
 import { DashboardController } from './Controller/DashBoardController';
 import { DashboardView } from './View/DashboardView';
 import { DashboardModel } from './Model/DashboardModel';
 import { ipcRenderer } from 'electron';
-
 import { remote } from 'electron';
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 const win = remote.getCurrentWindow();
+io.init();
+const firebaseConfig = io.getJsonData("firebase_config");
+firebase.initializeApp(firebaseConfig);
 
 $(document).ready(() => {
-    io.init();
     console.log(io.getData("list_data"));
     // let a = new DashboardView();
     console.log("ready");
@@ -22,47 +26,94 @@ $(document).ready(() => {
     let a: DashboardController = new DashboardController(new DashboardModel(), new DashboardView());
     ipcRenderer.on("Receive root path", (event, message) => {
         console.log(message);
+    });
+
+    $('.dashboard-lists').scroll(function () {
+        var scrollTop = $('.dashboard-lists').scrollTop();
+        console.log('scroll-top: ' + scrollTop);
+
+        $('.list-header').css({
+            opacity: function () {
+                var elementHeight = $('.koyoheader').height(),
+                    opacity = ((1 - (elementHeight - scrollTop) / elementHeight) * 0.8);
+                console.log(elementHeight);
+                return opacity;
+            }
+        });
+
+        // if (scrollTop > 10) {
+        //     $('.list-header').fadeOut(1000);
+        // }
+    });
+    $(".list-group-item").click((event: any) => {
+        for (let element of $(".list-group-item")) {
+            console.log(element)
+            if (element.className.includes("active")) {
+                element.classList.toggle("active")
+            }
+        };
+        event.currentTarget.classList.toggle("active");
     })
-    if (document.readyState == "complete") {
-        handleWindowControls();
-    }
-})
 
-window.onbeforeunload = (event:any) => {
-    /* If window is reloaded, remove win event listeners
-    (DOM element listeners get auto garbage collected but not
-    Electron win listeners as the win is not dereferenced unless closed) */
-    win.removeAllListeners();
-}
+    $(".test-hide").click((event: any) => {
+        $(".title1").css("word-wrap: initial,word-break: initial")
+        console.log($(".title1"))
+        collapseSection($(".title1")[0])
+        $(".title1")[0].animate({
+            opacity: 0
+        }, 300)
+        window.setTimeout(() => {
+            $(".title1").remove();
+        }, 300)
+    })
+    $(".more-button").click((event: any) => {
+        if ($(".modal").css("display") == "none") {
+            $(".modal").css("display", "block");
+            $(".task-menu").css("display", "block");
+            let tempSave = (event: any) => {
+                if (event.target.className.includes("modal")) {
+                    $(".task-menu").hide(200, () => {
+                        $(".task-menu").css("display", "none")
+                        $(".modal").css("display", "none")
+                    })
 
-function handleWindowControls() {
-    // Make minimise/maximise/restore/close buttons work when they are clicked
-    document.getElementById('min-button').addEventListener("click", event => {
-        win.minimize();
-    });
-
-    document.getElementById('max-button').addEventListener("click", event => {
-        win.maximize();
-    });
-
-    document.getElementById('restore-button').addEventListener("click", event => {
-        win.unmaximize();
-    });
-
-    document.getElementById('close-button').addEventListener("click", event => {
-        win.close();
-    });
-
-    // Toggle maximise/restore buttons when maximisation/unmaximisation occurs
-    toggleMaxRestoreButtons();
-    win.on('maximize', toggleMaxRestoreButtons);
-    win.on('unmaximize', toggleMaxRestoreButtons);
-
-    function toggleMaxRestoreButtons() {
-        if (win.isMaximized()) {
-            document.body.classList.add('maximized');
-        } else {
-            document.body.classList.remove('maximized');
+                }
+            }
+            window.addEventListener("click", tempSave)
         }
+    })
+
+    function collapseSection(element: any) {
+        // get the height of the element's inner content, regardless of its actual size
+        var sectionHeight = element.scrollHeight;
+
+        // temporarily disable all css transitions
+        var elementTransition = element.style.transition;
+        element.style.transition = '';
+
+        // on the next frame (as soon as the previous style change has taken effect),
+        // explicitly set the element's height to its current pixel height, so we 
+        // aren't transitioning out of 'auto'
+        requestAnimationFrame(function () {
+            element.style.height = sectionHeight + 'px';
+            element.style.transition = elementTransition;
+
+            // on the next frame (as soon as the previous style change has taken effect),
+            // have the element transition to height: 0
+            requestAnimationFrame(function () {
+                element.style.height = 0 + 'px';
+            });
+        });
+
+        // mark the section as "currently collapsed"
+        element.setAttribute('data-collapsed', 'true');
     }
-}
+    window.addEventListener('contextmenu', (e) => {
+        e.preventDefault()
+        ipcRenderer.send('show-context-menu')
+    })
+
+    ipcRenderer.on('context-menu-command', (e, command) => {
+        // ...
+    })
+})

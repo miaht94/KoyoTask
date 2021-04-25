@@ -24,23 +24,23 @@ export class List {
         })
     }
 
-    public getTasks(): Task[] {return this.tasks;}
+    public getTasks(): Task[] { return this.tasks; }
 
-    public getListID(): string {return this.listID;}
+    public getListID(): string { return this.listID; }
 
-    public getListName(): string {return this.listName;}
+    public getListName(): string { return this.listName; }
 
-    public getListDescription(): string {return this.listDescription;}
+    public getListDescription(): string { return this.listDescription; }
 
-    public setListID(listID:string):void {this.listID = listID;}
+    public setListID(listID: string): void { this.listID = listID; }
 
-    public setListName(listName:string):void {this.listName = listName;}
+    public setListName(listName: string): void { this.listName = listName; }
 
-    public setListDescription(listDescription:string):void {this.listDescription = listDescription;}
+    public setListDescription(listDescription: string): void { this.listDescription = listDescription; }
 
-    public addTaskCompact(taskName : string): void {this.tasks.push(Task.createNewTaskCompact(taskName));}
+    public addTaskCompact(taskName: string, completed: boolean): void { this.tasks.push(Task.createNewTaskCompact(taskName,completed)); }
 
-    public addTask(task:any){
+    public addTask(task: any) {
         this.tasks.push(Task.createNewTaskByJson(task));
     }
 
@@ -70,21 +70,21 @@ export class Task {
 
     static createNewTaskByJson(task: any): Task {
         // console.log(task);
-        task = JSON.parse(task);
-        let newTask : Task = new Task();
+        // task = JSON.parse(task);
+        let newTask: Task = new Task();
         newTask.task_name = task.task_name;
         newTask.task_id = task.task_id;
         newTask.task_description = task.task_description;
-        newTask.completed = false;
+        newTask.completed = task.completed;
         return newTask;
     }
 
-    static createNewTaskCompact(taskName: string): Task {
-        let newTask : Task = new Task();
+    static createNewTaskCompact(taskName: string, completed: boolean): Task {
+        let newTask: Task = new Task();
         newTask.task_name = taskName;
-             newTask.task_id = ''; //generate task ID later
+        newTask.task_id = ''; //generate task ID later
         newTask.task_description = '';
-        newTask.completed = false;
+        newTask.completed = completed;
         return newTask;
     }
 
@@ -100,6 +100,10 @@ export class Task {
         return this.task_name;
     }
 
+    public getCompleted(): boolean {
+        return this.completed;
+    }
+
     public setTaskName(task_name: string): void {
         this.task_name = task_name;
     }
@@ -112,12 +116,13 @@ export class Task {
         this.task_description = task_description;
     }
 
-    public setCompleted(b : boolean):void {
+    public setCompleted(b: boolean): void {
         this.completed = b;
     }
 
-    public setTask(that:Task): void{
+    public setTask(that: Task): void {
         this.task_name = that.task_name;
         this.task_description = that.task_description;
+        this.completed = that.completed;
     }
 }
