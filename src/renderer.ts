@@ -39,6 +39,7 @@ $(document).ready(() => {
     // $("#tabs").tabs();
     let mvc: DashboardController = new DashboardController(new DashboardModel(firebase), new DashboardView());
     ipcRenderer.on("Receive root path", (event, message) => {
+        console.log("MVC");
         console.log(message);
     });
 
