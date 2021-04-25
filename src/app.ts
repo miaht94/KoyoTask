@@ -77,12 +77,39 @@ export default class Main {
             console.log("token : " + event + " : " + arg);
             argument = arg;
             let credential = firebase.auth.GoogleAuthProvider.credential(null, arg);
+<<<<<<< Updated upstream
             firebase.auth().signInWithCredential(credential).then(() => {
               userData.uid = firebase.auth().currentUser.uid;
               userData.fullname = firebase.auth().currentUser.displayName;
               userData.account_type = "Logged";
               IO.writeData("user", JSON.stringify(userData, null, 2));
               Main.mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+=======
+                
+                firebase.auth().signInWithCredential(credential).then(() => {
+                let uid = firebase.auth().currentUser.uid;
+                let fullname = firebase.auth().currentUser.displayName;
+                let avtURL = firebase.auth().currentUser.photoURL;
+                let email = firebase.auth().currentUser.email;
+                userData.uid = uid;
+                userData.fullname = fullname;
+                userData.account_type = credential.signInMethod;
+                userData.email = email;
+                userData.avtURL = avtURL;
+                IO.writeData("user", JSON.stringify(userData, null, 2));
+                Main.mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+                // add new user for the first time login
+                const userRef = database.collection('users').doc(uid)
+                 userRef.get().then((snapshot) => {
+                    if (!snapshot.exists) {
+                        userRef.set({
+                            avtURL : avtURL,
+                            email : email,
+                            fullname : fullname
+                        })
+                    }
+                })
+>>>>>>> Stashed changes
             })
           });
         ipcMain.on("requestCredential", (event, arg) => {
