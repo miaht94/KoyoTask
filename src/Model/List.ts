@@ -4,11 +4,13 @@ export class List {
     private listID: string;
     private listName: string;
     private listDescription: string;
+    private listIcon : string;
     constructor(list: any) {
         if (list === undefined) throw new Error("Illegal JSON Argument")
         this.listID = list.list_id;
         this.listName = list.list_name;
-
+        this.listDescription = list.listDescription;
+        this.listIcon = list.list_icon;
         for (let task of list.tasks) {
             //console.log(task);
             if (task === undefined) throw new Error("Illegal JSON Argument");
@@ -32,16 +34,24 @@ export class List {
 
     public getListDescription(): string { return this.listDescription; }
 
+    public getListIcon(): string { return this.listIcon; }
+
     public setListID(listID: string): void { this.listID = listID; }
 
     public setListName(listName: string): void { this.listName = listName; }
 
     public setListDescription(listDescription: string): void { this.listDescription = listDescription; }
 
+    public setListIcon(listIcon: string): void { this.listIcon = listIcon;}
+
     public addTaskCompact(taskName: string, completed: boolean): void { this.tasks.push(Task.createNewTaskCompact(taskName,completed)); }
 
     public addTask(task: any) {
         this.tasks.push(Task.createNewTaskByJson(task));
+    }
+
+    public addDefinedTask(task: any) {
+        this.tasks.push(task);
     }
 
     public deleteTask(taskID: string): void {

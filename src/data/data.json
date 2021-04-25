@@ -2,18 +2,6 @@
 	{
 		"tasks": [
 			{
-				"task_name": "Homie",
-				"task_id": "00007",
-				"task_description": "",
-				"completed": true
-			},
-			{
-				"task_name": "Homie",
-				"task_id": "00009",
-				"task_description": "",
-				"completed": true
-			},
-			{
 				"task_name": "hello",
 				"task_id": "",
 				"task_description": "",
@@ -24,6 +12,12 @@
 				"task_id": "",
 				"task_description": "",
 				"completed": false
+			},
+			{
+				"task_name": "happy",
+				"task_id": "",
+				"task_description": "",
+				"completed": true
 			}
 		]
 	},
@@ -36,5 +30,20 @@
 				"completed": false
 			}
 		]
+	},
+	{
+		"tasks": []
+	},
+	{
+		"tasks": [
+			{
+				"task_name": "sample_task_name",
+				"task_id": "n0KqrN1118AFkeSc8d40",
+				"task_description": "sample_description"
+			}
+		],
+		"listID": "9FaN9dsXHmUEnM2UqXTX",
+		"listName": "sample_list",
+		"listIcon": "list icon class name"
 	}
 ]
