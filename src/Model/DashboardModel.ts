@@ -9,8 +9,49 @@ export class DashboardModel extends Model {
     protected currentList: List;
     protected currentUser: User
     protected database : any;
+    protected firebase : any;
     public onChange: Function;
-    
+    ListConverter = {
+        toFirestore(list : List) : firebase.firestore.DocumentData {
+            return {
+                list_name : list.getListName(), list_icon : list.getListIcon() ,tasks : list.getTasks()
+            }
+        },
+        fromFirestore(
+            snapshot: firebase.firestore.QueryDocumentSnapshot,
+            options: firebase.firestore.SnapshotOptions
+        ): List {
+            const data = snapshot.data(options)!;
+            let list = {
+                list_name : data.list_name,
+                list_icon : data.list_icon,
+                listDescription : data.list_description,
+                tasks : [] as any[]
+            };
+            return new List(list);
+        }
+    };
+    TaskConverter = {
+        toFireStore(task : Task) : firebase.firestore.DocumentData {
+            return {
+                task_name : task.getTaskName(),
+                task_description : task.getTaskDescription(),
+                completed : task.getCompleted()
+            }
+        },
+        fromFireStore(
+            snapshot: firebase.firestore.QueryDocumentSnapshot,
+            options: firebase.firestore.SnapshotOptions
+            ): Task {
+                const data = snapshot.data(options)!;
+                let task = {
+                    task_name : data.task_name,
+                    task_description : data.task_description,
+                    completed : data.completed
+                };
+                return Task.createNewTaskByJson(task);
+            }
+        };
     protected commit() {
         IOSystem.writeData("list_data", JSON.stringify(this.lists, null, "\t"));
         this.onChange(this.currentList);
@@ -19,6 +60,8 @@ export class DashboardModel extends Model {
     constructor(firebase : any) {
         super();
         this.database = firebase.firestore();
+        this.firebase = firebase;
+        console.log(this.lists);
         let lists_json: any = IOSystem.getData("list_data");
         lists_json.forEach((element: any) => {
             let temp_list: List = new List(element);
@@ -32,26 +75,40 @@ export class DashboardModel extends Model {
         let userData : any = IOSystem.getData("user");
         this.currentUser = new User(userData.fullname, userData.uid, userData.email, userData.avtURL);
         //console.log(JSON.stringify(this.lists));
-        console.log("from dashborad model" + this.database);
-        // get lists data first time
+
+        // get lists data for the first time
         let validID = this.database.collection("users").doc(this.currentUser.getUID());
         console.log(validID);
 
-
         //validID = reference to user ID to fetch
-        this.database.collection("lists").where("collaborators", "array-contains" ,validID)
+        this.database.collection("lists").withConverter(this.ListConverter).where("collaborators", "array-contains" ,validID)
         .get()
-        .then((querySnapshot : any) => { 
-            querySnapshot.forEach((doc : any) => {
+        .then((list_Snapshot : any) => { 
+            list_Snapshot.forEach((list_doc : any) => {
                 console.log("print from Dashboard Model");
-                // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
+                this.currentList = list_doc.data();
+                this.currentList.setListID(list_doc.id);
+
+                // get tasks collection
+                this.database.collection("lists").withConverter(this.TaskConverter).doc(list_doc.id).collection("tasks").get()
+                .then((task_Snapshot : any) => {
+                    task_Snapshot.forEach((task_doc : any) => {
+                        console.log("111");
+                        let task = Task.createNewTaskByJson(task_doc.data());
+                        task.setTaskID(task_doc.id);
+                        this.currentList.addDefinedTask(task);
+                    });
+                })
+                .catch((error : any) => {
+                    console.log("Error getting documents: ", error);
+                });
+                this.lists.push(this.currentList);
             });
         })
         .catch((error : any) => {
             console.log("Error getting documents: ", error);
         });
-
+        console.log(this.lists);
     }
 
     public getCurrentUser(): User {

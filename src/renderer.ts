@@ -28,7 +28,12 @@ if (!is_logged) {
     ipcRenderer.send('requestCredential');
 }
 ipcRenderer.on("credential-reply", function(event, data) {
-    let credential = firebase.auth.GoogleAuthProvider.credential(null, data);
+    let credential;
+    if(data[1] == "google") {
+        credential = firebase.auth.GoogleAuthProvider.credential(null, data[0]);
+    } else if (data[1] == "github") {
+        credential = firebase.auth.GithubAuthProvider.credential(data[0]);
+    }
     firebase.auth().signInWithCredential(credential)
 });
 $(document).ready(() => {

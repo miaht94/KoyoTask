@@ -3,6 +3,7 @@ import { ipcMain, Menu, BrowserWindow } from 'electron';
 import IO from './utils/iosys';
 import "firebase/auth";
 import "firebase/firestore"
+import { User } from './Model/User';
 global['XMLHttpRequest'] = require('xmlhttprequest').XMLHttpRequest;
 global.atob = require("atob");
 global.Blob = require('node-blob');
@@ -77,33 +78,56 @@ export default class Main {
         Main.application.on('ready', Main.onReady);
         var argument : string;
         ipcMain.on('token', function (event, arg) {
-            console.log("token : " + event + " : " + arg);
+            console.log("token : " + event + " : " + arg[0]);
             argument = arg;
-            let credential = firebase.auth.GoogleAuthProvider.credential(null, arg);
+            let uid : string, fullname : string, avtURL : string, email : string, account_type : string ; 
+            let credential: any;
+            if (arg[1] == "google") {
+                credential = firebase.auth.GoogleAuthProvider.credential(null, argument[0]);
+            }
+            else if (arg[1] == "github") {
+                let provider =  new firebase.auth.GithubAuthProvider();
+                provider.addScope("user");
+                credential = provider.credential({accessToken : argument[0]});
+            }
                 firebase.auth().signInWithCredential(credential).then(() => {
-                let uid = firebase.auth().currentUser.uid;
-                let fullname = firebase.auth().currentUser.displayName;
-                let avtURL = firebase.auth().currentUser.photoURL;
-                let email = firebase.auth().currentUser.email;
-                userData.uid = uid;
-                userData.fullname = fullname;
-                userData.account_type = credential.signInMethod;
-                userData.email = email;
-                userData.avtURL = avtURL;
-                IO.writeData("user", JSON.stringify(userData, null, 2));
-                Main.mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
-                // add new user for the first time login
-                const userRef = database.collection('users').doc(uid)
-                 userRef.get().then((snapshot) => {
-                    if (!snapshot.exists) {
-                        userRef.set({
-                            avtURL : avtURL,
-                            email : email,
-                            fullname : fullname
-                        })
+                                  
+                    var user = firebase.auth().currentUser;
+                    if (user != null) {
+                    user.providerData.forEach(function (profile : any) {
+                        account_type = profile.providerId;
+                        
+                        if (arg[1] == "github"){
+                            email = profile.email;
+                            fullname = profile.displayName;
+                        } else{
+                            email = user.email;
+                            fullname = user.displayName;
+                        }
+                        
+                        avtURL = profile.photoURL;
+                    });
                     }
-                })
-            })
+
+                    userData.uid = user.uid;
+                    userData.fullname = fullname;
+                    userData.email = email;
+                    userData.avtURL = avtURL;
+                    userData.account_type = account_type;
+                    IO.writeData("user", JSON.stringify(userData, null, 2));
+                    Main.mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+                    // add new user for the first time login
+                    const userRef = database.collection('users').doc(uid)
+                    userRef.get().then((snapshot) => {
+                        if (!snapshot.exists) {
+                            userRef.set({
+                                avtURL : avtURL,
+                                email : email,
+                                fullname : fullname
+                                })
+                            }
+                        })
+                    })
           });
         ipcMain.on("log-out",(event, arg) => {
             userData.uid = null;
@@ -113,6 +137,9 @@ export default class Main {
             userData.avtURL = "guest";
             IO.writeData("user", JSON.stringify(userData, null, 2));
             Main.mainWindow.loadURL("https://southamerica-east1-fourth-jigsaw-305509.cloudfunctions.net/function-1");
+            Main.mainWindow.webContents.on("did-finish-load", () => {
+                Main.mainWindow.webContents.send("sign-out","..");
+            })
         });
         ipcMain.on("requestCredential", (event, arg) => {
             console.log("received")
