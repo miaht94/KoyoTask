@@ -1,7 +1,7 @@
 {
-  "account_type": "google.com",
-  "fullname": "Koyomi Hatsune",
-  "uid": "vjDZYlgNxAa6i7bKGxW76QvNMRH3",
-  "avtURL": "https://lh3.googleusercontent.com/a-/AOh14GgMCsQSdqpHiK7Bn659u7LnCHEiIeALX0S2gMClvxs=s96-c",
-  "email": "vietanh.yenlac@gmail.com"
+  "account_type": "guest",
+  "fullname": "guest",
+  "uid": null,
+  "avtURL": "guest",
+  "email": "guest"
 }

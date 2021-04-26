@@ -24,6 +24,12 @@ export class DashboardView {
 
     private currentTask: Task;
 
+
+    private sidebar: HTMLElement;
+
+    private userInfoConfig: any;
+    private listHTML: String;
+
     constructor() {
         this.dashboard = $('#DashboardList');
 
@@ -36,6 +42,17 @@ export class DashboardView {
         // console.log(this.taskHTML);
         //init each button on dashboard
         this.initAddTaskButton();
+
+        this.sidebar = $('#SidebarView');
+
+        //USER INFO
+        this.userInfoConfig = IOSystem.getData("user");
+
+        //LISTS
+        this.renderConfig = IOSystem.getData("render_config");
+        this.listHTML = this.renderConfig.appendNewList.html;
+
+        this.initAddListButton();
     }
 
     public render(listData: List) { 
@@ -58,6 +75,14 @@ export class DashboardView {
             //behavior for each task
             this.initTaskBehavior(task);
         }
+
+        //RENDER USER INFO
+
+        console.log(this.userInfoConfig);
+        this.renderUserInfo(this.userInfoConfig);
+        
+        //RENDER LISTS
+        //this.renderLists(lists);
 
     }
 
@@ -149,6 +174,79 @@ export class DashboardView {
             $('#AddListModal').show();
         });
     }
+
+    private renderUserInfo(userInfo: any) {
+        let userfieldForAppender : any = $('#UserInfo');
+        console.log("userfieldForAppender");
+        console.log(userfieldForAppender);
+  
+        //id: UserInfo -> UserAvt + Username + UserEmail
+        //Load
+        let currentUsername: String = userInfo.fullname;
+        let currentAvt: String = userInfo.avtURL;
+        let currentEmail: String = userInfo.email;   
+  
+        let userfieldHTML = this.renderConfig.userInfo.html;
+        userfieldHTML = userfieldHTML.replace("{{username}}", currentUsername);
+        userfieldHTML = userfieldHTML.replace("{{useremail}}", currentEmail);
+        userfieldHTML = userfieldHTML.replace("{{avtURL}}", currentAvt);
+        
+        //Render
+        userfieldForAppender.append(userfieldHTML);
+      }
+  
+      private renderLists(lists: List[]){
+        let listviewForAppender : any = $('#ListView');
+        
+        //id: ListView -> listitem -> list_icon + list_name + list_description
+        let list;
+        for (list of lists) {
+          //Load each list
+          let certainListHTML : String = this.renderConfig.appendNewList;
+          certainListHTML = certainListHTML.replace("{{list_name}}", list.getListName());
+          certainListHTML = certainListHTML.replace("{{list_icon}}", list.getListIcon());
+          certainListHTML = certainListHTML.replace("{{list_description}}", list.getListDescription());
+  
+          //Render each list
+          listviewForAppender.append(certainListHTML);
+  
+          //Attach behavior for each list
+          this.initListBehavior(list);
+        }
+      }
+  
+      //WORKING
+      private initListBehavior(list: List){
+        let currentList = list;
+        let listForAppender = document.querySelector('#listitem');
+        listForAppender.addEventListener('click',  () => {
+            //press on List -> change current list -> change dashboard
+        });
+        
+        //delete list
+        //add list
+  
+        //edit list name (on dashboard)
+      }
+  
+      private initAddListButton():void {    
+        this.addListButton = $('#AddListButton');
+        let addListButtonAny: any = this.addListButton
+        addListButtonAny.on("click", () => {
+          $('#AddListModal').modal('toggle');
+        });
+      }
+  
+      public getSidebar(): HTMLElement {
+          return this.sidebar;
+      }
+  
+      public setSidebar(sidebar: HTMLElement): void {
+          this.sidebar = sidebar;
+      }
+  
+      private initNewSidebar(): void {
+      }
 
     public getDashboard(): HTMLElement {
         return this.dashboard;

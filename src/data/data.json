@@ -8,9 +8,7 @@
 				"completed": true
 			}
 		],
-		"listID": "list001",
-		"listName": "List 1",
-		"listIcon": null
+		"listDescription": null
 	},
 	{
 		"tasks": [
@@ -21,8 +19,6 @@
 				"completed": false
 			}
 		],
-		"listID": "list002",
-		"listName": "List 2",
-		"listIcon": null
+		"listDescription": null
 	}
 ]
