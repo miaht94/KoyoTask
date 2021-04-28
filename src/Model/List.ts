@@ -44,7 +44,9 @@ export class List {
 
     public setListIcon(listIcon: string): void { this.listIcon = listIcon;}
 
-    public addTaskCompact(taskName: string, completed: boolean): void { this.tasks.push(Task.createNewTaskCompact(taskName,completed)); }
+    public addTaskCompact(taskName: string, completed: boolean): void { 
+        this.tasks.push(Task.createNewTaskCompact(taskName,completed)); 
+    }
 
     public addTask(task: any) {
         this.tasks.push(Task.createNewTaskByJson(task));

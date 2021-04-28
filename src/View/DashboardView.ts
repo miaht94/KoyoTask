@@ -232,9 +232,9 @@ export class DashboardView {
       private initAddListButton():void {    
         this.addListButton = $('#AddListButton');
         let addListButtonAny: any = this.addListButton
-        addListButtonAny.on("click", () => {
-          $('#AddListModal').modal('toggle');
-        });
+        // addListButtonAny.on("click", () => {
+        //   $('#AddListModal').modal('toggle');
+        // });
       }
   
       public getSidebar(): HTMLElement {
