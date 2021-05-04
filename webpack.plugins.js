@@ -9,7 +9,7 @@ assets.map(asset => {
   arg.patterns.push(((isProd) => {
     return (isProd) ? {
       from: path.resolve(__dirname, 'src', asset),
-      to: path.resolve(__dirname, '.webpack', 'renderer', 'main_window', asset)
+      to: path.resolve(__dirname, '.webpack', 'renderer', asset)
     } : {
       from: path.resolve(__dirname, 'src', asset),
       to: path.resolve(__dirname, '.webpack', 'renderer', asset)

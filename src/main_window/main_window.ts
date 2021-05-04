@@ -1,8 +1,8 @@
 import * as fs from 'fs';
-import io from './utils/iosys';
-import $ from './js/jquery';
+import io from '../utils/iosys';
+import $ from '../js/jquery';
 import "@popperjs/core";
-import "./js/bootstrap.min";
+import "../js/bootstrap.min";
 import { DashboardController } from './Controller/DashBoardController';
 import { DashboardView } from './View/DashboardView';
 import { DashboardModel } from './Model/DashboardModel';
@@ -14,49 +14,40 @@ import "firebase/firestore";
 
 const win = remote.getCurrentWindow();
 io.init();
-const firebaseConfig = io.getJsonData("firebase_config");
-firebase.initializeApp(firebaseConfig);
-let is_logged = true;
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-    }
-    else {
-        is_logged = false;
-    }
-  });
-if (!is_logged) {
-    ipcRenderer.send('requestCredential');
-}
-ipcRenderer.on("credential-reply", function(event, data) {
-    let credential;
-    if(data[1] == "google") {
-        credential = firebase.auth.GoogleAuthProvider.credential(null, data[0]);
-    } else if (data[1] == "github") {
-        credential = firebase.auth.GithubAuthProvider.credential(data[0]);
-    }
-    firebase.auth().signInWithCredential(credential)
-});
-$(document).ready(() => {
-    console.log(io.getData("list_data"));
-    // let a = new DashboardView();
-    console.log("ready");
-    // $("html").append(html);
-    // $("#tabs").tabs();
-    let mvc: DashboardController = new DashboardController(new DashboardModel(firebase), new DashboardView());
-    ipcRenderer.on("Receive root path", (event, message) => {
-        console.log("MVC");
-        console.log(message);
-    });
 
+
+$(document).ready(async () => {
+    const firebaseConfig = io.getJsonData("firebase_config");
+    firebase.initializeApp(firebaseConfig);
+    let is_logged = true;
+    let user: firebase.User;
+    try {
+        user = await new Promise<firebase.User>((resolve, reject) => {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    console.log("MainWindow: ")
+                    console.log(user)
+                    resolve(user)
+                }
+                else {
+                    reject("User Null Though Logged In");
+                    is_logged = false;
+                }
+            });
+        })
+    } catch (e) {
+        console.error(e);
+    }
+    console.log("Firebase is available");
+    let mvc: DashboardController = new DashboardController(new DashboardModel(user), new DashboardView());
     $('.dashboard-lists').scroll(function () {
         var scrollTop = $('.dashboard-lists').scrollTop();
-        console.log('scroll-top: ' + scrollTop);
+
 
         $('.list-header').css({
             opacity: function () {
                 var elementHeight = $('.koyoheader').height(),
                     opacity = ((1 - (elementHeight - scrollTop) / elementHeight) * 0.8);
-                console.log(elementHeight);
                 return opacity;
             }
         });
@@ -75,21 +66,21 @@ $(document).ready(() => {
         event.currentTarget.classList.toggle("active");
     })
 
-    $(".test-hide").click((event: any) => {
-        $(".title1").css("word-wrap: initial,word-break: initial")
-        console.log($(".title1"))
-        collapseSection($(".title1")[0])
-        $(".title1")[0].animate({
-            opacity: 0
-        }, 300)
-        window.setTimeout(() => {
-            $(".title1").remove();
-        }, 300)
-    })
+    // $(".test-hide").click((event: any) => {
+    //     $(".title1").css("word-wrap: initial,word-break: initial")
+    //     console.log($(".title1"))
+    //     collapseSection($(".title1")[0])
+    //     $(".title1")[0].animate({
+    //         opacity: 0
+    //     }, 300)
+    //     window.setTimeout(() => {
+    //         $(".title1").remove();
+    //     }, 300)
+    // })
 
     $(".log-out").click((event: any) => {
-        firebase.auth().signOut().then(function (){
-            ipcRenderer.send("log-out");
+        firebase.auth().signOut().then(function () {
+            ipcRenderer.send("logged-out");
         })
     })
 

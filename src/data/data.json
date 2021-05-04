@@ -2,23 +2,24 @@
 	{
 		"tasks": [
 			{
-				"task_name": "Homie",
-				"task_id": "00007",
-				"task_description": "",
-				"completed": true
+				"task_name": "sample_task_name",
+				"task_description": "sample_description"
 			}
 		],
-		"listDescription": null
+		"listName": "sample_list",
+		"listIcon": "list icon class name"
 	},
 	{
 		"tasks": [
 			{
-				"task_name": "name",
-				"task_id": 0,
-				"task_description": "description",
-				"completed": false
+				"task_name": "adada",
+				"task_description": "ascsac"
 			}
 		],
-		"listDescription": null
+		"listName": "list_1"
+	},
+	{
+		"tasks": [],
+		"listName": "list_3"
 	}
 ]

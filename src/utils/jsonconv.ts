@@ -1,4 +1,4 @@
-import { List, Task } from '../Model/List';
+import { List, Task } from '../main_window/Model/List';
 import IOSystem from './iosys';
 export default class JSONConv {
     private listKey : string[];
