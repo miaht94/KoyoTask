@@ -26,6 +26,6 @@
     },
     "userInfo" : {
         "targetId" : "UserInfo",
-        "html" : "<div class='col col-4 col-sm-4 align-items-center'><div class='d-flex p-0 justify-content-center'id='UserAvt'><img src='{{photoURL}}' class='user-avatar rounded-circle'></img></div></div><div class='col col-8 col-sm-8 d-flex align-items-center'><div class='d-flex flex-column'><div class='username p-0'id='Username'>{{displayName}}</div><div class='usermail p-0'id='UserEmail'>{{email}}</div></div></div>"
+        "html" : "<div class='col col-4 col-sm-4 align-items-center'><div class='d-flex p-0 justify-content-center'id='UserAvt'><img src='{{photoURL}}' class='user-avatar rounded-circle'></img></div></div><div class='col col-8 col-sm-8 d-flex align-items-center'><div class='d-flex flex-column'><div class='username p-0'id='Username'>{{displayName}}</div><div class='usermail p-0'id='UserEmail'>{{uid}}</div></div></div>"
     }
 }

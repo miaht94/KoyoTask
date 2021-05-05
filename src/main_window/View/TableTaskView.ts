@@ -9,15 +9,18 @@ export class TableTaskView {
     private taskRowTemplate: HandleBars.TemplateDelegate;
     private addTaskBtn: JQuery<HTMLElement>;
     private render_config: any;
+    private inputShare: JQuery<HTMLElement>;
     private handleTaskNameChange: (task_id: string, new_name: string) => void;
     private handleTaskDescriptionChange: (task_id: string, new_description: string) => void;
     private handleAddTask: () => void;
+    private handleSharing: (uid: string) => void;
     constructor() {
         IO.init();
         this.render_config = IO.getData("render_config");
         this.taskTableRef = $("#" + this.render_config.appendNewTask.targetId);
         this.taskRowTemplate = HandleBars.compile(this.render_config.appendNewTask.html);
         this.addTaskBtn = $("#AddButton");
+        this.inputShare = $("#sharing-list-input");
         this.initBehaviour();
     }
 
@@ -31,6 +34,10 @@ export class TableTaskView {
 
     public bindHandleAddTask(func: () => void) {
         this.handleAddTask = func;
+    }
+
+    public bindHandleShare(func: (uid: string) => void) {
+        this.handleSharing = func;
     }
 
     public renderAllTasks(tasks: TaskModel[]) {
@@ -73,5 +80,11 @@ export class TableTaskView {
         this.addTaskBtn.on("click", () => {
             this.handleAddTask();
         })
+        this.inputShare.on("keypress", event => {
+            if (event.keyCode === 13)
+                this.handleSharing(this.inputShare.val().toString());
+        })
     }
+
+
 }

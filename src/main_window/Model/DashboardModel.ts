@@ -69,7 +69,7 @@ export class DashboardModel {
         this.currentUser = user;
     }
 
-    public setCurrentTaskModel(taskModel: TableTaskModel, currentColRef: firebase.firestore.CollectionReference) {
+    public setCurrentTaskModel(taskModel: TableTaskModel, currentColRef: firebase.firestore.CollectionReference, listModelOfTask: ListModel) {
 
         taskModel.bindOnAdded(this.currentTaskModel.getOnAdded());
         taskModel.bindOnRemoved(this.currentTaskModel.getOnRemoved());
@@ -81,6 +81,7 @@ export class DashboardModel {
         console.log(taskModel);
         this.currentTaskModel = taskModel;
         this.onCurrentTaskModelChange(this.currentTaskModel);
+        this.currentList = listModelOfTask;
     }
 
     public bindOnCurrentTaskModelChange(callback: (taskModel: TableTaskModel) => void) {

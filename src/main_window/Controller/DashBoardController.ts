@@ -26,6 +26,7 @@ export class DashboardController {
         this.view.getTableTaskView().bindHandleTaskNameChange(this.handleTaskNameChange.bind(this))
         this.view.getTableTaskView().bindHandleTaskDescriptionChange(this.handleTaskDescriptionChange.bind(this))
         this.view.getTableTaskView().bindHandleAddTask(this.handleAddTask.bind(this));
+        this.view.getTableTaskView().bindHandleShare(this.handleSharing.bind(this));
         // this.model.onChange(model.getCurrentList());
         this.model.bindOnUserChange(this.view.renderUserInfo.bind(this.view));
         this.model.onUserChange(this.model.getCurrentUser());
@@ -60,8 +61,8 @@ export class DashboardController {
 
     public handleChangeCurrentTaskModel(id: string) {
         let temp = this.model.getTableListModel().findOListModelById(id).get().getListRef().collection("tasks")
-
-        this.model.setCurrentTaskModel(this.model.getTableListModel().findOListModelById(id).get().getTasksModel(), temp);
+        let temp2 = this.model.getTableListModel().findOListModelById(id).get()
+        this.model.setCurrentTaskModel(this.model.getTableListModel().findOListModelById(id).get().getTasksModel(), temp, temp2);
     }
 
     public handleTaskNameChange(id: string, newName: string) {
@@ -80,6 +81,11 @@ export class DashboardController {
         let currentTaskCol = this.model.getCurrentTaskColRef()
         let newTask = TaskModel.createEmptyTask(currentTaskCol);
         this.model.getTableTaskModel().getTaskModelsObservable().addElement(newTask);
+    }
+
+    public handleSharing(uid: string) {
+        if (this.model.getCurrentList())
+            this.model.getCurrentList().addCollab(uid);
     }
 
     //Testing 

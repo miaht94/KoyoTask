@@ -83,6 +83,10 @@ export class ListModel {
 
     }
 
+    public addCollab(uid: string) {
+        this.collaborators.addElement(firebase.firestore().collection("users").doc(uid))
+    }
+
     public setListName(listName: string): void {
         this.listName.set(listName);
 

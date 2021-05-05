@@ -496,6 +496,10 @@ div[contenteditable] {
   /* Black w/ opacity */
 }
 
+.input-modal {
+  display: none;
+}
+
 .menu-button+.menu-button {
   border-top: 0.1px solid grey;
 }
