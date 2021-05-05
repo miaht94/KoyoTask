@@ -3,8 +3,10 @@ import firebase from 'firebase/app'
 import { ArrayModelObservable } from './ArrayModelObservable';
 import { Observable } from './Observable';
 import { ArrayObservable } from './ArrayObservable';
+import { TableTaskModel } from './TableTaskModel';
 export class ListModel {
-    private tasks: ArrayModelObservable<TaskModel>;
+
+    private tasksModel: TableTaskModel;
     private listID: Observable<string> = new Observable<string>();
     private listName: Observable<string> = new Observable<string>();
     private listDescription: Observable<string> = new Observable<string>();
@@ -13,14 +15,14 @@ export class ListModel {
     private collaborators: ArrayObservable<firebase.firestore.DocumentReference>;
     // If callback use this keyword in itself, callback must bind its class first
     private listenersCallback: ((newList: ListModel) => void)[] = [];
-    constructor(list: { list_id: string; list_name: string; listDescription: string; list_icon: string; tasks: ArrayModelObservable<TaskModel>, collaborators: firebase.firestore.DocumentReference[], list_ref?: firebase.firestore.DocumentReference }) {
+    constructor(list: { tasksModel: TableTaskModel; list_id: string; list_name: string; listDescription: string; list_icon: string; collaborators: firebase.firestore.DocumentReference[], list_ref?: firebase.firestore.DocumentReference }) {
         if (list === undefined) throw new Error("Illegal JSON Argument")
+        this.tasksModel = list.tasksModel;
         this.listID.set(list.list_id);
         this.listName.set(list.list_name);
         this.listDescription.set(list.listDescription);
         this.listIcon.set(list.list_icon);
         this.listRef = list.list_ref;
-        this.tasks = list.tasks;
         this.collaborators = new ArrayObservable<firebase.firestore.DocumentReference>(list.collaborators)
         console.log("Test : ");
         // for (let task of list.tasks) {
@@ -30,15 +32,21 @@ export class ListModel {
         // }
     }
 
+    public getListRef(): firebase.firestore.DocumentReference {
+        return this.listRef;
+    }
+
     public static createEmptyList(): ListModel {
+        let ref: firebase.firestore.DocumentReference;
+        ref = firebase.firestore().collection("lists").doc();
         return new ListModel({
-            "list_id": "",
+            "list_id": ref.id,
             "list_name": "",
             "listDescription": "",
             "list_icon": "",
-            "list_ref": firebase.firestore().collection("lists").doc(),
+            "list_ref": ref,
             "collaborators": [firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid)],
-            "tasks": new ArrayModelObservable<TaskModel>()
+            "tasksModel": new TableTaskModel(),
         })
     }
 
@@ -48,10 +56,14 @@ export class ListModel {
         this.listenersCallback.push(callback);
     }
 
-    public getTasksObservable(): ArrayModelObservable<TaskModel> { return this.tasks; }
+    public getTasksObservable(): ArrayModelObservable<TaskModel> { return this.tasksModel.getTaskModelsObservable(); }
 
     public getTasks(): Array<TaskModel> {
-        return this.getTasksObservable().getAllElements();
+        return this.tasksModel.getTaskModelsObservable().getAllElements();
+    }
+
+    public getTasksModel(): TableTaskModel {
+        return this.tasksModel;
     }
 
     public getCollaborators(): firebase.firestore.DocumentReference[] {
@@ -86,36 +98,36 @@ export class ListModel {
 
     }
 
-    public addTaskCompact(taskName: string, completed: boolean): void {
-        this.tasks.addElement(TaskModel.createNewTaskCompact(taskName, completed));
+    // public addTaskCompact(taskName: string, completed: boolean): void {
+    //     this.tasks.addElement(TaskModel.createNewTaskCompact(taskName, completed));
 
-    }
+    // }
 
-    public addTask(task: TaskModel) {
-        this.tasks.addElement(TaskModel.createNewTaskByJson(task));
+    // public addTask(task: TaskModel) {
+    //     this.tasks.addElement(TaskModel.createNewTaskByJson(task));
 
-    }
+    // }
 
-    public addDefinedTask(task: any) {
-        this.tasks.addElement(task);
+    // public addDefinedTask(task: any) {
+    //     this.tasks.addElement(task);
 
-    }
+    // }
 
-    public deleteTask(taskID: string): void {
-        for (var i = 0; i < this.tasks.length(); i++) {
-            var obj = this.tasks.getByIndex(i);
-            if (obj.getTaskID() == taskID) { this.tasks.removeElement(i); }
-        }
+    // public deleteTask(taskID: string): void {
+    //     for (var i = 0; i < this.tasks.length(); i++) {
+    //         var obj = this.tasks.getByIndex(i);
+    //         if (obj.getTaskID() == taskID) { this.tasks.removeElement(i); }
+    //     }
 
-    }
+    // }
 
-    public setTask(taskID: string, task: TaskModel) {
-        for (var i = 0; i < this.tasks.length(); i++) {
-            var obj = this.tasks.getByIndex(i);
-            if (obj.getTaskID() == taskID) { obj.setTask(task); }
-        }
+    // public setTask(taskID: string, task: TaskModel) {
+    //     for (var i = 0; i < this.tasks.length(); i++) {
+    //         var obj = this.tasks.getByIndex(i);
+    //         if (obj.getTaskID() == taskID) { obj.setTask(task); }
+    //     }
 
-    }
+    // }
 
     public publishOnFirebase(): void {
         if (this.listRef) {
@@ -144,26 +156,41 @@ export class ListModel {
                 listDescription: data.list_description,
                 list_ref: snapshot.ref,
                 collaborators: data.collaborators,
-                tasks: new ArrayModelObservable<TaskModel>()
+                tasksModel: new TableTaskModel()
             };
+
+            let returnList: ListModel = new ListModel(list);
             snapshot.ref.collection("tasks").withConverter(TaskModel.TaskConverter).onSnapshot((snapshot) => {
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === "added") {
+                        let taskModelsObservable = returnList.getTasks()
                         console.log("New Task ", "[", change.doc.id, "] :", change.doc.data());
-                        list.tasks.addElement(change.doc.data());
+                        let bool: boolean = true
+                        for (let i = 0; i < taskModelsObservable.length; i++) {
+                            if (change.doc.data().getTaskID() == taskModelsObservable[i].getTaskID()) {
+                                bool = false;
+                                break;
+                            }
+                        }
+                        if (bool)
+                            returnList.getTasksModel().getTaskModelsObservable().addElement(change.doc.data());
                     }
                     if (change.type === "modified") {
+
                         console.log("Modified Task: ", "[", change.doc.id, "] :", change.doc.data());
-                        list.tasks.modifyElement(change.doc.data(), change.newIndex);
+                        returnList.getTasksModel().getTaskModelsObservable().modifyElement(change.doc.data(), change.newIndex);
                     }
                     if (change.type === "removed") {
                         console.log("Removed Task: ", "[", change.doc.id, "] :", change.doc.data());
-                        list.tasks.removeElement(change.oldIndex);
+                        returnList.getTasksModel().getTaskModelsObservable().removeElement(change.oldIndex);
                     }
                 })
             })
-            let returnList: ListModel = new ListModel(list);
-            console.log("Final List ", "[", snapshot.id, "] : ")
+            // setInterval(() => {
+            //     console.log(returnList.getListName(), " : ", returnList.getTasksModel().getOnModified() != undefined);
+            // }, 3000)
+            // console.log("Final List ", "[", snapshot.id, "] : ")
+
             console.log(returnList)
             return returnList;
         }

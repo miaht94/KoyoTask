@@ -12,7 +12,7 @@ export interface ArrayModelChangeDetail<T extends Object> {
 export class ArrayModelObservable<T extends Object> {
     protected arr: Array<Observable<T>>;
     protected listenersCallback: Array<(changeType: ChangeType, args: ArrayModelChangeDetail<T>) => void>;
-    public isObservableObject: boolean = true;
+
     constructor() {
         this.arr = new Array<Observable<T>>();
         this.listenersCallback = new Array<(changeType: ChangeType, args: ArrayModelChangeDetail<T>) => void>();
@@ -56,15 +56,14 @@ export class ArrayModelObservable<T extends Object> {
 
     public addElement(newElement: T) {
         let listModelObservable: Observable<T> = new Observable<T>();
-
+        listModelObservable.set(newElement)
         this.notifyAllListeners(ChangeType.added, { addedElement: newElement });
         listModelObservable.addListener(((change: ChangeDetail<T>) => {
             this.notifyAllListeners(ChangeType.modified, { newElement: change.newValue })
         }).bind(this))
         this.arr.push(listModelObservable);
 
-        listModelObservable.set(newElement)
-
+        console.log("arr :", this.length())
     }
 
     public modifyElement(newElement: T, pos: number) {

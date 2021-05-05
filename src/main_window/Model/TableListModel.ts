@@ -54,6 +54,8 @@ export class TableListModel {
         target.get().setListDescription(newDescription);
     }
 
+    
+
 
     protected commitChange(changeType: ChangeType, args: ArrayModelChangeDetail<ListModel>) {
         switch (changeType) {
@@ -62,7 +64,6 @@ export class TableListModel {
                 this.onAdded(args.addedElement);
 
                 //Resolve Backend (Firebase)
-
 
                 break;
             case ChangeType.modified:

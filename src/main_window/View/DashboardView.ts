@@ -6,6 +6,7 @@ import { Logger } from '../../utils/Logger'
 import Handlebars from 'handlebars'
 import { User } from '../Model/User';
 import { TableListView } from './TableListView';
+import { TableTaskView } from './TableTaskView';
 export class DashboardView {
     protected Logger: Logger;
     private dashboard: JQuery<HTMLElement>;
@@ -35,10 +36,12 @@ export class DashboardView {
     private userInfoConfig: any;
     private listHTML: String;
     private tableListView: TableListView;
+    private tableTaskView: TableTaskView;
     constructor() {
         IO.init();
         this.Logger = new Logger(this);
         this.tableListView = new TableListView();
+        this.tableTaskView = new TableTaskView();
         this.dashboard = $('#DashboardList');
         this.renderConfig = IO.getData("render_config");
         this.taskHTML = this.renderConfig.appendNewTask.html;
@@ -61,6 +64,10 @@ export class DashboardView {
 
     public getTableListView(): TableListView {
         return this.tableListView;
+    }
+
+    public getTableTaskView(): TableTaskView {
+        return this.tableTaskView;
     }
 
     public render(listData: ListModel) {
@@ -155,34 +162,34 @@ export class DashboardView {
         this.addTriggered = false;
         let addButtonAny: any = this.addButton;
 
-        addButtonAny.on("click", () => {
-            if (this.addTriggered == false) {
-                this.addTriggered = true;
-                let certainTaskAddHTML: String = this.taskAddHTML;
-                certainTaskAddHTML = certainTaskAddHTML.replace("{{task_name}}", "Enter task name here");
-                dashboardForAppender.append(certainTaskAddHTML);
-                let newTaskTitleCompact: any = $('#taskTitleForAdd');
-                let checkboxCompact: any = $('#checkboxForAdd');
-                this.Logger.Log(checkboxCompact.prop("checked"));
-                newTaskTitleCompact.on("keypress", (event: any) => {
-                    if (event.keyCode === 13) {
-                        if (newTaskTitleCompact.textContent != "") {
-                            this.handleAddCompact($('#taskTitleForAdd').text().trimLeft().trimRight(), checkboxCompact.prop("checked"));
-                            this.addTriggered = false;
-                        }
-                    }
-                });
-            }
-        });
+        // addButtonAny.on("click", () => {
+        //     if (this.addTriggered == false) {
+        //         this.addTriggered = true;
+        //         let certainTaskAddHTML: String = this.taskAddHTML;
+        //         certainTaskAddHTML = certainTaskAddHTML.replace("{{task_name}}", "Enter task name here");
+        //         dashboardForAppender.append(certainTaskAddHTML);
+        //         let newTaskTitleCompact: any = $('#taskTitleForAdd');
+        //         let checkboxCompact: any = $('#checkboxForAdd');
+        //         this.Logger.Log(checkboxCompact.prop("checked"));
+        //         newTaskTitleCompact.on("keypress", (event: any) => {
+        //             if (event.keyCode === 13) {
+        //                 if (newTaskTitleCompact.textContent != "") {
+        //                     this.handleAddCompact($('#taskTitleForAdd').text().trimLeft().trimRight(), checkboxCompact.prop("checked"));
+        //                     this.addTriggered = false;
+        //                 }
+        //             }
+        //         });
+        //     }
+        // });
 
         //TEST ONLY
-        this.addListButton = $('#AddListButton');
-        let addListButtonAny: any = this.addListButton;
-        let addListModal = $('#AddListModal');
-        this.Logger.Log(addListModal);
-        addListButtonAny.on("click", () => {
-            $('#AddListModal').show();
-        });
+        // this.addListButton = $('#AddListButton');
+        // let addListButtonAny: any = this.addListButton;
+        // let addListModal = $('#AddListModal');
+        // this.Logger.Log(addListModal);
+        // addListButtonAny.on("click", () => {
+        //     $('#AddListModal').show();
+        // });
     }
 
     public renderUserInfo(user: User): void {
