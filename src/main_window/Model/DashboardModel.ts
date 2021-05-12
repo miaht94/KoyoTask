@@ -127,6 +127,7 @@ export class DashboardModel {
                 let data = change.doc.data()
                 if (change.type === "added") {
                     console.log("New List Ref: ", data);
+                    data.fetchTasks();
                     lists.binaryInsert(data);
 
                 }
