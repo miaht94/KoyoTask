@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import firebase from 'firebase/app';
-import IO from '../utils/iosys';
+import IO from '../Utils/iosys';
 import 'firebase/auth';
 
 IO.init();

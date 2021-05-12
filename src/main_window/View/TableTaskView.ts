@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import IO from '../../utils/iosys'
+import IO from '../../Utils/iosys'
 import HandleBars from 'handlebars'
-import { TaskModel } from '../Model/TaskModel';
+import { Task } from '../Model/Task';
 import { TableTaskModel } from '../Model/TableTaskModel';
 
 export class TableTaskView {
@@ -40,7 +40,7 @@ export class TableTaskView {
         this.handleSharing = func;
     }
 
-    public renderAllTasks(tasks: TaskModel[]) {
+    public renderAllTasks(tasks: Task[]) {
         this.taskTableRef.html("");
         for (let task of tasks) {
             this.renderAddedTask(task);
@@ -51,15 +51,15 @@ export class TableTaskView {
         this.renderAllTasks(taskModel.getTaskModelsObservable().getAllElements())
     }
 
-    public renderAddedTask(task: TaskModel): void {
+    public renderAddedTask(task: Task): void {
         this.taskTableRef.append(this.taskRowTemplate(task));
     }
 
-    public renderModifiedList(list: TaskModel, index: number): void {
+    public renderModifiedList(list: Task, index: number): void {
 
         $("#" + this.render_config.appendNewTask.targetId).children().eq(index).replaceWith(this.taskRowTemplate(list));
     }
-    public renderModifiedTaskById(task: TaskModel, index?: number): void {
+    public renderModifiedTaskById(task: Task, index?: number): void {
 
         console.log("Dem: ", task.getTaskID())
         if ($("#" + this.render_config.appendNewTask.targetId).children("#" + task.getTaskID()))

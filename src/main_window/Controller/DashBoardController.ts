@@ -1,11 +1,12 @@
 
-import { Logger } from '../../utils/Logger'
+import { Logger } from '../../Utils/Logger'
 import { DashboardModel } from '../Model/DashboardModel';
 import { DashboardView } from '../View/DashboardView';
 
-import { TaskModel } from '../Model/TaskModel';
+// import { TaskModel } from '../Model/TaskModel';
 import $ from '../../js/jquery';
-import { ListModel } from '../Model/ListModel';
+import { List } from '../Model/List';
+// import { ListModel } from '../Model/ListModel';
 export class DashboardController {
     private model: DashboardModel;
     private view: DashboardView;
@@ -14,28 +15,27 @@ export class DashboardController {
         this.Logger = new Logger(this);
         this.model = model;
         this.view = view;
-        // this.model.bindOnChange(this.view.render.bind(this.view));
-
-        // this.view.bindOnAddCompact(this.onAddCompact.bind(this));
-        // this.view.bindOnDelete(this.onDelete.bind(this));
-        // this.view.bindOnSetTask(this.onSetTask.bind(this));
         this.view.getTableListView().bindHandleListNameChange(this.handleListNameChange.bind(this));
         this.view.getTableListView().bindHandleListDescriptionChange(this.handleListDescriptionChange.bind(this));
-        this.view.getTableListView().bindHandleChangeCurrentTaskModel(this.handleChangeCurrentTaskModel.bind(this));
+        // this.view.getTableListView().bindHandleChangeCurrentTaskModel(this.handleChangeCurrentTaskModel.bind(this));
         this.view.getTableListView().bindHandleAddList(this.handleAddList.bind(this));
-        this.view.getTableTaskView().bindHandleTaskNameChange(this.handleTaskNameChange.bind(this))
-        this.view.getTableTaskView().bindHandleTaskDescriptionChange(this.handleTaskDescriptionChange.bind(this))
-        this.view.getTableTaskView().bindHandleAddTask(this.handleAddTask.bind(this));
-        this.view.getTableTaskView().bindHandleShare(this.handleSharing.bind(this));
-        // this.model.onChange(model.getCurrentList());
-        this.model.bindOnUserChange(this.view.renderUserInfo.bind(this.view));
-        this.model.onUserChange(this.model.getCurrentUser());
-        this.model.getTableListModel().bindOnAdded(this.view.getTableListView().renderAddedList.bind(this.view.getTableListView()))
+        this.view.getTableListView().bindHandleDeleteList(this.handleRemoveList.bind(this))
+        // this.view.getTableTaskView().bindHandleTaskNameChange(this.handleTaskNameChange.bind(this))
+        // this.view.getTableTaskView().bindHandleTaskDescriptionChange(this.handleTaskDescriptionChange.bind(this))
+        // this.view.getTableTaskView().bindHandleAddTask(this.handleAddTask.bind(this));
+        // this.view.getTableTaskView().bindHandleShare(this.handleSharing.bind(this));
+        // this.model.bindOnUserChange(this.view.renderUserInfo.bind(this.view));
+        // this.model.onUserChange(this.model.getCurrentUser());
+        // this.model.getTableListModel().bindOnAdded(this.view.getTableListView().renderAddedList.bind(this.view.getTableListView()))
+        this.model.getTableListModel().bindOnInserted(this.view.getTableListView().renderInsertedList.bind(this.view.getTableListView()))
         this.model.getTableListModel().bindOnModified(this.view.getTableListView().renderModifiedList.bind(this.view.getTableListView()))
-        this.model.getTableTaskModel().bindOnModified(this.view.getTableTaskView().renderModifiedTaskById.bind(this.view.getTableTaskView()))
-        this.model.getTableTaskModel().bindOnAdded(this.view.getTableTaskView().renderAddedTask.bind(this.view.getTableTaskView()))
-        this.model.bindOnCurrentTaskModelChange(this.view.getTableTaskView().renderTaskModel.bind(this.view.getTableTaskView()))
+        this.model.getTableListModel().bindOnRemoved(this.view.getTableListView().removeListById.bind(this.view.getTableListView()))
+        // this.model.getTableTaskModel().bindOnModified(this.view.getTableTaskView().renderModifiedTaskById.bind(this.view.getTableTaskView()))
+        // this.model.getTableTaskModel().bindOnAdded(this.view.getTableTaskView().renderAddedTask.bind(this.view.getTableTaskView()))
+        // this.model.getTableTaskModel().bindOnInserted(this.view.getTableTaskView().renderInsertedTask.bind(this.view.getTableTaskView()))
+        // this.model.bindOnCurrentTaskModelChange(this.view.getTableTaskView().renderTaskModel.bind(this.view.getTableTaskView()))
         //Test
+
         $(".test-hide").click(this.TestingFunction.bind(this));
     }
 
@@ -52,47 +52,56 @@ export class DashboardController {
     // }
 
     public handleListNameChange(id: string, newName: string) {
-        this.model.getTableListModel().setNameModelListById(id, newName);
+        this.model.getTableListModel().getListsRenderModel().getElementByIdCode(id).setListName(newName);
+        this.model.getTableListModel().getListsRenderModel().getElementByIdCode(id).publishOnFirebase();
     }
 
     public handleListDescriptionChange(id: string, newDescription: string) {
-        this.model.getTableListModel().setDescriptionModelListById(id, newDescription);
+        this.model.getTableListModel().getListsRenderModel().getElementByIdCode(id).setListDescription(newDescription);
+        this.model.getTableListModel().getListsRenderModel().getElementByIdCode(id).publishOnFirebase();
     }
 
-    public handleChangeCurrentTaskModel(id: string) {
-        let temp = this.model.getTableListModel().findOListModelById(id).get().getListRef().collection("tasks")
-        let temp2 = this.model.getTableListModel().findOListModelById(id).get()
-        this.model.setCurrentTaskModel(this.model.getTableListModel().findOListModelById(id).get().getTasksModel(), temp, temp2);
+    // public handleChangeCurrentTaskModel(id: string) {
+    //     let temp = this.model.getTableListModel().findOListModelById(id).get().getListRef().collection("tasks")
+    //     let temp2 = this.model.getTableListModel().findOListModelById(id).get()
+    //     this.model.setCurrentTaskModel(this.model.getTableListModel().findOListModelById(id).get().getTasksModel(), temp, temp2);
+    // }
+
+    // public handleTaskNameChange(id: string, newName: string) {
+    //     this.model.getTableTaskModel().findOTaskModelById(id).get().setTaskName(newName);
+    // }
+
+    // public handleTaskDescriptionChange(id: string, newDescription: string) {
+    //     this.model.getTableTaskModel().findOTaskModelById(id).get().setTaskDescription(newDescription);
+    // }
+
+
+
+    public handleAddList(list: List) {
+        this.model.getTableListModel().getListsRenderModel().binaryInsert(list)
+
     }
 
-    public handleTaskNameChange(id: string, newName: string) {
-        this.model.getTableTaskModel().findOTaskModelById(id).get().setTaskName(newName);
+    public handleRemoveList(id: string) {
+        let removedList = this.model.getTableListModel().getListsRenderModel().removeElementByElement(this.model.getTableListModel().getListsRenderModel().getElementByIdCode(id));
+        removedList.removeOnFirebase(() => { }, () => {
+            this.model.getTableListModel().getListsRenderModel().binaryInsert(removedList)
+        });
     }
 
-    public handleTaskDescriptionChange(id: string, newDescription: string) {
-        this.model.getTableTaskModel().findOTaskModelById(id).get().setTaskDescription(newDescription);
-    }
+    // public handleAddTask() {
+    //     let currentTaskCol = this.model.getCurrentTaskColRef()
+    //     let newTask = TaskModel.createEmptyTask(currentTaskCol);
+    //     this.model.getTableTaskModel().getTaskModelsObservable().addElement(newTask);
+    // }
 
-    public handleAddList() {
-        this.model.getTableListModel().getListModelsObservable().addElement(ListModel.createEmptyList())
-    }
-
-    public handleAddTask() {
-        let currentTaskCol = this.model.getCurrentTaskColRef()
-        let newTask = TaskModel.createEmptyTask(currentTaskCol);
-        this.model.getTableTaskModel().getTaskModelsObservable().addElement(newTask);
-    }
-
-    public handleSharing(uid: string) {
-        if (this.model.getCurrentList())
-            this.model.getCurrentList().addCollab(uid);
-    }
+    // public handleSharing(uid: string) {
+    //     if (this.model.getCurrentList())
+    //         this.model.getCurrentList().addCollab(uid);
+    // }
 
     //Testing 
     public TestingFunction() {
-        setInterval(() => console.log(this.model.getTableListModel().getListModelsObservable().getAllElements()), 3000)
-        // console.log(this.model.getTableListModel().getListModelsObservable())
-        // this.model.getTableListModel().getListModelsObservable().getByIndex(0).setListName("nsacahua")
-        // this.model.setCurrentTaskModel(this.model.getTableListModel().getListModelsObservable().getByIndex(0).getTasksModel())
+        console.log(this.model.getTableListModel())
     }
 }

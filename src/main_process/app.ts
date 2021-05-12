@@ -1,12 +1,13 @@
 import { ipcMain, Menu, BrowserWindow } from 'electron';
 import firebase from 'firebase/app'
-import IO from '../utils/iosys';
+import IO from '../Utils/iosys';
 import "firebase/auth";
 import "firebase/firestore"
 import { User } from '../main_window/Model/User';
 import portscanner from 'portscanner';
 import express from 'express'
 import path from 'path'
+import http from 'http'
 // Initialize iosystem
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 declare const LOGIN_WINDOW_WEBPACK_ENTRY: any;
@@ -56,9 +57,22 @@ export default class Main {
 
         });
         Main.mainWindow.webContents.on('did-finish-load', () => {
+            console.log("Finish load")
             Main.mainWindow.webContents.send('Receive root path', Main.MAIN_WINDOW_WEBPACK_ENTRY)
         })
-        Main.mainWindow.webContents.openDevTools();
+
+        // Main.mainWindow.webContents.on('did-fail-load', () => {
+        //     console.log("Load Fail");
+        //     Main.mainWindow.reload();
+        // })
+
+        // Main.mainWindow.webContents.session.webRequest.onCompleted({ urls: [Main.LOGIN_WINDOW_WEBPACK_ENTRY, Main.MAIN_WINDOW_WEBPACK_ENTRY] }, (details) => {
+        //     console.log(details.statusCode);
+        //     if (details.statusCode === 404) Main.mainWindow.reload();
+        // });
+
+        if (!(process.env.NODE_ENV == 'production'))
+            Main.mainWindow.webContents.openDevTools();
         // if (Main.userData.uid == null) {
         //     Main.mainWindow.loadURL(Main.LOGIN_WINDOW_WEBPACK_ENTRY)
         // }
@@ -202,6 +216,33 @@ export default class Main {
         }
     }
 
+    static async getResourceStatus() {
+        const options = {
+            hostname: 'localhost',
+            port: Main.port,
+            path: '/login_window',
+            method: 'GET'
+        };
+        console.log("Checking Resource");
+        await new Promise<void>(resolve => {
+            setTimeout(() => { resolve() }, 500)
+        })
+        let checkingPromise = new Promise<boolean>((resolve) => {
+            const req = http.request(options, res => {
+                if (res.statusCode === 200) {
+                    console.log("Resource Ready")
+                    resolve(true);
+                    return;
+                }
+                console.log("Resource Not Ready")
+                resolve(false)
+            })
+            req.end();
+        })
+        let a = await checkingPromise;
+        if (a === false) await this.getResourceStatus()
+    }
+
     static async main(app: Electron.App, browserWindow: typeof BrowserWindow, firebase: any) {
         Main.configRootDir();
         Main.application = app;
@@ -232,11 +273,16 @@ export default class Main {
             console.error(e);
         }
         Main.database = firebase.firestore();
+
+
+
         console.log("Init Firebase complete")
         console.log("Starting indentify login status")
+        let status = await Main.getResourceStatus();
         let user = await Main.indentifyLoginStatus();
         if (!user) Main.mainWindow.loadURL(Main.LOGIN_WINDOW_WEBPACK_ENTRY);
         else Main.mainWindow.loadURL(Main.MAIN_WINDOW_WEBPACK_ENTRY)
+
         console.log("End");
 
         // Work flow :

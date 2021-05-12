@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import io from '../utils/iosys';
+import io from '../Utils/iosys';
 import $ from '../js/jquery';
 import "@popperjs/core";
 import "../js/bootstrap.min";
@@ -16,9 +16,25 @@ const win = remote.getCurrentWindow();
 io.init();
 
 
+
+
+
 $(document).ready(async () => {
     const firebaseConfig = io.getJsonData("firebase_config");
-    firebase.initializeApp(firebaseConfig);
+    await firebase.initializeApp(firebaseConfig);
+    firebase.firestore().enablePersistence()
+        .catch((err) => {
+            if (err.code == 'failed-precondition') {
+                // Multiple tabs open, persistence can only be enabled
+                // in one tab at a a time.
+                // ...
+            } else if (err.code == 'unimplemented') {
+                // The current browser does not support all of the
+                // features required to enable persistence
+                // ...
+            }
+        });
+
     let is_logged = true;
     let user: firebase.User;
     try {
@@ -126,6 +142,7 @@ $(document).ready(async () => {
         // mark the section as "currently collapsed"
         element.setAttribute('data-collapsed', 'true');
     }
+
     window.addEventListener('contextmenu', (e) => {
         e.preventDefault()
         ipcRenderer.send('show-context-menu')

@@ -1,60 +1,54 @@
-import { ListModel } from './ListModel'
 import { ChangeType } from './ChangeType'
 import firebase from 'firebase'
-import { ArrayModelObservable, ArrayModelChangeDetail } from './ArrayModelObservable';
+import { ObservableArrayObservable, ArrayChangeDetail } from './ObservableArrayObservable';
 import { Observable } from './Observable';
-import { TaskModel } from './TaskModel';
+import { Task } from './Task';
 export class TableTaskModel {
-    protected taskModelsObservable: ArrayModelObservable<TaskModel>;
-    protected onModified: (task: TaskModel) => void;
-    protected onRemoved: (task: TaskModel) => void;
-    protected onAdded: (task: TaskModel) => void;
-    protected onInsert: (task: TaskModel) => void;
-    constructor() {
-        this.taskModelsObservable = new ArrayModelObservable<TaskModel>();
+    protected taskModelsObservable: ObservableArrayObservable<Task>;
+    protected onModified: (task: Task) => void;
+    protected onRemoved: (task: Task) => void;
+    protected onInserted: (task: Task) => void;
+    constructor(tasks: ObservableArrayObservable<Task>) {
+        this.taskModelsObservable = new ObservableArrayObservable<Task>();
         this.taskModelsObservable.addListener(this.commitChange.bind(this));
 
     }
 
-    public getOnModified(): (task: TaskModel) => void {
+    public dispose() {
+
+    }
+
+    public getOnModified(): (task: Task) => void {
         return this.onModified;
     }
 
-    public getOnRemoved(): (task: TaskModel) => void {
+    public getOnRemoved(): (task: Task) => void {
         return this.onRemoved;
     }
 
-    public getOnAdded(): (task: TaskModel) => void {
-        return this.onAdded;
+    public getOnInserted(): (task: Task) => void {
+        return this.onInserted;
     }
 
-    public getOnInsert(): (task: TaskModel) => void {
-        return this.onInsert;
-    }
-
-    public getTaskModelsObservable(): ArrayModelObservable<TaskModel> {
+    public getTaskModelsObservable(): ObservableArrayObservable<Task> {
         return this.taskModelsObservable;
     }
 
-    public bindOnModified(func: (task: TaskModel) => void): void {
+    public bindOnModified(func: (task: Task) => void): void {
         this.onModified = func;
     }
 
-    public bindOnRemoved(func: (task: TaskModel) => void): void {
+    public bindOnRemoved(func: (task: Task) => void): void {
         this.onRemoved = func;
     }
 
-    public bindOnAdded(func: (task: TaskModel) => void): void {
-        this.onAdded = func;
+    public bindOnInserted(func: (task: Task) => void): void {
+        this.onInserted = func;
     }
 
-    public bindOnInserted(func: (task: TaskModel) => void): void {
-        this.onInsert = func;
-    }
-
-    public findOTaskModelById(id: string): Observable<TaskModel> {
+    public findOTaskModelById(id: string): Observable<Task> {
         for (let i = 0; i < this.taskModelsObservable.length(); i++) {
-            let target: Observable<TaskModel> = this.taskModelsObservable.getObservableByIndex(i);
+            let target: Observable<Task> = this.taskModelsObservable.getObservableElementByIndex(i);
             if (target.get().getTaskID() === id)
                 return target;
         }
@@ -62,32 +56,26 @@ export class TableTaskModel {
     }
 
     public setNameModelTaskById(id: string, newName: string) {
-        let target: Observable<TaskModel> = this.findOTaskModelById(id);
+        let target: Observable<Task> = this.findOTaskModelById(id);
         target.get().setTaskName(newName);
     }
 
     public setDescriptionModelListById(id: string, newDescription: string) {
-        let target: Observable<TaskModel> = this.findOTaskModelById(id);
+        let target: Observable<Task> = this.findOTaskModelById(id);
         target.get().setTaskDescription(newDescription);
     }
 
 
-    protected commitChange(changeType: ChangeType, args: ArrayModelChangeDetail<TaskModel>) {
+    protected commitChange(changeType: ChangeType, args: ArrayChangeDetail<Task>) {
         switch (changeType) {
             case ChangeType.added:
-                // Resolve View
-                if (this.onAdded)
-                    this.onAdded(args.addedElement);
-
-                //Resolve Backend (Firebase)
-
+                if (this.onInserted)
+                    this.onInserted(args.newElement);
                 break;
             case ChangeType.modified:
                 // Resolve View
                 if (this.onModified)
                     this.onModified(args.newElement);
-                //Resolve Backend (Firebase)
-                args.newElement.publishOnFirebase();
                 break;
             case ChangeType.removed:
                 break;

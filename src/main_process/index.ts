@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import Main from './app';
-import IO from '../utils/iosys';
+import IO from '../Utils/iosys';
 import firebase from "firebase/app";
 import "firebase/auth";
 import portscanner from 'portscanner';

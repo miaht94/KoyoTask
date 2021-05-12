@@ -1,70 +1,111 @@
-import { TaskModel } from './TaskModel'
 import firebase from 'firebase/app'
-import { ArrayModelObservable } from './ArrayModelObservable';
+import { ObservableArrayObservable } from './ObservableArrayObservable';
 import { Observable } from './Observable';
-import { ArrayObservable } from './ArrayObservable';
+import { ArrayObservable } from './ObservableArray';
 import { TableTaskModel } from './TableTaskModel';
-export class ListModel {
+import { Task } from './Task';
+import { Comparator } from '../../Utils/Comparator';
+import { IdentifyCode } from '../../Utils/IdentifyCode';
+export class List implements Comparator<List>, IdentifyCode {
 
-    private tasksModel: TableTaskModel;
+    private tasks: ObservableArrayObservable<Task>;
     private listID: Observable<string> = new Observable<string>();
     private listName: Observable<string> = new Observable<string>();
     private listDescription: Observable<string> = new Observable<string>();
     private listIcon: Observable<string> = new Observable<string>();
     private listRef: firebase.firestore.DocumentReference;
     private collaborators: ArrayObservable<firebase.firestore.DocumentReference>;
+    private createdDate: Observable<firebase.firestore.Timestamp> = new Observable<firebase.firestore.Timestamp>();
     // If callback use this keyword in itself, callback must bind its class first
-    private listenersCallback: ((newList: ListModel) => void)[] = [];
-    constructor(list: { tasksModel: TableTaskModel; list_id: string; list_name: string; listDescription: string; list_icon: string; collaborators: firebase.firestore.DocumentReference[], list_ref?: firebase.firestore.DocumentReference }) {
+    private listenersCallback: ((newList: List) => void)[] = [];
+    constructor(list: { tasks: ObservableArrayObservable<Task>; list_id: string; list_name: string; listDescription: string; list_icon: string; collaborators: firebase.firestore.DocumentReference[], createdDate: firebase.firestore.Timestamp, list_ref?: firebase.firestore.DocumentReference }) {
         if (list === undefined) throw new Error("Illegal JSON Argument")
-        this.tasksModel = list.tasksModel;
+        this.tasks = list.tasks;
         this.listID.set(list.list_id);
         this.listName.set(list.list_name);
         this.listDescription.set(list.listDescription);
         this.listIcon.set(list.list_icon);
         this.listRef = list.list_ref;
+        this.createdDate.set(list.createdDate);
         this.collaborators = new ArrayObservable<firebase.firestore.DocumentReference>(list.collaborators)
-        console.log("Test : ");
-        // for (let task of list.tasks) {
-        //     //console.log(task);
-        //     if (task === undefined) throw new Error("Illegal JSON Argument");
-        //     this.tasks.addElement(TaskModel.createNewTaskByJson(task))
-        // }
+    }
+    public getIdCode(): string {
+        return this.getListID();
+    }
+    public compare(o1: List, o2: List): number {
+        if (o1.getCreatedDate().toDate().getTime() === o2.getCreatedDate().toDate().getTime()) {
+            if (o1.toString() === o2.toString()) return 0
+            else return o1.toString() > o2.toString() ? 1 : -1;
+        }
+        else {
+            return o1.getCreatedDate().toDate().getTime() > o2.getCreatedDate().toDate().getTime() ? 1 : -1
+        }
+    }
+
+    public getCollaboratorAsString(): string {
+        let arr = this.getCollaborators();
+        let returnArr = [];
+        for (let i of arr) {
+            returnArr.push(i.id);
+        }
+        return returnArr.toString();
+    }
+
+    public static cloneWithoutTask(list: List): List {
+        return new List({
+            "list_id": list.getListID(),
+            "list_name": list.getListName(),
+            "listDescription": list.getListDescription(),
+            "list_icon": list.getListIcon(),
+            "list_ref": list.getListRef(),
+            "collaborators": list.getCollaborators(),
+            "createdDate": list.getCreatedDate(),
+            "tasks": new ObservableArrayObservable<Task>()
+        })
     }
 
     public getListRef(): firebase.firestore.DocumentReference {
         return this.listRef;
     }
 
-    public static createEmptyList(): ListModel {
+    public getCreatedDate() {
+        return this.createdDate.get();
+    }
+
+    public setCreatedDate(timestamp: firebase.firestore.Timestamp) {
+        return this.createdDate.set(timestamp);
+    }
+
+    public static createEmptyList(): List {
         let ref: firebase.firestore.DocumentReference;
         ref = firebase.firestore().collection("lists").doc();
-        return new ListModel({
+        return new List({
             "list_id": ref.id,
             "list_name": "",
             "listDescription": "",
             "list_icon": "",
             "list_ref": ref,
+            "createdDate": firebase.firestore.Timestamp.fromDate(new Date()),
             "collaborators": [firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid)],
-            "tasksModel": new TableTaskModel(),
+            "tasks": new ObservableArrayObservable<Task>(),
         })
     }
 
 
 
-    public addListener(callback: (newList: ListModel) => void): void {
+    public addListener(callback: (newList: List) => void): void {
         this.listenersCallback.push(callback);
     }
 
-    public getTasksObservable(): ArrayModelObservable<TaskModel> { return this.tasksModel.getTaskModelsObservable(); }
+    public getTasksObservable(): ObservableArrayObservable<Task> { return this.tasks; }
 
-    public getTasks(): Array<TaskModel> {
-        return this.tasksModel.getTaskModelsObservable().getAllElements();
+    public getTasks(): Array<Task> {
+        return this.tasks.getAllElements();
     }
 
-    public getTasksModel(): TableTaskModel {
-        return this.tasksModel;
-    }
+    // public getTasksModel(): TableTaskModel {
+    //     return this.tasksModel;
+    // }
 
     public getCollaborators(): firebase.firestore.DocumentReference[] {
         return this.collaborators.getAllElements();
@@ -102,6 +143,17 @@ export class ListModel {
 
     }
 
+    public toString(): string {
+        return JSON.stringify({
+            "list_id": this.getListID(),
+            "list_name": this.getListName(),
+            "listDescription": this.getListDescription(),
+            "list_icon": this.getListIcon(),
+            "createdDate": this.getCreatedDate().toDate().getTime(),
+            "collaborators": this.getCollaboratorAsString(),
+        });
+    }
+
     // public addTaskCompact(taskName: string, completed: boolean): void {
     //     this.tasks.addElement(TaskModel.createNewTaskCompact(taskName, completed));
 
@@ -133,25 +185,40 @@ export class ListModel {
 
     // }
 
-    public publishOnFirebase(): void {
+    public publishOnFirebase(onDone: () => void = () => { }, onError: (error: any) => void = () => { }): void {
         if (this.listRef) {
-            this.listRef.withConverter(ListModel.ListConverter).set(this)
+            this.listRef.withConverter(List.ListConverter).set(this).then(() => {
+                onDone();
+            }).catch((error) => {
+                onError(error);
+            })
+        }
+    }
+
+    public removeOnFirebase(onDone: () => void = () => { }, onError: (error: any) => void = () => { }): void {
+        if (this.listRef) {
+            this.listRef.delete().then(() => {
+                onDone();
+            }).catch((error) => {
+                onError(error);
+            })
         }
     }
 
     static ListConverter = {
-        toFirestore(list: ListModel): firebase.firestore.DocumentData {
+        toFirestore(list: List): firebase.firestore.DocumentData {
             return {
                 list_name: list.getListName() ? list.getListName() : "",
                 list_icon: list.getListIcon() ? list.getListIcon() : "",
                 list_description: list.getListDescription() ? list.getListDescription() : "",
-                collaborators: list.getCollaborators()
+                collaborators: list.getCollaborators(),
+                createdDate: list.getCreatedDate()
             }
         },
         fromFirestore(
             snapshot: firebase.firestore.QueryDocumentSnapshot,
             options: firebase.firestore.SnapshotOptions
-        ): ListModel {
+        ): List {
             const data = snapshot.data(options)!;
             let list = {
                 list_id: snapshot.id,
@@ -159,34 +226,28 @@ export class ListModel {
                 list_icon: data.list_icon,
                 listDescription: data.list_description,
                 list_ref: snapshot.ref,
+                createdDate: data.createdDate,
                 collaborators: data.collaborators,
-                tasksModel: new TableTaskModel()
+                tasks: new ObservableArrayObservable<Task>()
             };
 
-            let returnList: ListModel = new ListModel(list);
-            snapshot.ref.collection("tasks").withConverter(TaskModel.TaskConverter).onSnapshot((snapshot) => {
+            let returnList: List = new List(list);
+            snapshot.ref.collection("tasks").withConverter(Task.TaskConverter).orderBy("createdDate").onSnapshot((snapshot) => {
                 snapshot.docChanges().forEach((change) => {
+                    let data = change.doc.data();
                     if (change.type === "added") {
                         let taskModelsObservable = returnList.getTasks()
-                        console.log("New Task ", "[", change.doc.id, "] :", change.doc.data());
-                        let bool: boolean = true
-                        for (let i = 0; i < taskModelsObservable.length; i++) {
-                            if (change.doc.data().getTaskID() == taskModelsObservable[i].getTaskID()) {
-                                bool = false;
-                                break;
-                            }
-                        }
-                        if (bool)
-                            returnList.getTasksModel().getTaskModelsObservable().addElement(change.doc.data());
+                        console.log("New Task ", "[", change.doc.id, "] :", data);
+                        returnList.getTasksObservable().binaryInsert(data);
                     }
                     if (change.type === "modified") {
 
                         console.log("Modified Task: ", "[", change.doc.id, "] :", change.doc.data());
-                        returnList.getTasksModel().getTaskModelsObservable().modifyElement(change.doc.data(), change.newIndex);
+                        returnList.getTasksObservable().modifyElementByIdCode(data);
                     }
                     if (change.type === "removed") {
-                        console.log("Removed Task: ", "[", change.doc.id, "] :", change.doc.data());
-                        returnList.getTasksModel().getTaskModelsObservable().removeElement(change.oldIndex);
+                        console.log("Removed Task: ", "[", change.doc.id, "] :", data);
+                        returnList.getTasksObservable().removeElementByElement(data);
                     }
                 })
             })
@@ -195,7 +256,6 @@ export class ListModel {
             // }, 3000)
             // console.log("Final List ", "[", snapshot.id, "] : ")
 
-            console.log(returnList)
             return returnList;
         }
     };

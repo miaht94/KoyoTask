@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import IO from '../utils/iosys';
+import IO from '../Utils/iosys';
 import 'firebase/auth';
 import 'firebase/firestore'
 import $ from '../js/jquery';

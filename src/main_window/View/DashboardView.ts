@@ -1,12 +1,14 @@
-import { ListModel } from '../Model/ListModel';
-import { TaskModel } from '../Model/TaskModel';
-import IO from '../../utils/iosys';
+// import { ListModel } from '../Model/ListModel';
+// import { TaskModel } from '../Model/TaskModel';
+import IO from '../../Utils/iosys';
 import $ from 'jquery';
-import { Logger } from '../../utils/Logger'
+import { Logger } from '../../Utils/Logger'
 import Handlebars from 'handlebars'
 import { User } from '../Model/User';
 import { TableListView } from './TableListView';
 import { TableTaskView } from './TableTaskView';
+import { List } from '../Model/List';
+import { Task } from '../Model/Task';
 export class DashboardView {
     protected Logger: Logger;
     private dashboard: JQuery<HTMLElement>;
@@ -28,7 +30,7 @@ export class DashboardView {
     private taskAddHTML: String;
     private taskButtonGroupHTML: String;
 
-    private currentTask: TaskModel;
+    // private currentTask: TaskModel;
 
 
     private sidebar: JQuery<HTMLElement>;
@@ -70,7 +72,7 @@ export class DashboardView {
         return this.tableTaskView;
     }
 
-    public render(listData: ListModel) {
+    public render(listData: List) {
         //RENDER DASHBOARD
         let dashboardForAppender: any = this.dashboard;
 
@@ -101,7 +103,7 @@ export class DashboardView {
 
     }
 
-    private initTaskBehavior(task: TaskModel): void {
+    private initTaskBehavior(task: Task): void {
         let currentTask = task;
         let dashboardItemForAppender: any = document.querySelector('#dashboarditem:last-child');
 
@@ -203,7 +205,7 @@ export class DashboardView {
         userfieldForAppender.html(userfieldHTML);
     }
 
-    private renderLists(lists: ListModel[]) {
+    private renderLists(lists: List[]) {
         let listviewForAppender: any = $('#ListView');
 
         //id: ListView -> listitem -> list_icon + list_name + list_description
@@ -224,7 +226,7 @@ export class DashboardView {
     }
 
     //WORKING
-    private initListBehavior(list: ListModel) {
+    private initListBehavior(list: List) {
         let currentList = list;
         let listForAppender = document.querySelector('#listitem');
         listForAppender.addEventListener('click', () => {
