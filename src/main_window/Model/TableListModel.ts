@@ -7,12 +7,18 @@ export class TableListModel {
     protected listsRenderModel: ObservableArrayObservable<List>;
     protected onModified: (list: List, atIndex: number) => void;
     protected onRemoved: (list: List, atIndex: number) => void;
-    protected onInsert: (list: List, atIndex: number) => void;
-    constructor(originLists: ObservableArrayObservable<List>) {
-        this.listsRenderModel = new ObservableArrayObservable<List>();
+    protected onInserted: (list: List, atIndex: number) => void;
+    constructor(renderLists: ObservableArrayObservable<List>) {
+        this.listsRenderModel = renderLists;
         this.listsRenderModel.addListener(this.commitChange.bind(this));
-        originLists.addListener(this.syncLocalDataToRenderData.bind(this));
+        // originLists.addListener(this.syncLocalDataToRenderData.bind(this));
     }
+
+    // public addSourceList(newSouceList: ObservableArrayObservable<List>) {
+    //     if (newSouceList) {
+    //         newSouceList.addListener(this.syncLocalDataToRenderData.bind(this));
+    //     }
+    // }
 
     public getListsRenderModel(): ObservableArrayObservable<List> {
         return this.listsRenderModel;
@@ -27,7 +33,7 @@ export class TableListModel {
     }
 
     public bindOnInserted(func: (list: List, atIndex: number) => void): void {
-        this.onInsert = func;
+        this.onInserted = func;
     }
 
 
@@ -51,19 +57,20 @@ export class TableListModel {
         target.get().setListDescription(newDescription);
     }
 
-    public syncLocalDataToRenderData(changeType: ChangeType, args: ArrayChangeDetail<List>) {
-        switch (changeType) {
-            case ChangeType.added:
-                this.listsRenderModel.binaryInsert(List.cloneWithoutTask(args.newElement));
-                break;
-            case ChangeType.removed:
-                this.listsRenderModel.removeElementByElement(List.cloneWithoutTask(args.removedElement));
-                break;
-            case ChangeType.modified:
-                this.listsRenderModel.modifyElementByIdCode(List.cloneWithoutTask(args.newElement));
-                break;
-        }
-    }
+    // public syncRenderDataToModel(changeType: ChangeType, args: ArrayChangeDetail<List>) {
+    //     switch (changeType) {
+    //         case ChangeType.added:
+
+    //             this.listsRenderModel.binaryInsert(List.cloneWithoutTask(args.newElement));
+    //             break;
+    //         case ChangeType.removed:
+    //             this.listsRenderModel.removeElementByElement(List.cloneWithoutTask(args.removedElement));
+    //             break;
+    //         case ChangeType.modified:
+    //             this.listsRenderModel.modifyElementByIdCode(List.cloneWithoutTask(args.newElement));
+    //             break;
+    //     }
+    // }
 
 
     protected commitChange(changeType: ChangeType, args: ArrayChangeDetail<List>) {
@@ -71,7 +78,7 @@ export class TableListModel {
             case ChangeType.added:
                 // Resolve View
 
-                this.onInsert(args.newElement, args.atIndex);
+                this.onInserted(args.newElement, args.atIndex);
 
                 //Resolve Backend (Firebase)
                 break;

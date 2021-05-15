@@ -4,36 +4,40 @@ export interface ChangeDetail<T> {
 }
 
 export class Observable<T> {
-    private listenersCallback: Record<string, (change: ChangeDetail<T>) => void> = {};
+    private listenersCallback: Map<string, (change: ChangeDetail<T>) => void>;
     private array: Record<string, (change: ChangeDetail<T>) => void>
     private value: T;
     public isObservableObject: boolean = true;
 
     constructor(value?: T) {
+        this.listenersCallback = new Map<string, (change: ChangeDetail<T>) => void>()
         if (value) {
-            this.value = value;
+            this.set(value);
         }
     }
 
     public notifyAllListener(): void {
-        for (let key in this.listenersCallback) {
-            this.listenersCallback[key]({ newValue: this.value });
+        for (let [key, value] of this.listenersCallback.entries()) {
+            value({ newValue: this.value });
         }
     }
 
-    public addListener(callback: (change: ChangeDetail<T>) => void, id?: string): void {
+    public addListener(callback: (change: ChangeDetail<T>) => void, id?: string): string {
         if (id)
-            this.listenersCallback[id] = callback;
-        else
-            this.listenersCallback[uniqid()] = callback
+            this.listenersCallback.set(id, callback);
+        else {
+            id = uniqid()
+            this.listenersCallback.set(id, callback);
+            return id
+        }
     }
 
     public detachAllListener(): void {
-        this.listenersCallback = {};
+        this.listenersCallback.clear();
     }
 
     public detachListener(id: string): void {
-        this.listenersCallback[id] = () => { };
+        this.listenersCallback.delete(id);
     }
 
     public set(value: T, duplicate: boolean = false) {

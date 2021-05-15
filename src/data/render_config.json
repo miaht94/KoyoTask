@@ -1,7 +1,7 @@
 {
     "appendNewTask" : {
         "targetId" : "DashboardList",
-        "html" : "<div class='d-flex flex-row row task-frame dashboarditem' id='{{task_id}}'><div class='d-flex col-1 justify-content-start' id='dashboarditemcol'><label class='container_checkbox'><input type='checkbox' name='radio' id='taskCheckbox'><span class='checkmark'></span></label></div><div class='d-flex flex-column col-9 task-data'><div class='d-flex col-11 task-title' id = 'taskTitleForEdit' contenteditable='true'> {{task_name}}</div><div class='d-flex col-1'></div><div class='d-flex col-12 task-time'>{{task_date}}</div><div class='d-flex col-11 task-description' id = 'task-description' contenteditable=true>{{task_description}}</div><div class='d-flex col-1'></div></div></div></div>" 
+        "html" : "<div class='d-flex flex-row row task-frame dashboarditem' id='{{task_id}}'><div class='d-flex col-1 justify-content-start' id='dashboarditemcol'><label class='container_checkbox'><input type='checkbox' name='radio' {{#ifEquals completed 'true'}}checked='checked'{{/ifEquals}} id='taskCheckbox'><span class='checkmark'></span></label></div><div class='d-flex flex-column col-9 task-data'><div class='d-flex col-11 task-title' id = 'taskTitleForEdit' contenteditable='true'> {{task_name}}</div><div class='d-flex col-1'></div><div class='d-flex col-12 task-time'>{{task_date}}</div><div class='d-flex flex-column col-11 task-description' id = 'task-description' contenteditable=true>{{{task_description}}}</div><div class='d-flex col-1'></div></div></div></div>" 
     },
 
     "TaskButtonGroup" :{

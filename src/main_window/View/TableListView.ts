@@ -2,6 +2,34 @@ import $ from 'jquery';
 import IO from '../../Utils/iosys'
 import HandleBars from 'handlebars'
 import { List } from '../Model/List';
+import { remote } from 'electron';
+const { Menu, MenuItem } = remote;
+function collapseSection(element: any) {
+    // get the height of the element's inner content, regardless of its actual size
+    var sectionHeight = element.scrollHeight;
+
+    // temporarily disable all css transitions
+    var elementTransition = element.style.transition;
+    element.style.transition = '';
+
+    // on the next frame (as soon as the previous style change has taken effect),
+    // explicitly set the element's height to its current pixel height, so we 
+    // aren't transitioning out of 'auto'
+    requestAnimationFrame(function () {
+        element.style.height = sectionHeight + 'px';
+        element.style.transition = elementTransition;
+
+        // on the next frame (as soon as the previous style change has taken effect),
+        // have the element transition to height: 0
+        requestAnimationFrame(function () {
+            element.style.height = 0 + 'px';
+        });
+    });
+
+    // mark the section as "currently collapsed"
+    element.setAttribute('data-collapsed', 'true');
+}
+
 export class TableListView {
     private listTableRef: JQuery<HTMLElement>;
     private listRowTemplate: HandleBars.TemplateDelegate;
@@ -9,10 +37,11 @@ export class TableListView {
     private render_config: any;
     private handleListNameChange: (list_id: string, new_name: string) => void;
     private handleListDescriptionChange: (list_id: string, new_description: string) => void;
-    private handleChangeCurrentTaskModel: (list_id: string) => void;
+    private handleChangeCurrentList: (list_id: string) => void;
     private handleDeleteList: (list_id: string) => void;
-    private handleAddList: (list: List) => void;
+    private handleAddList: () => string;
     private addListBtn: JQuery<HTMLElement>;
+    private curListActive: JQuery<HTMLElement>;
     constructor() {
         IO.init();
         this.render_config = IO.getData("render_config");
@@ -38,11 +67,11 @@ export class TableListView {
         this.handleListDescriptionChange = func;
     }
 
-    public bindHandleChangeCurrentTaskModel(func: (list_id: string) => void) {
-        this.handleChangeCurrentTaskModel = func;
+    public bindHandleChangeCurrentList(func: (list_id: string) => void) {
+        this.handleChangeCurrentList = func;
     }
 
-    public bindHandleAddList(handler: () => void) {
+    public bindHandleAddList(handler: () => string) {
         this.handleAddList = handler;
     }
 
@@ -117,17 +146,20 @@ export class TableListView {
         this.listTableRef.on("mousedown", (event) => {
             console.log("click")
 
-
-            let temp = $(event.target);
-            while (!temp.hasClass("list-group-item") && temp.parent() != temp) {
-                temp = temp.parent()
-            }
-            if (temp.attr("id")) {
-                // this.handleChangeCurrentTaskModel(temp.attr("id"));
-                let a: string = temp.attr("id");
-                console.log($("#" + a).children("#list-title").children("#list-name").text());
-                this.listBigTitle.text(temp.children("#list-name").text());
-                $(".list-name-big").attr("id", "#list-name-big-" + temp.attr("id"))
+            if (event.button === 0) {
+                let temp = $(event.target);
+                temp = temp.parents().filter(".list-group-item")
+                // while (!temp.hasClass("list-group-item") && temp.parent() != temp) {
+                //     temp = temp.parent()
+                // }
+                if (temp && temp.attr("id")) {
+                    // temp.toggleClass("active");
+                    // if (this.curListActive) {
+                    //     this.curListActive.toggleClass("active");
+                    // }
+                    // this.curListActive = temp;
+                    this.handleChangeCurrentList(temp.attr("id"));
+                }
             }
 
         })
@@ -164,12 +196,30 @@ export class TableListView {
             }
         })
         this.addListBtn.on("click", () => {
-            let newList: List = List.createEmptyList();
-            let list_id = newList.getListID();
-            this.handleAddList(newList);
+
+            let list_id = this.handleAddList();
             $("#" + list_id).find("#list_name").click();
             $("#" + list_id).find("#list_name").focus();
 
+        })
+        this.listTableRef.on("click", ".list-group-item", (event) => {
+
+        })
+
+        $(".list-group").on("contextmenu", event => {
+
+            const menu = new Menu();
+            let temp1 = $(event.target);
+            let temp = temp1.parents().filter(".list-group-item")
+            if (temp && temp.hasClass("list-group-item")) {
+                menu.append(new MenuItem({
+                    label: "Delete this List ????",
+                    click: (() => {
+                        this.handleDeleteList(temp.attr("id"));
+                    }).bind(this)
+                }));
+            }
+            menu.popup({ window: remote.getCurrentWindow() })
         })
     }
 }

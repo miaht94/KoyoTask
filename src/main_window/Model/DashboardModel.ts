@@ -5,15 +5,18 @@ import { DashboardView } from '../View/DashboardView';
 import firebase from "firebase/app"
 import "firebase/firestore";
 import { TableListModel } from './TableListModel';
-import { ObservableArrayObservable } from './ObservableArrayObservable';
+import { ObservableArrayObservable, ArrayChangeDetail } from './ObservableArrayObservable';
 import { Observable } from './Observable';
 import { TableTaskModel } from './TableTaskModel';
 import { List } from './List';
+import { ChangeType } from './ChangeType';
+import { Task } from './Task';
 export class DashboardModel {
 
-    protected lists: ObservableArrayObservable<List>; //same
+    protected localLists: ObservableArrayObservable<List>; //same
+    protected renderLists: ObservableArrayObservable<List>;
     protected tableListModel: TableListModel;
-    protected currentTaskModel: TableTaskModel;
+    protected tableTaskModel: TableTaskModel;
     protected currentTaskColRef: firebase.firestore.CollectionReference;
     protected currentUser: User;
     protected database: firebase.firestore.Firestore;
@@ -30,13 +33,17 @@ export class DashboardModel {
     constructor(user: firebase.User) {
         IO.init();
         this.currentUser = User.createUserFromFirebaseUser(user)
-        this.lists = new ObservableArrayObservable<List>();
-        this.tableListModel = new TableListModel(this.lists);
-
+        this.localLists = new ObservableArrayObservable<List>();
+        this.renderLists = new ObservableArrayObservable<List>();
+        this.localLists.addListener(this.syncListsLocalToRender.bind(this));
+        this.tableListModel = new TableListModel(this.renderLists);
+        // this.tableListModel.addSourceList(this.pendingLists);
+        this.tableTaskModel = new TableTaskModel();
         console.log(firebase.apps.length !== 0)
         this.Logger = new Logger(this);
         this.database = firebase.firestore();
         this.fetchTableList();
+        // this.initTableTaskModel();
         // this.currentTaskModel = new TableTaskModel();
 
         //Init User data
@@ -49,12 +56,51 @@ export class DashboardModel {
         // })
     }
 
+    private syncListsLocalToRender(changeType: ChangeType, args: ArrayChangeDetail<List>) {
+        switch (changeType) {
+            case ChangeType.added:
+
+                let newRenderList = List.cloneWithoutTask(args.newElement);
+                args.newElement.getTasksObservable().addListener(this.getSyncTasksLocalToRenderFunction(newRenderList.getTasksObservable()).bind(this))
+                this.renderLists.binaryInsert(newRenderList);
+                break;
+            case ChangeType.removed:
+                this.renderLists.removeElementByElement(List.cloneWithoutTask(args.removedElement));
+                break;
+            case ChangeType.modified:
+                this.renderLists.modifyElementByIdCode(List.cloneWithoutTask(args.newElement));
+                break;
+        }
+    }
+
+    private getSyncTasksLocalToRenderFunction(renderTasks: ObservableArrayObservable<Task>): (changeType: ChangeType, args: ArrayChangeDetail<Task>) => void {
+        return (changeType: ChangeType, args: ArrayChangeDetail<Task>) => {
+            switch (changeType) {
+                case ChangeType.added:
+
+                    renderTasks.binaryInsert(Task.clone(args.newElement));
+                    break;
+                case ChangeType.removed:
+                    renderTasks.removeElementByElement(Task.clone(args.removedElement));
+                    break;
+                case ChangeType.modified:
+
+                    renderTasks.modifyElementByIdCode(Task.clone(args.newElement));
+                    break;
+            }
+        }
+    }
+
     public getLists() {
-        return this.lists;
+        return this.localLists;
+    }
+
+    public getRenderLists() {
+        return this.renderLists;
     }
 
     public getTableTaskModel() {
-        return this.currentTaskModel;
+        return this.tableTaskModel;
     }
 
     public getCurrentTaskColRef() {
@@ -127,8 +173,19 @@ export class DashboardModel {
                 let data = change.doc.data()
                 if (change.type === "added") {
                     console.log("New List Ref: ", data);
-                    data.fetchTasks();
-                    lists.binaryInsert(data);
+
+
+                    data.fetchTasks()
+                    // .then((() => {
+                    //     if (this.getTableTaskModel().getTaskModelsObservable().length() === 0 && change.newIndex === 0) {
+                    //         this.getTableTaskModel().setTasksRenderModel(data.getTasksObservable());
+                    //     }
+                    // }).bind(this));
+                    let i = lists.binaryInsert(data);
+                    if (this.getTableTaskModel().getTaskModelsObservable().length() === 0 && change.newIndex === 0) {
+
+                        this.getTableTaskModel().setListRenderModel(lists.getObservableElementByIndex(i));
+                    }
 
                 }
                 if (change.type === "modified") {

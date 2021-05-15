@@ -205,26 +205,30 @@ export class List implements Comparator<List>, IdentifyCode {
         }
     }
 
-    public fetchTasks(): void {
-        this.getListRef().collection("tasks").withConverter(Task.TaskConverter).orderBy("createdDate").onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach(((change: firebase.firestore.DocumentChange<Task>) => {
-                let data = change.doc.data();
-                if (change.type === "added") {
-                    let taskModelsObservable = this.getTasks()
-                    console.log("New Task ", "[", change.doc.id, "] :", data);
-                    this.getTasksObservable().binaryInsert(data);
-                }
-                if (change.type === "modified") {
+    public fetchTasks(): Promise<void> {
+        return new Promise<void>(((resolve: any) => {
+            this.getListRef().collection("tasks").withConverter(Task.TaskConverter).orderBy("createdDate").onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach(((change: firebase.firestore.DocumentChange<Task>) => {
+                    let data = change.doc.data();
+                    if (change.type === "added") {
+                        let taskModelsObservable = this.getTasks()
+                        console.log("New Task ", "[", change.doc.id, "] :", data);
+                        this.getTasksObservable().binaryInsert(data);
+                    }
+                    if (change.type === "modified") {
 
-                    console.log("Modified Task: ", "[", change.doc.id, "] :", change.doc.data());
-                    this.getTasksObservable().modifyElementByIdCode(data);
-                }
-                if (change.type === "removed") {
-                    console.log("Removed Task: ", "[", change.doc.id, "] :", data);
-                    this.getTasksObservable().removeElementByElement(data);
-                }
-            }).bind(this))
-        })
+                        console.log("Modified Task: ", "[", change.doc.id, "] :", change.doc.data());
+                        this.getTasksObservable().modifyElementByIdCode(data);
+                    }
+                    if (change.type === "removed") {
+                        console.log("Removed Task: ", "[", change.doc.id, "] :", data);
+                        this.getTasksObservable().removeElementByElement(data);
+                    }
+
+                }).bind(this))
+                resolve();
+            })
+        }).bind(this))
     }
 
     static ListConverter = {

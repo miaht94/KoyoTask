@@ -11,14 +11,15 @@ import { remote } from 'electron';
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import Handlebars from 'handlebars';
 
+declare var functionAnimate: (element: any) => void;
 const win = remote.getCurrentWindow();
 io.init();
 
-
-
-
-
+Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+    return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+});
 $(document).ready(async () => {
     const firebaseConfig = io.getJsonData("firebase_config");
     await firebase.initializeApp(firebaseConfig);
@@ -148,7 +149,4 @@ $(document).ready(async () => {
         ipcRenderer.send('show-context-menu')
     })
 
-    ipcRenderer.on('context-menu-command', (e, command) => {
-        // ...
-    })
 })

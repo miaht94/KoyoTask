@@ -2,5 +2,6 @@ export enum ChangeType {
     added,
     modified,
     removed,
-    inserted
+    inserted,
+    cleared
 }

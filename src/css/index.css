@@ -113,9 +113,8 @@ body {
 .list-group-item {
   border: 0px !important;
   font-size: 1rem !important;
-  height: 60px;
-
 }
+
 
 .list-group-item+.list-group-item {
   background: linear-gradient(rgb(175, 175, 175), rgb(245, 244, 244))top right/ 80% 1px;

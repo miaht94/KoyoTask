@@ -176,16 +176,16 @@ export default class Main {
         //     event.reply('credential-reply', argument)
         // })
 
-        ipcMain.on('show-context-menu', (event) => {
-            const template = [
-                {
-                    label: Main.rootDir,
-                    click: () => { event.sender.send('context-menu-command', 'menu-item-1') }
-                }
-            ]
-            const menu = Menu.buildFromTemplate(template)
-            menu.popup(BrowserWindow.fromWebContents(event.sender) as Electron.PopupOptions)
-        })
+        // ipcMain.on('show-context-menu', (event) => {
+        //     const template = [
+        //         {
+        //             label: Main.rootDir,
+        //             click: () => { event.sender.send('context-menu-command', 'menu-item-1') }
+        //         }
+        //     ]
+        //     const menu = Menu.buildFromTemplate(template)
+        //     menu.popup(BrowserWindow.fromWebContents(event.sender) as Electron.PopupOptions)
+        // })
 
     }
 

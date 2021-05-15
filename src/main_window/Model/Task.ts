@@ -19,6 +19,21 @@ export class Task implements Comparator<Task>, IdentifyCode {
     public getIdCode(): string {
         return this.getTaskID();
     }
+
+    public setTaskByJson(task: { task_name: string; task_id?: string; task_description: string; completed: boolean, task_ref?: firebase.firestore.DocumentReference; createdDate?: firebase.firestore.Timestamp }) {
+        this.setTaskName(task.task_name);
+        this.setTaskDescription(task.task_description);
+        this.setCompleted(task.completed);
+        if (!(task.createdDate === undefined)) {
+            this.setCreatedDate(task.createdDate);
+        }
+        if (!(task.task_id === undefined)) {
+            this.setTaskID(task.task_id);
+        }
+        if (!(task.task_ref === undefined)) {
+            this.task_ref = task.task_ref;
+        }
+    }
     public compare(o1: Task, o2: Task): number {
         if (o1.getCreatedDate().toDate().getTime() === o2.getCreatedDate().toDate().getTime()) {
             if (o1.toString() === o2.toString()) return 0
@@ -36,19 +51,19 @@ export class Task implements Comparator<Task>, IdentifyCode {
         newTask.task_id.set(task.task_id);
         newTask.task_description.set(task.task_description);
         newTask.completed.set(task.completed);
-        newTask.createdDate.set(firebase.firestore.Timestamp.fromDate(new Date()))
+        newTask.createdDate.set(task.createdDate)
         newTask.task_ref = task.task_ref;
         return newTask;
     }
 
-    public clone() {
+    public static clone(task: Task) {
         return Task.createNewTaskByJson({
-            task_name: this.getTaskName(),
-            task_id: this.getTaskID(),
-            task_description: this.getTaskDescription(),
-            completed: this.getCompleted(),
-            createdDate: this.getCreatedDate(),
-            task_ref: this.getTaskRef()
+            task_name: task.getTaskName(),
+            task_id: task.getTaskID(),
+            task_description: task.getTaskDescription(),
+            completed: task.getCompleted(),
+            createdDate: task.getCreatedDate(),
+            task_ref: task.getTaskRef()
         })
     }
 
@@ -147,8 +162,24 @@ export class Task implements Comparator<Task>, IdentifyCode {
 
 
 
-    public publishOnFirebase() {
-        this.task_ref.withConverter(Task.TaskConverter).set(this);
+    public publishOnFirebase(onDone: () => void = () => { }, onError: (error: any) => void = () => { }): void {
+        if (this.task_ref) {
+            this.task_ref.withConverter(Task.TaskConverter).set(this).then(() => {
+                onDone();
+            }).catch((error) => {
+                onError(error);
+            })
+        }
+    }
+
+    public removeOnFirebase(onDone: () => void = () => { }, onError: (error: any) => void = () => { }): void {
+        if (this.task_ref) {
+            this.task_ref.delete().then(() => {
+                onDone();
+            }).catch((error) => {
+                onError(error);
+            })
+        }
     }
 
     static TaskConverter = {
