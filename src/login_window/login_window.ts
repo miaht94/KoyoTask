@@ -30,6 +30,7 @@ firebase.firestore().enablePersistence()
     });
 
 var provider = new firebase.auth.GoogleAuthProvider();
+
 function googleSignin() {
     firebase.auth()
 
@@ -48,6 +49,7 @@ function googleSignin() {
                         lists: []
                     })
                 }
+
                 ipcRenderer.send('logged-in');
             })
 
@@ -102,8 +104,10 @@ function githubSignin() {
                         photoURL: user.photoURL,
                         lists: []
                     })
-                    ipcRenderer.send('logged-in');
+                    debugger
+
                 }
+                ipcRenderer.send('logged-in');
             })
         }).catch(function (error) {
             var errorCode = error.code;

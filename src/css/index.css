@@ -502,3 +502,7 @@ div[contenteditable] {
 .menu-button+.menu-button {
   border-top: 0.1px solid grey;
 }
+
+#AddButton {
+  visibility: hidden;
+}

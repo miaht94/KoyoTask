@@ -107,11 +107,16 @@ export class TableTaskView {
     }
 
     public renderCurList(list: List) {
-
+        if (!list) {
+            this.addTaskBtn.css("visibility", "hidden");
+            return;
+        }
         if (this.curListOnListTable)
             this.curListOnListTable.toggleClass("active");
+        this.addTaskBtn.css("visibility", "visible");
         this.curListOnListTable = $("#" + list.getListID());
         this.curListOnListTable.toggleClass("active");
+
         $("#list-name-big").text(list.getListName());
     }
 
@@ -181,8 +186,10 @@ export class TableTaskView {
 
 
         this.addTaskBtn.on("click", () => {
+            debugger
             let task_id = this.handleAddTask();
             // $("#" + task_id).find("#taskTitleForEdit").click();
+
             $("#" + task_id).find("#taskTitleForEdit").focus();
         })
         this.inputShare.on("keypress", event => {

@@ -59,12 +59,17 @@ export class DashboardModel {
     private syncListsLocalToRender(changeType: ChangeType, args: ArrayChangeDetail<List>) {
         switch (changeType) {
             case ChangeType.added:
-
                 let newRenderList = List.cloneWithoutTask(args.newElement);
                 args.newElement.getTasksObservable().addListener(this.getSyncTasksLocalToRenderFunction(newRenderList.getTasksObservable()).bind(this))
-                this.renderLists.binaryInsert(newRenderList);
+                let i = this.renderLists.binaryInsert(newRenderList);
+                if (this.getTableTaskModel().getTaskModelsObservable().length() === 0 && i === 0) {
+                    this.getTableTaskModel().setListRenderModel(this.renderLists.getObservableElementByIndex(i));
+                }
                 break;
             case ChangeType.removed:
+                if (this.getTableTaskModel().getCurrRenderListModel().toString() === args.removedElement.toString()) {
+                    this.getTableTaskModel().setListRenderModel(this.renderLists.getObservableElementByIndex(0))
+                }
                 this.renderLists.removeElementByElement(List.cloneWithoutTask(args.removedElement));
                 break;
             case ChangeType.modified:
@@ -182,10 +187,7 @@ export class DashboardModel {
                     //     }
                     // }).bind(this));
                     let i = lists.binaryInsert(data);
-                    if (this.getTableTaskModel().getTaskModelsObservable().length() === 0 && change.newIndex === 0) {
 
-                        this.getTableTaskModel().setListRenderModel(lists.getObservableElementByIndex(i));
-                    }
 
                 }
                 if (change.type === "modified") {
