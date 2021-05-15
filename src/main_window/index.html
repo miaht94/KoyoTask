@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/bootstrap-icons-1.4.0/bootstrap-icons.css">
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="dashboard-container container-fluid">
+        <div class="row no-gutters vh-100">
+            <div class="col col-4 col-sm-4 justify-content-center dashboard-lists overflow-auto" id='SidebarView'>
+                <div class='list-header col col-4 fixed-top d-flex p-1 justify-content-center'>
+                    <p>KoyoTaskkkkk</p>
+                </div>
+                <div class='d-flex p-1 pt-4 justify-content-start'>
+                    <div class='text-start koyoheader'>KoyoTaskkkkk</div>
+                </div>
+                <div class='row d-flex flex-row p-3'>
+                    <div class='d-flex justify-content-start align-items-center searchBar'>
+                        <i class="col-1 bi bi-search"></i>
+                        <input class='col-11 searchInput' placeholder='Search'></input>
+                    </div>
+                </div>
+                <div class='row no-gutters d-flex p-3'>
+                    <div class='userinfor d-flex p-2' id='UserInfo'>
+                        
+                    </div>
+                </div>
+                <!-- <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active">
+                    <div class="row no-gutters align-items-between">
+                        <div class="d-flex p-1 col-1 justify-content-center">
+                            <i class="bi bi-plus-circle"></i>
+                        </div>
+                    </div>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                  </div> -->
+                <div class='row d-flex flex-column p-3 list-group' id='list-group'>
+                    
+                </div>
+                <div class='list-add-footer col col-4 fixed-bottom d-flex p-2 justify-content-end align-items-center'>
+                    <!-- <button type='button' class='btn btn-secondary' id = 'AddListButton'>Add List</button> -->
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#AddListModal" id = 'AddListButton'>
+                        Add list
+                    </button>
+                </div>
+            </div>
+
+            <div class="col col-sm-8 d-flex flex-column p-0 justify-content-start dashboard-tasks" id='DashboardView'>
+                <div class='d-flex flex-column p-3 task-name-frame mb-3'>
+                    <div class='d-flex col-12 mt-4 list-name-big' id="list-name-big">List name</div>
+                    <div class='d-flex flex-row task-notice'>
+                        <div class='d-flex flex-row m-2 flex-wrap shared-user-avatar-frame justify-content-end'>
+                            <div class='d-flex align-items-center '>
+                                <img class='d-flex rounded-circle shared-user-avatar' src='avt.jpg'></img>
+                                <img class='d-flex rounded-circle shared-user-avatar' src='avt_1.jpg'></img>
+                            </div>
+                        </div>
+                        <div class='d-flex m-2'>Đã chia sẻ với IV.Anh</div>
+                    </div>
+                </div>
+                <button type='button' class='btn btn-secondary' id = 'AddButton'>Add Task</button>
+                <div class = 'DashboardList' id = 'DashboardList'>
+                   
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+    <button class="more-button"><i class="bi bi-list"></i></button>
+    <button class="test-hide">HIDE</button>
+    <button class="log-out">Log Out</button>
+    
+    <div class="modal">
+        <div class="container task-menu">
+            <div class="d-flex row menu-button p-1 align-items-center">
+                <div class="d-flex col-10 menu-title">Bach</div>
+                <div class="d-flex col-2 menu-button" id="menubutton1">
+                    <i class="bi bi-pen-fill"></i>
+                </div>
+            </div>
+            <div class="d-flex row menu-button p-1 align-items-center">
+                <div class="d-flex col-10 menu-title">
+                    <input id="sharing-list-input"></input>
+                </div>
+                <div class="d-flex col-2 menu-button">
+                    <i class="bi bi-pen-fill"></i>
+                </div>
+            </div>
+            <div class="d-flex row menu-button p-1 align-items-center">
+                <div class="d-flex col-10 menu-title">Bach</div>
+                <div class="d-flex col-2 menu-button">
+                    <i class="bi bi-pencil-square"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+</html>

@@ -1,67 +1,212 @@
 /* Basic styling */
-* {margin: 0; padding: 0; border: 0; vertical-align: baseline;}
-html {box-sizing: border-box;}
-*, *:before, *:after {box-sizing: inherit;}
-html, body {height: 100%; margin: 0;}
+/* * {margin: 0; padding: 0; border: 0; vertical-align: baseline;} */
+/* html {box-sizing: border-box;} */
+/* *, *:before, *:after {box-sizing: inherit;} */
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+}
 
-.column {
-  float: left;
-  padding: 0px;
-  height: 500px;
+.taskColumn {
+  opacity:0;
+}
+
+.newTaskGroup {
+  display: grid;
+  grid-template-columns: 30px 120px 50px 70px;
+  position: auto;
+  width: 70vw;
+}
+
+.window {
+  height:100%;
+  width: 100%;
+}
+
+.main {
+  display:table;
+  height:100%;
+  width: 100%;
+}
+
+.view {
+  height:100%;
+  width: 100%;
+}
+
+.viewcontent{
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  min-height:100%
 }
 
 .sidebar{
-  width: 35%;
-  padding-left: 5px;
+  display:table-cell;
+  width: 250px;
+  height:100vh;
   background-color:rgb(235, 235, 235);
 }
 
 .mainview {
-  width: 65%;
-  padding-left: 0px;
-  padding-top: -10px;
+  display:table-cell;
+  min-width:100%;
+  height:100%;
 }
 
+.mainviewheading {
+  display:table;
+  height:100%;
+  width: 100%;
+  table-layout: auto;
+  align-items: baseline;
+}
+
+.button {
+  height: 31px;
+  margin-left: -1px;
+  position: relative;
+  width: 31px;
+}
+
+.buttongroup {
+  display: grid;
+  grid-template-columns: repeat(1, 30px);
+  position: absolute;
+  top: 45px;
+  right: 0;
+  padding-right: 30px;
+  height: 100%;
+}
+
+/* heading text like koyotask & dashboard */
+.title {
+  display:table-cell;
+  letter-spacing: 0px;
+  line-height: 30px;
+  margin-left: 3px;
+  max-height: 100%-50px;
+  white-space: nowrap;
+  color: black;
+  font-family: "Helvetica", Helvetica;
+  font-size: 24px;
+}
+
+.dashboard_main .oval {
+  height: 16px;
+  margin-bottom: 1px;
+  width: 16px;
+}
+
+.searchbox {
+  border: 1px solid var(--mountain-mist);
+}
+
+.oval {
+  height: 31px;
+  left: 0px;
+  /* position: absolute; */
+  top: 0px;
+  width: 31px;
+}
+
+.textlabel {
+  font-weight: 300;
+  color: white;
+  height: 31px;
+  line-height: 35px;
+  position:absolute;
+  text-align: center;
+  align-items: center;
+  top: 0px;
+  white-space: nowrap;
+  width: 31px;
+
+}
+
+.heading {
+  margin-top:15px;
+}
 .window {
   background-color: #ffffff;
 
 }
 
-.view:after {
+
+.listitem {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+.dashboarditem {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.listitem .itemname {
+  letter-spacing: 0px;
+  line-height: 19px;
+  min-height: 19px;
+  min-width: 49px;
+  white-space: nowrap;
+  color: black;
+  font-family: "Helvetica", Helvetica;
+  font-size: 16px;
+}
+
+.listitem .itemname {
+  letter-spacing: 0px;
+  line-height: 19px;
+  min-height: 19px;
+  min-width: 49px;
+  white-space: nowrap;
+  color: black;
+  font-family: "Helvetica", Helvetica;
+  font-size: 16px;
+}
+
+.dashboarditem .itemname {
+  letter-spacing: 0px;
+  line-height: 19px;
+  min-width: 49px;
+  padding-left:19px;
+  white-space: nowrap;
+  color: black;
+  font-family: "Helvetica", Helvetica;
+  font-size: 16px;
+}
+
+/* .view:after {
   content: "";
   display: table;
   clear: both;
-}
+} */
 
 /* disable when develop */
-.ui-tabs{
+/* .ui-tabs{
   top: -65px;
-}
-
-body {
-  font-family: "System", sans-serif;
-  /* background: #ffffff; */
-  /* color: rgb(0, 0, 0); */
-}
+} */
 
 h1 {
-  margin: 45px 0 0px 0;
+  margin: 45px 0 0 0;
   font-weight: 400;
   font-size: 25px;
   line-height: 1.2;
 }
 
-p {
-  margin-top: 10px;
-  color: rgba(0, 0, 0, 0.4);
-}
 
-/* Styling of window frame and titlebar */
+/* Styling of window frame and titlebar
 body {
-  /* border: 1px solid #ffffff; */
+  border: 1px solid #ffffff;
   overflow-y: hidden;
-}
-
+}*/
+/*
 #titlebar {
   display: block;
   position: fixed;
@@ -77,10 +222,10 @@ body {
 #main {
   height: calc(100% - 32px);
   margin-top: 0px;
-  /* padding: 20px; */
+  padding: 20px;
   overflow-y: auto;
-}
-
+} */
+/* 
 #titlebar {
   padding: 4px;
 }
@@ -113,10 +258,4 @@ body {
 .maximized #window-title {
   margin-left: 12px;
 }
-
-#window-title span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  line-height: 1.5;
-}
+ */

@@ -1,0 +1,132 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+* {
+  box-sizing: border-box;
+}
+.artboard {
+  align-items: flex-start;
+  background-color: white;
+  display: flex;
+  overflow: hidden;
+}
+.artboard .addtaskbutton {
+  align-items: flex-start;
+  align-self: flex-end;
+  display: flex;
+  margin-left: 82px;
+  min-width: 37px;
+}
+.artboard .column-mainview {
+  align-items: flex-start;
+  display: flex;
+  height: 557px;
+  margin-top: 30px;
+  min-width: 525px;
+}
+.artboard .column-sidebar {
+  align-items: flex-start;
+  display: flex;
+  height: 588px;
+  margin-left: -1px;
+  margin-top: -3px;
+  min-width: 285px;
+}
+.artboard .dashboard {
+  letter-spacing: 0px;
+  line-height: 29px;
+  margin-bottom: 1px;
+  min-height: 29px;
+  white-space: nowrap;
+  width: 375px;
+}
+.artboard .oval {
+  height: 31px;
+  left: 4px;
+  position: absolute;
+  top: 0px;
+  width: 31px;
+}
+.artboard .overlap-group {
+  height: 31px;
+  margin-left: -1px;
+  position: relative;
+  width: 38px;
+}
+.artboard .overlap-group-1 {
+  align-items: flex-start;
+  background-image: url(https://anima-uploads.s3.amazonaws.com/projects/60633923f44a1907a369d511/releases/60675202f6c618c6981274d6/img/artboard-column-sidebar.png);
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 587px;
+  padding: 69px 18px;
+  width: 284px;
+}
+.artboard .overlap-group1 {
+  align-items: flex-start;
+  background-color: white;
+  display: flex;
+  height: 555px;
+  justify-content: flex-end;
+  min-width: 523px;
+  padding: 37px 9px;
+}
+.artboard .rectangle {
+  align-self: flex-end;
+  background-color: var(--iron);
+  border-radius: 8px;
+  height: 32px;
+  margin-top: 4px;
+  width: 246px;
+}
+.artboard .textlabel {
+  font-weight: 300;
+  height: 30px;
+  left: 0px;
+  letter-spacing: 0px;
+  line-height: 33px;
+  position: absolute;
+  text-align: center;
+  top: 0px;
+  white-space: nowrap;
+  width: 38px;
+}
+.artboard .title {
+  letter-spacing: 0px;
+  line-height: 30px;
+  margin-left: 3px;
+  min-height: 30px;
+  white-space: nowrap;
+}
+.artboard .titlebar {
+  align-items: center;
+  display: flex;
+  height: 32px;
+  min-width: 495px;
+}
+.border-1px-mountain-mist {
+  border: 1px solid var(--mountain-mist);
+}
+.helvetica-normal-black-24px {
+  color: black;
+  font-family: "Helvetica", Helvetica;
+  font-size: 24px;
+}
+.hiraginosans-w3-normal-white-22px {
+  color: white;
+  font-family: "HiraginoSans-W3", Helvetica;
+  font-size: 22px;
+}
+.times-roman-normal-black-25px {
+  color: black;
+  font-family: "Times-Roman", Helvetica;
+  font-size: 25px;
+}
+:root {
+  --iron: rgba(215, 215, 215, 1);
+  --mountain-mist: rgba(150, 150, 150, 1);
+}
+.valign-text-middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

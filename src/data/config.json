@@ -1,3 +1,15 @@
 {
-    "list_data": "/data.json"
+  "list_data": "/data.json",
+  "render_config": "/render_config.json",
+  "firebase_config" : {
+    "apiKey": "AIzaSyDkji7bC2lAavnQYjJp-2yzSDG3NvUIQsQ",
+    "authDomain": "test-9c328.firebaseapp.com",
+    "databaseURL": "https://test-9c328-default-rtdb.firebaseio.com",
+    "projectId": "test-9c328",
+    "storageBucket": "test-9c328.appspot.com",
+    "messagingSenderId": "93831312801",
+    "appId": "1:93831312801:web:58b998abfb7d8e941907e0",
+    "measurementId": "G-JHK1D11GGT"
+  },
+  "user" : "/user.json"
 }
