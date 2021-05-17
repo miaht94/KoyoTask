@@ -1,10 +1,7 @@
 {
-  "provider": "google.com",
-  "displayName": "Bach Tran Xuan",
-  "email": "guest",
-  "photoURL": "https://lh3.googleusercontent.com/a-/AOh14GhYu0ISDEEC1dqAccVc3I2QA92833wgw7f0sjZplg=s96-c",
-  "uid": null,
-  "fullname": "guest",
-  "account_type": "guest",
-  "avtURL": "guest"
+    "provider": "github.com",
+    "displayName": "Trần Xuân Bách",
+    "email": "19021222@vnu.edu.vn",
+    "photoURL": "https://avatars.githubusercontent.com/u/30613978?v=4",
+    "uid": "7CnFsxWUPJbwvwvC5kygoFNtkXm1"
 }

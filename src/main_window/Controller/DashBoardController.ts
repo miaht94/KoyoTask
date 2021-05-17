@@ -95,9 +95,10 @@ export class DashboardController {
     }
 
     public handleTaskDescriptionOfCurListChange(taskId: string, newDescription: string) {
+        debugger
         let listId = this.model.getTableTaskModel().getCurrRenderListModel().getListID();
         if (!listId) return;
-        let task = this.model.getLists().getElementByIdCode(listId).getTasksObservable().getElementByIdCode(taskId);
+        let task = this.model.getRenderLists().getElementByIdCode(listId).getTasksObservable().getElementByIdCode(taskId);
         if (!task) return;
         let oldDesc = task.getTaskName();
         task.setTaskDescription(newDescription);

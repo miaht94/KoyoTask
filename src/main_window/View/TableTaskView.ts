@@ -168,7 +168,7 @@ export class TableTaskView {
             let clickOutSizeTaskDesc = (event: any) => {
                 console.log("focusout")
                 $(temp.target).trigger("blur");
-                console.log("Change Task Desc[" + $(temp.target).parent().parent().attr("id") + ", '" + $(temp.target).text() + "' ] ");
+                console.log("Change Task Desc[" + $(temp.target).parent().parent().attr("id") + ", '" + $(temp.target).html() + "' ] ");
                 temp.target.removeEventListener("focusout", clickOutSizeTaskDesc)
                 this.handleTaskDescriptionChange($(temp.target).parent().parent().attr("id"), $(temp.target).html());
                 console.log($(temp.target).html());
