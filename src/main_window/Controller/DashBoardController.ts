@@ -98,7 +98,7 @@ export class DashboardController {
     }
 
     public handleTaskDescriptionOfCurListChange(taskId: string, newDescription: string) {
-        debugger
+
         let listId = this.model.getTableTaskModel().getCurrRenderListModel().getListID();
         if (!listId) return;
         let task = this.model.getRenderLists().getElementByIdCode(listId).getTasksObservable().getElementByIdCode(taskId);
@@ -167,7 +167,7 @@ export class DashboardController {
 
     public handleSharing(uid: string) {
         if (this.model.getTableTaskModel().getCurrRenderListModel().getListID()) {
-            debugger
+
             let list = this.model.getRenderLists().getElementByIdCode(this.model.getTableTaskModel().getCurrRenderListModel().getListID());
             list.addCollab(uid);
             list.publishOnFirebase();

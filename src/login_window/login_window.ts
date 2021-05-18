@@ -104,7 +104,7 @@ function githubSignin() {
                         photoURL: user.photoURL,
                         lists: []
                     })
-                    debugger
+
 
                 }
                 ipcRenderer.send('logged-in');
