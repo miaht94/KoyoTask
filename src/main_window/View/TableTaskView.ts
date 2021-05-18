@@ -12,6 +12,7 @@ export class TableTaskView {
     private addTaskBtn: JQuery<HTMLElement>;
     private render_config: any;
     private inputShare: JQuery<HTMLElement>;
+    private shareModalBtn: JQuery<HTMLElement>;
     private curListOnListTable: JQuery<HTMLElement>;
     private handleTaskNameChange: (task_id: string, new_name: string) => void;
     private handleTaskDescriptionChange: (task_id: string, new_description: string) => void;
@@ -21,6 +22,7 @@ export class TableTaskView {
     private handleTickTask: (task_id: string) => void;
     private handleSharing: (uid: string) => void;
 
+
     constructor() {
         IO.init();
         this.render_config = IO.getData("render_config");
@@ -28,6 +30,7 @@ export class TableTaskView {
         this.taskRowTemplate = HandleBars.compile(this.render_config.appendNewTask.html);
         this.addTaskBtn = $("#AddButton");
         this.inputShare = $("#sharing-list-input");
+        this.shareModalBtn = $(".share-list-btn");
         this.initBehaviour();
     }
 
@@ -50,7 +53,7 @@ export class TableTaskView {
         this.handleAddTask = func;
     }
 
-    public bindHandleShare(func: (uid: string) => void) {
+    public bindHandleSharing(func: (uid: string) => void) {
         this.handleSharing = func;
     }
 
@@ -109,18 +112,23 @@ export class TableTaskView {
     public renderCurList(list: List) {
         if (!list) {
             this.addTaskBtn.css("visibility", "hidden");
+            this.shareModalBtn.css("visibility", "hidden")
+            $("#list-name-big").text("");
             return;
         }
         if (this.curListOnListTable)
             this.curListOnListTable.toggleClass("active");
         this.addTaskBtn.css("visibility", "visible");
+        this.shareModalBtn.css("visibility", "visible")
         this.curListOnListTable = $("#" + list.getListID());
-        this.curListOnListTable.toggleClass("active");
-
+        if (!this.curListOnListTable.attr("class").includes("active"))
+            this.curListOnListTable.toggleClass("active");
         $("#list-name-big").text(list.getListName());
     }
 
     public clearAllTasks() {
+        this.addTaskBtn.css("visibility", "hidden");
+        this.shareModalBtn.css("visibility", "hidden")
         this.taskTableRef.empty();
     }
 
@@ -186,7 +194,7 @@ export class TableTaskView {
 
 
         this.addTaskBtn.on("click", () => {
-            debugger
+
             let task_id = this.handleAddTask();
             // $("#" + task_id).find("#taskTitleForEdit").click();
 
@@ -196,6 +204,15 @@ export class TableTaskView {
             if (event.keyCode === 13)
                 this.handleSharing(this.inputShare.val().toString());
         })
+
+        $(".submit-share").on('click', () => {
+            let uid = $("#share-to-input").val();
+            console.log("Share to : ", $("#share-to-input").val())
+            $("#share-to-input").val("");
+            $("#shareModal").modal('hide');
+            this.handleSharing(uid.toString());
+
+        });
 
         //context-menu
         $(".DashboardList").on("contextmenu", (event) => {

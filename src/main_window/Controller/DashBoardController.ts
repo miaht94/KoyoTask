@@ -4,7 +4,8 @@ import { DashboardModel } from '../Model/DashboardModel';
 import { DashboardView } from '../View/DashboardView';
 
 // import { TaskModel } from '../Model/TaskModel';
-import $ from '../../js/jquery';
+import $ from 'jquery';
+import '@popperjs/core';
 import { List } from '../Model/List';
 import { Task } from '../Model/Task';
 // import { ListModel } from '../Model/ListModel';
@@ -26,7 +27,7 @@ export class DashboardController {
         this.view.getTableTaskView().bindHandleAddTask(this.handleAddTask.bind(this));
         this.view.getTableTaskView().bindHandleDeleteTask(this.handleDeleteTask.bind(this));
         this.view.getTableTaskView().bindHandleTickTask(this.handleTickTask.bind(this));
-        // this.view.getTableTaskView().bindHandleShare(this.handleSharing.bind(this));
+        this.view.getTableTaskView().bindHandleSharing(this.handleSharing.bind(this));
 
         this.model.bindOnUserChange(this.view.renderUserInfo.bind(this.view));
         this.model.onUserChange(this.model.getCurrentUser());
@@ -44,7 +45,8 @@ export class DashboardController {
         // this.model.bindOnCurrentTaskModelChange(this.view.getTableTaskView().renderTaskModel.bind(this.view.getTableTaskView()))
         //Test
 
-        $(".test-hide").click(this.TestingFunction.bind(this));
+        // $(".test-hide").click(this.TestingFunction.bind(this));
+        // $(".submit-share").click(this.TestingFunction.bind(this));
     }
 
     // public onAddCompact(taskName: string, completed: boolean) {
@@ -74,6 +76,7 @@ export class DashboardController {
     }
 
     public handleChangeCurrentList(id: string) {
+
         // let temp = this.model.getTableListModel().findOListModelById(id).get().getListRef().collection("tasks")
         // let temp2 = this.model.getTableListModel().findOListModelById(id).get()
         // this.model.setCurrentTaskModel(this.model.getTableListModel().findOListModelById(id).get().getTasksModel(), temp, temp2);
@@ -119,6 +122,13 @@ export class DashboardController {
     public handleRemoveList(id: string) {
         let removedList = this.model.getRenderLists().removeElementByElement(this.model.getRenderLists().getElementByIdCode(id));
         if (!removedList) return
+        try {
+            this.handleChangeCurrentList(this.model.getRenderLists().getElementByIndex(0).getListID());
+        } catch (e) {
+            console.log(e);
+            console.log("Maybe first list doesn't exists")
+            this.handleChangeCurrentList(null);
+        }
         removedList.removeOnFirebase(() => { }, () => {
             this.model.getRenderLists().binaryInsert(removedList)
         });
@@ -155,13 +165,18 @@ export class DashboardController {
         })
     }
 
-    // public handleSharing(uid: string) {
-    //     if (this.model.getCurrentList())
-    //         this.model.getCurrentList().addCollab(uid);
-    // }
+    public handleSharing(uid: string) {
+        if (this.model.getTableTaskModel().getCurrRenderListModel().getListID()) {
+            debugger
+            let list = this.model.getRenderLists().getElementByIdCode(this.model.getTableTaskModel().getCurrRenderListModel().getListID());
+            list.addCollab(uid);
+            list.publishOnFirebase();
+        }
+
+    }
 
     //Testing 
-    public TestingFunction() {
-        console.log(this.model.getTableListModel())
-    }
+    // public TestingFunction() {
+    //     $("#exampleModal").modal('hide');
+    // }
 }

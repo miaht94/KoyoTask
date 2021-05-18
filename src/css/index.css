@@ -376,10 +376,11 @@ div[contenteditable] {
   font-size: 1.2rem;
 }
 
-.test-hide {
+.share-list-btn {
   position: fixed;
-  bottom: 100px;
+  bottom: 50px;
   right: 100px;
+  visibility: hidden;
 }
 
 .log-out {
@@ -474,7 +475,9 @@ div[contenteditable] {
   opacity: 0.5
 }
 
-.modal {
+
+
+.self-make-modal {
   display: none;
   /* Hidden by default */
   position: fixed;

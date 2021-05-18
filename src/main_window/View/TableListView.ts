@@ -94,10 +94,18 @@ export class TableListView {
     }
 
     public renderModifiedList(list: List, index: number): void {
-
-        $("#" + this.render_config.list_group.targetId).children().eq(index).replaceWith(this.listRowTemplate(list));
+        // Modify list name 
+        $("#" + this.render_config.list_group.targetId).children().eq(index).find("#list_name").text(list.getListName());
         if ($("#list-name-big-" + list.getListID()))
             $("#list-name-big-" + list.getListID()).text(list.getListName());
+
+        // Modify list description 
+        $("#" + this.render_config.list_group.targetId).children().eq(index).find("#list_description").text(list.getListDescription());
+
+        // Modify list icon
+        let iconElement = $("#" + this.render_config.list_group.targetId).children().eq(index).find("#list_icon").find("i");
+        iconElement.removeClass(iconElement.attr("class"));
+        iconElement.addClass(list.getListIcon() ? list.getListIcon() : "");
     }
     public renderModifiedListById(list: List): void {
         if (this.listTableRef.find("#" + list.getListID()))

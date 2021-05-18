@@ -81,7 +81,7 @@
     "@electron-forge/plugin-webpack": "^6.0.0-beta.54",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "@types/express": "^4.17.11",
-    "@types/jquery": "^3.5.5",
+    "@types/jquery": "^3.4.1",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
     "copy-webpack-plugin": "^6.2.1",
@@ -98,15 +98,18 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
+    "@types/bootstrap": "^4.0.0",
     "@types/portscanner": "^2.1.0",
     "@types/uniqid": "^5.3.0",
     "@types/uuid": "^8.3.0",
     "atob": "^2.1.2",
+    "bootstrap": "^4.0.0",
     "bootstrap-icons": "^1.4.1",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.17.1",
     "firebase": "^8.4.1",
     "handlebars": "^4.7.7",
+    "jquery": "^3.4.1",
     "portscanner": "^2.2.0",
     "xmlhttprequest": "^1.8.0"
   }

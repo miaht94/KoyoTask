@@ -5,22 +5,26 @@ import { ChangeDetail, Observable } from './Observable';
 import { Task } from './Task';
 import { v4 as uniqid } from 'uuid';
 import { List } from './List';
+import { DashboardModel } from './DashboardModel';
 export class TableTaskModel {
     protected tasksRenderModel: ObservableArrayObservable<Task>;
     protected currentRenderListModelObservable: Observable<List>;
+    protected dashboardModel: DashboardModel;
     protected onModified: (task: Task, atIndex: number) => void;
     protected onRemoved: (task: Task, atIndex: number) => void;
     protected onInserted: (task: Task, atIndex: number) => void;
     protected onCleared: () => void;
     protected onListChangeSomething: (list: List) => void;
     protected detachCallbackOfRenderData: () => void;
+    // protected emptyList = List.createEmptyList();
     // protected detachListenerOnTasksOrigin: (callbackId: string) => void;
     protected readonly callbackIdForOrigin: string = uniqid();
-    constructor(currentRenderList?: Observable<List>) {
+    constructor(dashboardModelRef: DashboardModel, currentRenderList?: Observable<List>) {
         // this.tasksRenderModel = renderTasks;
         // this.detachListenerOnTasksOrigin = (callbackId: string) => { };
         // this.tasksRenderModel.addListener(this.commitChange.bind(this), this.callbackIdForTasksOrigin);
         // this.setTasksRenderModel(tasksOrigin);
+        this.dashboardModel = dashboardModelRef;
         this.tasksRenderModel = new ObservableArrayObservable<Task>();
         this.detachCallbackOfRenderData = () => { };
         this.tasksRenderModel.addListener(this.commitChangeOnTasks.bind(this), this.callbackIdForOrigin)
@@ -35,11 +39,14 @@ export class TableTaskModel {
     }
 
     public setListRenderModel(renderList: Observable<List>) {
-        if (!renderList) return;
 
         this.dispose();
-        this.currentRenderListModelObservable.set(renderList.get());
-        this.currentRenderListModelObservable
+        if (!renderList) {
+            this.currentRenderListModelObservable.set(null, true);
+            return
+        }
+        this.currentRenderListModelObservable.set(renderList.get(), true);
+
         let renderTasks = renderList.get().getTasksObservable();
         renderTasks.addListener(this.syncRenderDataToModel.bind(this), this.callbackIdForOrigin, true);
         this.detachCallbackOfRenderData = () => {

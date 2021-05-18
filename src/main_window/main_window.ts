@@ -1,8 +1,9 @@
 import * as fs from 'fs';
 import io from '../Utils/iosys';
-import $ from '../js/jquery';
+import $ from 'jquery';
 import "@popperjs/core";
-import "../js/bootstrap.min";
+import "bootstrap";
+// import "../js/popper.min";
 import { DashboardController } from './Controller/DashBoardController';
 import { DashboardView } from './View/DashboardView';
 import { DashboardModel } from './Model/DashboardModel';

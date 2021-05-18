@@ -3,14 +3,21 @@ import { ChangeType } from './ChangeType'
 import firebase from 'firebase'
 import { ObservableArrayObservable, ArrayChangeDetail } from './ObservableArrayObservable';
 import { Observable } from './Observable';
+import { DashboardModel } from './DashboardModel';
 export class TableListModel {
     protected listsRenderModel: ObservableArrayObservable<List>;
     protected onModified: (list: List, atIndex: number) => void;
     protected onRemoved: (list: List, atIndex: number) => void;
     protected onInserted: (list: List, atIndex: number) => void;
-    constructor(renderLists: ObservableArrayObservable<List>) {
-        this.listsRenderModel = renderLists;
+    protected dashboardModel: DashboardModel;
+    constructor(dashboardModelRef: DashboardModel, renderLists?: ObservableArrayObservable<List>) {
+        this.listsRenderModel = new ObservableArrayObservable<List>();
         this.listsRenderModel.addListener(this.commitChange.bind(this));
+        this.dashboardModel = dashboardModelRef
+        if (renderLists) {
+            renderLists.addListener(this.syncRenderDataToModel.bind(this));
+        }
+
         // originLists.addListener(this.syncLocalDataToRenderData.bind(this));
     }
 
@@ -57,20 +64,22 @@ export class TableListModel {
         target.get().setListDescription(newDescription);
     }
 
-    // public syncRenderDataToModel(changeType: ChangeType, args: ArrayChangeDetail<List>) {
-    //     switch (changeType) {
-    //         case ChangeType.added:
-
-    //             this.listsRenderModel.binaryInsert(List.cloneWithoutTask(args.newElement));
-    //             break;
-    //         case ChangeType.removed:
-    //             this.listsRenderModel.removeElementByElement(List.cloneWithoutTask(args.removedElement));
-    //             break;
-    //         case ChangeType.modified:
-    //             this.listsRenderModel.modifyElementByIdCode(List.cloneWithoutTask(args.newElement));
-    //             break;
-    //     }
-    // }
+    public syncRenderDataToModel(changeType: ChangeType, args: ArrayChangeDetail<List>) {
+        switch (changeType) {
+            case ChangeType.added:
+                let i = this.listsRenderModel.binaryInsert(List.cloneWithoutTask(args.newElement));
+                if (this.dashboardModel.getTableTaskModel().getTaskModelsObservable().length() === 0 && i === 0) {
+                    this.dashboardModel.getTableTaskModel().setListRenderModel(this.dashboardModel.getRenderLists().getObservableElementByIndex(i));
+                }
+                break;
+            case ChangeType.removed:
+                this.listsRenderModel.removeElementByElement(List.cloneWithoutTask(args.removedElement));
+                break;
+            case ChangeType.modified:
+                this.listsRenderModel.modifyElementByIdCode(List.cloneWithoutTask(args.newElement));
+                break;
+        }
+    }
 
 
     protected commitChange(changeType: ChangeType, args: ArrayChangeDetail<List>) {

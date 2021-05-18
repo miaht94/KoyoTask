@@ -36,9 +36,9 @@ export class DashboardModel {
         this.localLists = new ObservableArrayObservable<List>();
         this.renderLists = new ObservableArrayObservable<List>();
         this.localLists.addListener(this.syncListsLocalToRender.bind(this));
-        this.tableListModel = new TableListModel(this.renderLists);
+        this.tableListModel = new TableListModel(this, this.renderLists);
         // this.tableListModel.addSourceList(this.pendingLists);
-        this.tableTaskModel = new TableTaskModel();
+        this.tableTaskModel = new TableTaskModel(this);
         console.log(firebase.apps.length !== 0)
         this.Logger = new Logger(this);
         this.database = firebase.firestore();
@@ -62,9 +62,7 @@ export class DashboardModel {
                 let newRenderList = List.cloneWithoutTask(args.newElement);
                 args.newElement.getTasksObservable().addListener(this.getSyncTasksLocalToRenderFunction(newRenderList.getTasksObservable()).bind(this))
                 let i = this.renderLists.binaryInsert(newRenderList);
-                if (this.getTableTaskModel().getTaskModelsObservable().length() === 0 && i === 0) {
-                    this.getTableTaskModel().setListRenderModel(this.renderLists.getObservableElementByIndex(i));
-                }
+                
                 break;
             case ChangeType.removed:
                 if (this.getTableTaskModel().getCurrRenderListModel().toString() === args.removedElement.toString()) {

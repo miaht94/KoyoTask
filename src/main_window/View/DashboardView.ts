@@ -69,6 +69,7 @@ export class DashboardView {
         let template: HandlebarsTemplateDelegate = Handlebars.compile(userfieldHTML);
         userfieldHTML = template(user)
         //Render
+        $("#modal-uid").text(user.getUID())
         userfieldForAppender.html(userfieldHTML);
     }
 
