@@ -11,7 +11,7 @@ This repository houses the second project of Koyomia100 originally made for Soft
 
 ### Documentation
 
-[Report 1](https://docs.google.com/spreadsheets/d/1VuO_lZsVFk5TMMdIF8GQ_K24ADrsQ_aMVlyA7tjniDU/edit#gid=0)
+[Report 1](https://drive.google.com/file/d/1Mo0LO-_5JtH1PizlhTFsWih8s2Curoim/view?usp=sharing)
 
 [Slide](https://drive.google.com/file/d/1V8FGFhqh96wKkR3oxRpxRtYKxFe4uEUF/view)
 
@@ -36,6 +36,7 @@ Application requires an internet connection for login. After the first login, of
 ### Build
 
 **debug:** "npm start"
+**build:** "npm run make"
 
 ### System Requirements
 
