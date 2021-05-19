@@ -1,4 +1,4 @@
-# Koyomia Dictionary
+# KoyoTask
 
 
 ### Introduction
@@ -23,6 +23,8 @@ Application requires an internet connection for login. After the first login, of
 
 **SDK:** npm 6.14.13 / node 14.17.0
 **Command:** "npm install"
+
+
 ### Build
 
 Use assembly:assembly in Maven
