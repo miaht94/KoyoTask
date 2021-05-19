@@ -102,15 +102,20 @@ $(document).ready(async () => {
         })
     })
 
+    $("#exit-app").click((event: any) => {
+        var window = remote.getCurrentWindow();
+        window.close();
+    })
+
     $(".more-button").click((event: any) => {
-        if ($(".modal").css("display") == "none") {
-            $(".modal").css("display", "block");
+        if ($(".self-make-modal").css("display") == "none") {
+            $(".self-make-modal").css("display", "block");
             $(".task-menu").css("display", "block");
             let tempSave = (event: any) => {
-                if (event.target.className.includes("modal")) {
+                if (event.target.className.includes("self-make-modal")) {
                     $(".task-menu").hide(200, () => {
                         $(".task-menu").css("display", "none")
-                        $(".modal").css("display", "none")
+                        $(".self-make-modal").css("display", "none")
                     })
 
                 }
@@ -149,5 +154,5 @@ $(document).ready(async () => {
         e.preventDefault()
         ipcRenderer.send('show-context-menu')
     })
-
+    $(".task-menu").find("#share-list-btn").remove();
 })

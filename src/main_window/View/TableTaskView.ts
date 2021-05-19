@@ -13,6 +13,8 @@ export class TableTaskView {
     private render_config: any;
     private inputShare: JQuery<HTMLElement>;
     private shareModalBtn: JQuery<HTMLElement>;
+    private shareModalBtn1: JQuery<HTMLElement>;
+    private menuTask: JQuery<HTMLElement>;
     private curListOnListTable: JQuery<HTMLElement>;
     private handleTaskNameChange: (task_id: string, new_name: string) => void;
     private handleTaskDescriptionChange: (task_id: string, new_description: string) => void;
@@ -31,6 +33,8 @@ export class TableTaskView {
         this.addTaskBtn = $("#AddButton");
         this.inputShare = $("#sharing-list-input");
         this.shareModalBtn = $(".share-list-btn");
+        this.shareModalBtn1 = $("#share-list-btn").clone();
+        this.menuTask = $(".task-menu");
         this.initBehaviour();
     }
 
@@ -113,6 +117,7 @@ export class TableTaskView {
         if (!list) {
             this.addTaskBtn.css("visibility", "hidden");
             this.shareModalBtn.css("visibility", "hidden")
+            this.menuTask.find("#share-list-btn").remove();
             $("#list-name-big").text("");
             return;
         }
@@ -120,6 +125,7 @@ export class TableTaskView {
             this.curListOnListTable.toggleClass("active");
         this.addTaskBtn.css("visibility", "visible");
         this.shareModalBtn.css("visibility", "visible")
+        this.menuTask.prepend(this.shareModalBtn1);
         this.curListOnListTable = $("#" + list.getListID());
         if (!this.curListOnListTable.attr("class").includes("active"))
             this.curListOnListTable.toggleClass("active");
@@ -128,7 +134,8 @@ export class TableTaskView {
 
     public clearAllTasks() {
         this.addTaskBtn.css("visibility", "hidden");
-        this.shareModalBtn.css("visibility", "hidden")
+        this.shareModalBtn.css("visibility", "hidden");
+        this.menuTask.find("#share-list-btn").remove();
         this.taskTableRef.empty();
     }
 

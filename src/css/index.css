@@ -414,7 +414,7 @@ div[contenteditable] {
 }
 
 .task-menu {
-  background-color: whitesmoke;
+  background-color: rgba(243, 243, 243, 0.938);
   display: block;
   border-radius: 7px;
   /* border: 0.05px solid rgba(128, 128, 128, 0.404); */
@@ -502,10 +502,20 @@ div[contenteditable] {
   display: none;
 }
 
+.menu-button:hover {
+  background-color: rgb(238, 234, 234)
+}
+
+.menu-button:active {
+  background-color: rgb(216, 206, 206)
+}
+
 .menu-button+.menu-button {
-  border-top: 0.1px solid grey;
+  border-top: 0.1px solid rgba(199, 199, 199, 0.61);
 }
 
 #AddButton {
   visibility: hidden;
 }
+
+#share-list-btn {}
