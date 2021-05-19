@@ -35,7 +35,7 @@ Application requires an internet connection for login. After the first login, of
 
 ### Build
 
-Use assembly:assembly in Maven
+**debug:** "npm start"
 
 ### System Requirements
 
