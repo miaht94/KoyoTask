@@ -83,7 +83,7 @@ export class List implements Comparator<List>, IdentifyCode {
             "list_id": ref.id,
             "list_name": "",
             "listDescription": "",
-            "list_icon": "",
+            "list_icon": "bi-star",
             "list_ref": ref,
             "createdDate": firebase.firestore.Timestamp.fromDate(new Date()),
             "collaborators": [firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid)],
